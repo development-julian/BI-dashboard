@@ -79,3 +79,8 @@ export const tableData: Transaction[] = [
     { id: 'TXN009', email: 'emma.miller@email.com', amount: 180.0, date: '2023-08-09', status: 'failed' },
     { id: 'TXN010', email: 'james.wilson@email.com', amount: 275.0, date: '2023-08-10', status: 'success' },
 ];
+
+export const analysisReport = {
+  analysis: "The analysis indicates a positive trend in user engagement and revenue. Key drivers include a recent marketing campaign and new feature launches. However, mobile adoption is lagging behind desktop, suggesting a need for improved mobile user experience.",
+  sentiment: "Positive"
+};

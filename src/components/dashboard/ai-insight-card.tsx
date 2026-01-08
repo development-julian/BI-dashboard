@@ -6,11 +6,13 @@ import { AlertCircle, Bot } from 'lucide-react';
 
 interface AiInsightCardProps {
   loading: boolean;
-  report?: string;
+  report?: { analysis: string; sentiment: string; };
   error?: string | null;
 }
 
 export default function AiInsightCard({ loading, report, error }: AiInsightCardProps) {
+  const reportText = typeof report === 'string' ? report : report?.analysis;
+
   return (
     <Card className="col-span-1 lg:col-span-7 animate-in fade-in-50">
       <CardHeader>
@@ -35,7 +37,7 @@ export default function AiInsightCard({ loading, report, error }: AiInsightCardP
             <p>{error}</p>
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground whitespace-pre-wrap">{report}</p>
+          <p className="text-sm text-muted-foreground whitespace-pre-wrap">{reportText}</p>
         )}
       </CardContent>
     </Card>
