@@ -44,7 +44,7 @@ export default function DashboardPage() {
       setLoading(false);
     };
     fetchData();
-  }, [toast]);
+  }, []);
 
   const handleAnalyze = async () => {
     setAnalysisLoading(true);

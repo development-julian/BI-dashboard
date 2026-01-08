@@ -2,7 +2,7 @@
 
 import { kpiData, barChartData, lineChartData, analysisReport } from "./data";
 
-const API_URL = 'https://willirv.app.n8n.cloud/webhook/api/v1/gateway';
+const API_URL = 'https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway';
 
 const defaultBody = {
   ghlLocationId: 'demo_location_id',
