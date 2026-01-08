@@ -81,6 +81,7 @@ export const tableData: Transaction[] = [
 ];
 
 export const analysisReport = {
-  analysis: "The analysis indicates a positive trend in user engagement and revenue. Key drivers include a recent marketing campaign and new feature launches. However, mobile adoption is lagging behind desktop, suggesting a need for improved mobile user experience.",
-  sentiment: "Positive"
+  summary: "The analysis indicates a positive trend in user engagement and revenue. Key drivers include a recent marketing campaign and new feature launches.",
+  key_insight: "Mobile adoption is lagging behind desktop, suggesting a need for improved mobile user experience.",
+  actionable_recommendation: "Invest in a mobile-first redesign and targeted mobile ad campaigns to boost engagement."
 };

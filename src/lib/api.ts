@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use server';
 
 import { kpiData, barChartData, lineChartData, analysisReport } from "./data";
@@ -43,8 +42,9 @@ export interface DashboardData {
 
 export interface AnalysisData {
   intelligenceReport: {
-    analysis: string;
-    sentiment: string;
+    summary: string;
+    key_insight: string;
+    actionable_recommendation: string;
   };
 }
 
@@ -84,10 +84,8 @@ const fetchFromApi = async <T>(action: 'GET_DASHBOARD' | 'GET_ANALYSIS'): Promis
     }
     
     if (action === 'GET_ANALYSIS') {
-      // Check if the actual API response for intelligenceReport is a string or object.
-      // The error suggests it's an object. Let's provide a mock that matches.
       return {
-        success: true, // Let's return success true to show mock data
+        success: true,
         data: {
           intelligenceReport: analysisReport,
         } as unknown as T
