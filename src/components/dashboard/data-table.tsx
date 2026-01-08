@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import {
-  CaretSortIcon,
-} from '@radix-ui/react-icons';
+  ChevronsUpDown,
+} from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -48,7 +48,7 @@ export function DataTable({ data }: { data: Transaction[] }) {
 
   const getSortIcon = (key: SortKey) => {
     if (!sortConfig || sortConfig.key !== key) {
-      return <CaretSortIcon className="ml-2 h-4 w-4" />;
+      return <ChevronsUpDown className="ml-2 h-4 w-4" />;
     }
     return sortConfig.direction === 'ascending' ? '▲' : '▼';
   };
