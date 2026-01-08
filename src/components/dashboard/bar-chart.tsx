@@ -1,12 +1,13 @@
 'use client';
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
-import { barChartData } from '@/lib/data';
+import type { ChartData } from '@/lib/api';
 
-export default function OverviewBarChart() {
+
+export default function OverviewBarChart({ data }: { data: ChartData[] }) {
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={barChartData}>
+      <BarChart data={data}>
         <XAxis
           dataKey="name"
           stroke="hsl(var(--muted-foreground))"

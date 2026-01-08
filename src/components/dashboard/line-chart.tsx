@@ -10,13 +10,13 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { lineChartData } from '@/lib/data';
+import type { ChartData } from '@/lib/api';
 
-export default function UserActivityLineChart() {
+export default function UserActivityLineChart({ data }: { data: ChartData[] }) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart
-        data={lineChartData}
+        data={data}
         margin={{
           top: 5,
           right: 10,
@@ -26,7 +26,7 @@ export default function UserActivityLineChart() {
       >
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
         <XAxis 
-            dataKey="date" 
+            dataKey="name" 
             stroke="hsl(var(--muted-foreground))"
             fontSize={12}
             tickLine={false}

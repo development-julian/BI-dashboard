@@ -12,7 +12,6 @@ interface MetricCardProps {
   value: string;
   change: string;
   changeType: 'increase' | 'decrease';
-  description: string;
   Icon: LucideIcon;
 }
 
@@ -33,7 +32,7 @@ export default function MetricCard({
         <div className="text-2xl font-bold">{value}</div>
         <p
           className={cn(
-            'text-xs',
+            'text-xs text-muted-foreground',
             changeType === 'increase'
               ? 'text-green-600'
               : 'text-red-600'

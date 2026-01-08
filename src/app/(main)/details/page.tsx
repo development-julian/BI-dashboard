@@ -1,3 +1,5 @@
+
+'use client';
 import {
   Card,
   CardContent,
@@ -6,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { DataTable } from '@/components/dashboard/data-table';
-import { tableData } from '@/lib/data';
+import { tableData, lineChartData } from '@/lib/data';
 import UserActivityLineChart from '@/components/dashboard/line-chart';
 
 export default function DetailsPage() {
@@ -18,7 +20,7 @@ export default function DetailsPage() {
           <CardDescription>A detailed look at user engagement across platforms.</CardDescription>
         </CardHeader>
         <CardContent>
-          <UserActivityLineChart />
+          <UserActivityLineChart data={lineChartData} />
         </CardContent>
       </Card>
 

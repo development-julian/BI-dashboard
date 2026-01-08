@@ -3,73 +3,79 @@ export const kpiData = [
     title: 'Total Revenue',
     value: '$45,231.89',
     change: '+20.1%',
-    changeType: 'increase',
-    description: 'from last month',
+    changeType: 'increase' as 'increase' | 'decrease',
+    description: 'Total revenue from all sales channels.',
   },
   {
     title: 'Subscriptions',
     value: '+2350',
     change: '+180.1%',
-    changeType: 'increase',
-    description: 'from last month',
+    changeType: 'increase' as 'increase' | 'decrease',
+    description: 'New subscribers this month.',
   },
   {
     title: 'Sales',
     value: '+12,234',
     change: '+19%',
-    changeType: 'increase',
-    description: 'from last month',
+    changeType: 'increase' as 'increase' | 'decrease',
+    description: 'Total sales this month.',
   },
   {
     title: 'Active Now',
     value: '+573',
-    change: '-2.1%',
-    changeType: 'decrease',
-    description: 'from last hour',
+    change: '+201',
+    changeType: 'increase' as 'increase' | 'decrease',
+    description: 'Users currently active on the platform.',
   },
 ];
 
-export const lineChartData = [
-  { date: 'Jan 22', desktop: 186, mobile: 80 },
-  { date: 'Feb 22', desktop: 305, mobile: 200 },
-  { date: 'Mar 22', desktop: 237, mobile: 120 },
-  { date: 'Apr 22', desktop: 73, mobile: 190 },
-  { date: 'May 22', desktop: 209, mobile: 130 },
-  { date: 'Jun 22', desktop: 214, mobile: 140 },
+export const barChartData = [
+  { name: 'Jan', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Feb', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Mar', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Apr', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'May', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Jun', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Jul', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Aug', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Sep', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Oct', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Nov', total: Math.floor(Math.random() * 5000) + 1000 },
+  { name: 'Dec', total: Math.floor(Math.random() * 5000) + 1000 },
 ];
 
-export const barChartData = [
-    { name: "Jan", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Feb", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Mar", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Apr", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "May", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Jun", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Jul", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Aug", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Sep", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Oct", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Nov", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Dec", total: Math.floor(Math.random() * 5000) + 1000 },
+export const lineChartData = [
+    { name: 'Jan', desktop: 186, mobile: 80 },
+    { name: 'Feb', desktop: 305, mobile: 200 },
+    { name: 'Mar', desktop: 237, mobile: 120 },
+    { name: 'Apr', desktop: 73, mobile: 190 },
+    { name: 'May', desktop: 209, mobile: 130 },
+    { name: 'Jun', desktop: 214, mobile: 140 },
+    { name: 'Jul', desktop: 345, mobile: 220 },
+    { name: 'Aug', desktop: 289, mobile: 180 },
+    { name: 'Sep', desktop: 402, mobile: 250 },
+    { name: 'Oct', desktop: 367, mobile: 210 },
+    { name: 'Nov', desktop: 488, mobile: 300 },
+    { name: 'Dec', desktop: 521, mobile: 320 },
 ];
 
 export type Transaction = {
-    id: string;
-    amount: number;
-    status: 'pending' | 'processing' | 'success' | 'failed';
-    email: string;
-    date: string;
+  id: string;
+  email: string;
+  amount: number;
+  date: string;
+  status: 'pending' | 'success' | 'failed';
 };
 
 export const tableData: Transaction[] = [
-    { id: 'TRX001', amount: 320.00, status: 'success', email: 'ken.t@example.com', date: '2023-06-23' },
-    { id: 'TRX002', amount: 198.50, status: 'processing', email: 'a.h@example.com', date: '2023-06-24' },
-    { id: 'TRX003', amount: 50.00, status: 'failed', email: 'm.j@example.com', date: '2023-06-25' },
-    { id: 'TRX004', amount: 675.00, status: 'success', email: 's.lee@example.com', date: '2023-06-26' },
-    { id: 'TRX005', amount: 89.99, status: 'pending', email: 'p.w@example.com', date: '2023-06-27' },
-    { id: 'TRX006', amount: 1200.00, status: 'success', email: 'l.c@example.com', date: '2023-06-28' },
-    { id: 'TRX007', amount: 45.50, status: 'processing', email: 'j.d@example.com', date: '2023-06-29' },
-    { id: 'TRX008', amount: 250.00, status: 'success', email: 'k.b@example.com', date: '2023-06-30' },
-    { id: 'TRX009', amount: 300.00, status: 'failed', email: 'e.g@example.com', date: '2023-07-01' },
-    { id: 'TRX010', amount: 75.00, status: 'pending', email: 'n.r@example.com', date: '2023-07-02' },
+    { id: 'TXN001', email: 'olivia.martin@email.com', amount: 250.0, date: '2023-08-01', status: 'success' },
+    { id: 'TXN002', email: 'jackson.lee@email.com', amount: 150.75, date: '2023-08-02', status: 'pending' },
+    { id: 'TXN003', email: 'isabella.nguyen@email.com', amount: 350.0, date: '2023-08-03', status: 'success' },
+    { id: 'TXN004', email: 'william.kim@email.com', amount: 450.5, date: '2023-08-04', status: 'failed' },
+    { id: 'TXN005', email: 'sofia.davis@email.com', amount: 550.0, date: '2023-08-05', status: 'success' },
+    { id: 'TXN006', email: 'liam.brown@email.com', amount: 200.0, date: '2023-08-06', status: 'success' },
+    { id: 'TXN007', email: 'ava.jones@email.com', amount: 300.25, date: '2023-08-07', status: 'pending' },
+    { id: 'TXN008', email: 'noah.garcia@email.com', amount: 100.0, date: '2023-08-08', status: 'success' },
+    { id: 'TXN009', email: 'emma.miller@email.com', amount: 180.0, date: '2023-08-09', status: 'failed' },
+    { id: 'TXN010', email: 'james.wilson@email.com', amount: 275.0, date: '2023-08-10', status: 'success' },
 ];
