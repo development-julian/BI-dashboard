@@ -56,12 +56,14 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
             <p className="text-xs font-semibold text-green-500">{data.mqlChange}</p>
           </div>
           <div className='p-4 rounded-lg bg-card-foreground/5'>
-            <p className="text-xs text-muted-foreground flex justify-between">
-                <span>CONVERSION RATE</span>
-                <span className='text-foreground'>Target: {data.conversionRateTarget}%</span>
-            </p>
+            <p className="text-xs text-muted-foreground">CONVERSION RATE</p>
             <p className="text-2xl font-bold">{data.conversionRate}%</p>
-            <Progress value={conversionPercentage} className='h-2 mt-2'/>
+            <div className="relative mt-2 pt-2">
+              <Progress value={conversionPercentage} className='h-2'/>
+              <div className="text-xs text-muted-foreground text-right mt-1">
+                Target: {data.conversionRateTarget}%
+              </div>
+            </div>
           </div>
         </div>
         <div className="col-span-1 md:col-span-3">
