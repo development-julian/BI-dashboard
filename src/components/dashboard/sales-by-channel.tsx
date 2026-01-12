@@ -60,7 +60,7 @@ export default function SalesByChannel({ data }: SalesByChannelProps) {
               dataKey="value"
               fill="hsl(var(--primary))"
               radius={[4, 4, 0, 0]}
-              barSize={60}
+              barSize={80}
             >
                 <LabelList dataKey="name" position="bottom" offset={25} className="fill-muted-foreground font-semibold" fontSize={12} />
                  <LabelList 
