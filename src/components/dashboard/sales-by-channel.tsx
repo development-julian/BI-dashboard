@@ -35,16 +35,18 @@ export default function SalesByChannel({ data }: SalesByChannelProps) {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={data} layout="horizontal" margin={{ left: -20, right: 20, top: 5, bottom: 20 }}>
+          <BarChart data={data} layout="vertical" margin={{ left: 10, right: 30, top: 5, bottom: 0 }}>
             <XAxis 
-              dataKey="name"
-              stroke="hsl(var(--muted-foreground))"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
+              type="number"
+              hide
              />
             <YAxis
-             hide
+                dataKey="name"
+                type="category"
+                axisLine={false}
+                tickLine={false}
+                tick={false}
+                width={10}
             />
             <Tooltip
               cursor={{ fill: 'hsl(var(--secondary))' }}
@@ -60,13 +62,13 @@ export default function SalesByChannel({ data }: SalesByChannelProps) {
               dataKey="value"
               fill="hsl(var(--primary))"
               radius={[4, 4, 0, 0]}
-              barSize={120}
+              layout="vertical"
             >
-                <LabelList dataKey="name" position="bottom" offset={25} className="fill-muted-foreground font-semibold" fontSize={12} />
+                <LabelList dataKey="name" position="insideLeft" offset={10} className="fill-background font-semibold" fontSize={12} />
                  <LabelList 
                     dataKey="value" 
-                    position="bottom" 
-                    offset={5} 
+                    position="right" 
+                    offset={10} 
                     className="fill-foreground font-bold" 
                     fontSize={14}
                     formatter={formatValue}
