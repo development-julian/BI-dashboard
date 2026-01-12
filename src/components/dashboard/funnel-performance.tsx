@@ -32,7 +32,7 @@ export default function FunnelPerformance({ data }: { data: FunnelStage[] }) {
           {data.map((item, index) => {
              const Icon = iconMap[item.stage as keyof typeof iconMap] || Target;
              const isLast = index === data.length - 1;
-             const changeColor = item.changeType === 'increase' ? 'text-green-400 bg-green-500/10' : item.changeType === 'decrease' ? 'text-red-400 bg-red-500/10' : 'text-muted-foreground bg-muted/20';
+             const changeColor = item.changeType === 'increase' ? 'text-green-400' : 'text-red-400';
 
             return (
                 <li key={item.stage} className="relative">
@@ -49,9 +49,9 @@ export default function FunnelPerformance({ data }: { data: FunnelStage[] }) {
                         <div className='flex-1'>
                             <div className='flex justify-between items-center'>
                                 <p className="text-sm text-muted-foreground">{item.stage}</p>
-                                 <Badge variant="outline" className={`text-xs ${changeColor}`}>
+                                 <span className={cn('text-xs font-semibold', changeColor)}>
                                     {item.change}
-                                </Badge>
+                                </span>
                             </div>
                             <p className="text-xl font-bold">{item.value}</p>
                             <p className="text-xs text-muted-foreground">{item.meta}</p>

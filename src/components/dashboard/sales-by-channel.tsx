@@ -12,11 +12,20 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  LabelList,
 } from 'recharts';
 
 interface SalesByChannelProps {
   data: { name: string; value: number }[];
 }
+
+const formatValue = (value: number) => {
+    if (value >= 1000) {
+        return `$${(value / 1000).toFixed(1)}k`;
+    }
+    return `$${value}`;
+}
+
 
 export default function SalesByChannel({ data }: SalesByChannelProps) {
   return (
@@ -26,15 +35,16 @@ export default function SalesByChannel({ data }: SalesByChannelProps) {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={data} layout="vertical" margin={{ left: 10, right: 30 }}>
-            <XAxis type="number" hide />
-            <YAxis
+          <BarChart data={data} layout="horizontal" margin={{ left: -20, right: 20, top: 5, bottom: 20 }}>
+            <XAxis 
               dataKey="name"
-              type="category"
-              axisLine={false}
+              stroke="hsl(var(--muted-foreground))"
+              fontSize={12}
               tickLine={false}
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-              width={60}
+              axisLine={false}
+             />
+            <YAxis
+             hide
             />
             <Tooltip
               cursor={{ fill: 'hsl(var(--secondary))' }}
@@ -49,9 +59,19 @@ export default function SalesByChannel({ data }: SalesByChannelProps) {
             <Bar
               dataKey="value"
               fill="hsl(var(--primary))"
-              radius={[0, 4, 4, 0]}
-              barSize={20}
-            />
+              radius={[4, 4, 0, 0]}
+              barSize={60}
+            >
+                <LabelList dataKey="name" position="bottom" offset={25} className="fill-muted-foreground font-semibold" fontSize={12} />
+                 <LabelList 
+                    dataKey="value" 
+                    position="bottom" 
+                    offset={5} 
+                    className="fill-foreground font-bold" 
+                    fontSize={14}
+                    formatter={formatValue}
+                 />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

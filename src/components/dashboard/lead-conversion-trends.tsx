@@ -15,6 +15,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  Area,
+  AreaChart,
 } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import type { DashboardStats } from '@/lib/api';
@@ -63,9 +65,15 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
           </div>
         </div>
         <div className="col-span-1 md:col-span-3">
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data.chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+          <ResponsiveContainer width="100%" height={260}>
+            <AreaChart data={data.chartData}>
+              <defs>
+                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
               <XAxis
                 dataKey="date"
                 stroke="hsl(var(--muted-foreground))"
@@ -78,6 +86,7 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
+                hide
               />
               <Tooltip
                 contentStyle={{
@@ -86,15 +95,26 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
                   borderRadius: 'var(--radius)',
                 }}
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="value"
                 stroke="hsl(var(--primary))"
                 strokeWidth={2}
-                dot={false}
+                fill="url(#colorValue)"
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
+          <div className="text-xs text-muted-foreground mt-2 flex items-center justify-center gap-4">
+              <span className='font-bold text-foreground'>QUALITY SCORE BREAKDOWN:</span>
+              <div className='flex items-center gap-1.5'>
+                <span className='h-2 w-2 rounded-full bg-green-500'></span>
+                <span>High (45%)</span>
+              </div>
+              <div className='flex items-center gap-1.5'>
+                <span className='h-2 w-2 rounded-full bg-blue-500'></span>
+                <span>Med (35%)</span>
+              </div>
+          </div>
         </div>
       </CardContent>
     </Card>

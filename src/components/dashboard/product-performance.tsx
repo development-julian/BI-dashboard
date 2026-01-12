@@ -10,16 +10,9 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import type { ProductPerformance as ProductPerformanceType } from '@/lib/api';
-import { Package, Headphones, Waves } from 'lucide-react';
 
 interface ProductPerformanceProps {
   data: ProductPerformanceType[];
-}
-
-const iconMap = {
-    'product-watch': Package,
-    'product-earbuds': Headphones,
-    'product-mat': Waves,
 }
 
 export default function ProductPerformance({ data }: ProductPerformanceProps) {
@@ -35,12 +28,21 @@ export default function ProductPerformance({ data }: ProductPerformanceProps) {
         <ul className="space-y-4">
           {data.map((product) => {
             const isIncrease = product.changeType === 'increase';
-            const Icon = iconMap[product.image as keyof typeof iconMap] || Package;
+            const productImage = PlaceHolderImages.find(p => p.id === product.image);
 
             return (
               <li key={product.sku} className="flex items-center gap-4">
-                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Icon className="h-5 w-5" />
+                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  {productImage && (
+                    <Image
+                      src={productImage.imageUrl}
+                      alt={product.name}
+                      width={40}
+                      height={40}
+                      className="rounded-md"
+                      data-ai-hint={productImage.imageHint}
+                    />
+                  )}
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold">{product.name}</p>

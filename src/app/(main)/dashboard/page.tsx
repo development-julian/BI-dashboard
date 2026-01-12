@@ -38,9 +38,9 @@ export default function DashboardPage() {
                 <Skeleton className="h-[400px] w-full lg:col-span-8" />
                 <Skeleton className="h-[400px] w-full lg:col-span-4" />
             </div>
-             <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-                <Skeleton className="h-[300px] w-full lg:col-span-2" />
-                <Skeleton className="h-[300px] w-full lg:col-span-3" />
+             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+                <Skeleton className="h-[300px] w-full lg:col-span-8" />
+                <Skeleton className="h-[300px] w-full lg:col-span-4" />
             </div>
         </div>
     );
@@ -64,11 +64,11 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-8">
           <SalesByChannel data={data.salesByChannel} />
         </div>
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-4">
           <ProductPerformance data={data.productPerformance} />
         </div>
       </div>
