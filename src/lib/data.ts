@@ -1,84 +1,107 @@
 // This file contains synthetic data for the dashboard components.
-// In a real application, this data would be fetched from a backend API.
+// In a real application, this data would be fetched from a backend API or Firestore.
 
 export const mockKpiData = [
   {
-    title: 'Leads Generated',
-    value: '1,257',
-    change: '15.2%',
-    changeType: 'increase' as 'increase' | 'decrease',
+    label: 'Ad Spend',
+    value: '$4,250.00',
+    change: '+5.2%',
+    changeType: 'increase',
+    icon: 'dollar',
   },
   {
-    title: 'Conversion Rate',
-    value: '28.4%',
-    change: '3.1%',
-    changeType: 'increase' as 'increase' | 'decrease',
+    label: 'ROAS',
+    value: '4.2x',
+    change: '-2.1%',
+    changeType: 'decrease',
+    icon: 'percent',
   },
   {
-    title: 'Pipeline Value',
-    value: '$458,231',
-    change: '5.8%',
-    changeType: 'decrease' as 'increase' | 'decrease',
-  },
-  {
-    title: 'Revenue',
-    value: '$95,670',
-    change: '21.3%',
-    changeType: 'increase' as 'increase' | 'decrease',
+    label: 'CPL',
+    value: '$12.50',
+    change: '-12% (Better)',
+    changeType: 'increase',
+    icon: 'user',
   },
 ];
 
-export const mockLineChartData = [
-  { name: 'Jan', leads: 210, conversions: 50 },
-  { name: 'Feb', leads: 250, conversions: 65 },
-  { name: 'Mar', leads: 310, conversions: 80 },
-  { name: 'Apr', leads: 280, conversions: 75 },
-  { name: 'May', leads: 350, conversions: 95 },
-  { name: 'Jun', leads: 420, conversions: 120 },
-];
-
-export const mockBarChartData = [
-  { name: 'New', value: 450 },
-  { name: 'Contacted', value: 320 },
-  { name: 'Qualified', value: 210 },
-  { name: 'Proposal', value: 150 },
-];
-
-export const mockPieChartData = [
-  { name: 'Organic Search', value: 400 },
-  { name: 'Social Media', value: 300 },
-  { name: 'Referrals', value: 250 },
-  { name: 'Paid Ads', value: 200 },
-];
-
-export const mockFunnelData = [
-  { name: 'Lead', count: 1257, percentage: 100 },
-  { name: 'Contacted', count: 980, percentage: 78 },
-  { name: 'Qualified', count: 654, percentage: 52 },
-  { name: 'Won', count: 352, percentage: 28 },
-];
-
-export type Transaction = {
-  id: string;
-  email: string;
-  amount: number;
-  date: string;
-  status: 'pending' | 'success' | 'failed';
+export const mockLeadConversionData = {
+  totalLeads: 1248,
+  totalLeadsChange: '+14%',
+  mql: 856,
+  mqlChange: '+8%',
+  conversionRate: 4.2,
+  conversionRateTarget: 5.0,
+  chartData: [
+    { date: 'Jan', value: 210 },
+    { date: 'Feb', value: 250 },
+    { date: 'Mar', value: 310 },
+    { date: 'Apr', value: 280 },
+    { date: 'May', value: 350 },
+    { date: 'Jun', value: 420 },
+  ],
 };
 
-export const tableData: Transaction[] = [
-    { id: 'TXN001', email: 'olivia.martin@email.com', amount: 250.0, date: '2023-08-01', status: 'success' },
-    { id: 'TXN002', email: 'jackson.lee@email.com', amount: 150.75, date: '2023-08-02', status: 'pending' },
-    { id: 'TXN003', email: 'isabella.nguyen@email.com', amount: 350.0, date: '2023-08-03', status: 'success' },
-    { id: 'TXN004', email: 'william.kim@email.com', amount: 450.5, date: '2023-08-04', status: 'failed' },
-    { id: 'TXN005', email: 'sofia.davis@email.com', amount: 550.0, date: '2023-08-05', status: 'success' },
+export const mockFunnelPerformance = [
+  {
+    stage: 'Impressions',
+    value: '45.2k',
+    meta: 'Reach: 32.1k users',
+    change: 'Top',
+    changeType: 'neutral',
+  },
+  {
+    stage: 'Clicks',
+    value: '3,120',
+    meta: 'CPC: $1.36 avg',
+    change: '6.9%',
+    changeType: 'decrease',
+  },
+  {
+    stage: 'Leads',
+    value: '245',
+    meta: 'CPL: $17.34',
+    change: '7.8%',
+    changeType: 'decrease',
+  },
+  {
+    stage: 'Sales',
+    value: '18',
+    meta: 'CAC: $236.11',
+    change: '320% ROI',
+    changeType: 'increase',
+  },
 ];
 
-export const lineChartData = [
-    { name: 'Jan', desktop: 186, mobile: 80 },
-    { name: 'Feb', desktop: 305, mobile: 200 },
-    { name: 'Mar', desktop: 237, mobile: 120 },
-    { name: 'Apr', desktop: 73, mobile: 190 },
-    { name: 'May', desktop: 209, mobile: 130 },
-    { name: 'Jun', desktop: 214, mobile: 140 },
+export const mockSalesByChannel = [
+  { name: 'Social', value: 18000 },
+  { name: 'Organic', value: 10200 },
+  { name: 'Referral', value: 6500 },
+];
+
+export const mockProductPerformance = [
+  {
+    name: 'Smart Watch X',
+    sku: 'SW-2024',
+    revenue: '$12,450',
+    change: '+18%',
+    changeType: 'increase',
+    image: 'product-watch',
+  },
+  {
+    name: 'Earbuds Pro',
+    sku: 'EP-100',
+    revenue: '$8,920',
+    change: '-4%',
+    changeType: 'decrease',
+    image: 'product-earbuds',
+  },
+  {
+    name: 'Yoga Mat',
+    sku: 'YM-550',
+    revenue: '$4,230',
+    change: '+8.5%',
+    changeType: 'increase',
+    image: 'product-mat',
+  },
 ];

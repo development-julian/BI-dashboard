@@ -1,98 +1,76 @@
 'use server';
 
+// In a real application, this is where you would fetch data from your backend.
+// For this MVP, we're using static mock data.
+// Later, this could be replaced with calls to a Firebase Firestore collection `dashboard_stats`.
+
 import {
   mockKpiData,
-  mockLineChartData,
-  mockBarChartData,
-  mockPieChartData,
-  mockFunnelData,
+  mockLeadConversionData,
+  mockSalesByChannel,
+  mockFunnelPerformance,
+  mockProductPerformance,
 } from './data';
 
-// This file simulates an API layer.
-// In a real application, this is where you would fetch data from your n8n backend.
-// Example: const API_URL = 'https://n8n.example.com/webhook/api/v1';
-
-export interface Kpi {
-  title: string;
+export interface KpiCard {
+  label: string;
   value: string;
   change: string;
   changeType: 'increase' | 'decrease';
+  icon: 'dollar' | 'percent' | 'user';
 }
 
 export interface ChartData {
-  name: string;
-  value?: number;
-  leads?: number;
-  conversions?: number;
-}
-
-export interface Chart {
-  chartType: 'bar' | 'line' | 'pie';
-  title: string;
-  description?: string;
-  data: ChartData[];
+  date: string;
+  [key: string]: any;
 }
 
 export interface FunnelStage {
+  stage: string;
+  value: string;
+  meta: string;
+  change: string;
+  changeType: 'increase' | 'decrease' | 'neutral';
+}
+
+export interface ProductPerformance {
   name: string;
-  count: number;
-  percentage: number;
+  sku: string;
+  revenue: string;
+  change: string;
+  changeType: 'increase' | 'decrease';
+  image: string;
 }
 
-export interface DashboardData {
-  kpis: Kpi[];
-  charts: Chart[];
-  funnel: FunnelStage[];
+export interface DashboardStats {
+  kpis: KpiCard[];
+  leadConversion: {
+    totalLeads: number;
+    totalLeadsChange: string;
+    mql: number;
+    mqlChange: string;
+    conversionRate: number;
+    conversionRateTarget: number;
+    chartData: ChartData[];
+  };
+  funnelPerformance: FunnelStage[];
+  salesByChannel: { name: string; value: number }[];
+  productPerformance: ProductPerformance[];
 }
 
-// Placeholder function to simulate fetching dashboard data.
-// Replace the mock data with actual API calls to your n8n endpoint.
-export const getDashboardData = async (): Promise<DashboardData> => {
-  console.log('Fetching dashboard data... (mocked)');
+export const getDashboardStats = async (): Promise<DashboardStats> => {
   // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  // In a real implementation, you would make a POST request here.
-  // const response = await fetch(API_URL, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({ action: 'GET_DASHBOARD', ... }),
-  // });
-  // const data = await response.json();
-  // return data.data;
+  // In a real implementation, you would fetch this from Firestore
+  // e.g., const docSnap = await getDoc(doc(db, "dashboard_stats", "latest"));
+  // if (docSnap.exists()) { return docSnap.data() as DashboardStats; }
 
   return {
     kpis: mockKpiData,
-    charts: [
-      {
-        chartType: 'line',
-        title: 'Performance Over Time',
-        description: 'Leads and conversions in the last 6 months.',
-        data: mockLineChartData,
-      },
-      {
-        chartType: 'bar',
-        title: 'Pipeline Stages',
-        description: 'Current distribution of leads in the pipeline.',
-        data: mockBarChartData,
-      },
-      {
-        chartType: 'pie',
-        title: 'Lead Sources',
-        description: 'Distribution of leads by acquisition channel.',
-        data: mockPieChartData,
-      },
-    ],
-    funnel: mockFunnelData,
-  };
-};
-
-// Placeholder for AI-driven actions
-export const getAiInsights = async () => {
-  console.log('Fetching AI insights... (mocked)');
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-  return {
-    success: true,
-    message: 'AI insights are not implemented yet.',
+    leadConversion: mockLeadConversionData,
+    funnelPerformance: mockFunnelPerformance,
+    salesByChannel: mockSalesByChannel,
+    productPerformance: mockProductPerformance,
   };
 };
