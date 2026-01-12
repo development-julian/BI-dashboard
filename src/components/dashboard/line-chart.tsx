@@ -12,9 +12,9 @@ import {
 } from 'recharts';
 import type { ChartData } from '@/lib/api';
 
-export default function UserActivityLineChart({ data }: { data: ChartData[] }) {
+export default function PerformanceLineChart({ data }: { data: ChartData[] }) {
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height={350}>
       <LineChart
         data={data}
         margin={{
@@ -52,14 +52,14 @@ export default function UserActivityLineChart({ data }: { data: ChartData[] }) {
         />
         <Line
           type="monotone"
-          dataKey="desktop"
+          dataKey="leads"
           stroke="hsl(var(--primary))"
           strokeWidth={2}
           dot={false}
         />
         <Line
           type="monotone"
-          dataKey="mobile"
+          dataKey="conversions"
           stroke="hsl(var(--accent))"
           strokeWidth={2}
           dot={false}

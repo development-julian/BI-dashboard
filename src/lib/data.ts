@@ -1,62 +1,61 @@
-export const kpiData = [
+// This file contains synthetic data for the dashboard components.
+// In a real application, this data would be fetched from a backend API.
+
+export const mockKpiData = [
   {
-    title: 'Total Revenue',
-    value: '$45,231.89',
-    change: '+20.1%',
+    title: 'Leads Generated',
+    value: '1,257',
+    change: '15.2%',
     changeType: 'increase' as 'increase' | 'decrease',
-    description: 'Total revenue from all sales channels.',
   },
   {
-    title: 'Subscriptions',
-    value: '+2350',
-    change: '+180.1%',
+    title: 'Conversion Rate',
+    value: '28.4%',
+    change: '3.1%',
     changeType: 'increase' as 'increase' | 'decrease',
-    description: 'New subscribers this month.',
   },
   {
-    title: 'Sales',
-    value: '+12,234',
-    change: '+19%',
-    changeType: 'increase' as 'increase' | 'decrease',
-    description: 'Total sales this month.',
+    title: 'Pipeline Value',
+    value: '$458,231',
+    change: '5.8%',
+    changeType: 'decrease' as 'increase' | 'decrease',
   },
   {
-    title: 'Active Now',
-    value: '+573',
-    change: '+201',
+    title: 'Revenue',
+    value: '$95,670',
+    change: '21.3%',
     changeType: 'increase' as 'increase' | 'decrease',
-    description: 'Users currently active on the platform.',
   },
 ];
 
-export const barChartData = [
-  { name: 'Jan', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Feb', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Mar', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Apr', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'May', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Jun', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Jul', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Aug', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Sep', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Oct', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Nov', total: Math.floor(Math.random() * 5000) + 1000 },
-  { name: 'Dec', total: Math.floor(Math.random() * 5000) + 1000 },
+export const mockLineChartData = [
+  { name: 'Jan', leads: 210, conversions: 50 },
+  { name: 'Feb', leads: 250, conversions: 65 },
+  { name: 'Mar', leads: 310, conversions: 80 },
+  { name: 'Apr', leads: 280, conversions: 75 },
+  { name: 'May', leads: 350, conversions: 95 },
+  { name: 'Jun', leads: 420, conversions: 120 },
 ];
 
-export const lineChartData = [
-    { name: 'Jan', desktop: 186, mobile: 80 },
-    { name: 'Feb', desktop: 305, mobile: 200 },
-    { name: 'Mar', desktop: 237, mobile: 120 },
-    { name: 'Apr', desktop: 73, mobile: 190 },
-    { name: 'May', desktop: 209, mobile: 130 },
-    { name: 'Jun', desktop: 214, mobile: 140 },
-    { name: 'Jul', desktop: 345, mobile: 220 },
-    { name: 'Aug', desktop: 289, mobile: 180 },
-    { name: 'Sep', desktop: 402, mobile: 250 },
-    { name: 'Oct', desktop: 367, mobile: 210 },
-    { name: 'Nov', desktop: 488, mobile: 300 },
-    { name: 'Dec', desktop: 521, mobile: 320 },
+export const mockBarChartData = [
+  { name: 'New', value: 450 },
+  { name: 'Contacted', value: 320 },
+  { name: 'Qualified', value: 210 },
+  { name: 'Proposal', value: 150 },
+];
+
+export const mockPieChartData = [
+  { name: 'Organic Search', value: 400 },
+  { name: 'Social Media', value: 300 },
+  { name: 'Referrals', value: 250 },
+  { name: 'Paid Ads', value: 200 },
+];
+
+export const mockFunnelData = [
+  { name: 'Lead', count: 1257, percentage: 100 },
+  { name: 'Contacted', count: 980, percentage: 78 },
+  { name: 'Qualified', count: 654, percentage: 52 },
+  { name: 'Won', count: 352, percentage: 28 },
 ];
 
 export type Transaction = {
@@ -73,15 +72,13 @@ export const tableData: Transaction[] = [
     { id: 'TXN003', email: 'isabella.nguyen@email.com', amount: 350.0, date: '2023-08-03', status: 'success' },
     { id: 'TXN004', email: 'william.kim@email.com', amount: 450.5, date: '2023-08-04', status: 'failed' },
     { id: 'TXN005', email: 'sofia.davis@email.com', amount: 550.0, date: '2023-08-05', status: 'success' },
-    { id: 'TXN006', email: 'liam.brown@email.com', amount: 200.0, date: '2023-08-06', status: 'success' },
-    { id: 'TXN007', email: 'ava.jones@email.com', amount: 300.25, date: '2023-08-07', status: 'pending' },
-    { id: 'TXN008', email: 'noah.garcia@email.com', amount: 100.0, date: '2023-08-08', status: 'success' },
-    { id: 'TXN009', email: 'emma.miller@email.com', amount: 180.0, date: '2023-08-09', status: 'failed' },
-    { id: 'TXN010', email: 'james.wilson@email.com', amount: 275.0, date: '2023-08-10', status: 'success' },
 ];
 
-export const analysisReport = {
-  summary: "The analysis indicates a positive trend in user engagement and revenue. Key drivers include a recent marketing campaign and new feature launches.",
-  key_insight: "Mobile adoption is lagging behind desktop, suggesting a need for improved mobile user experience.",
-  actionable_recommendation: "Invest in a mobile-first redesign and targeted mobile ad campaigns to boost engagement."
-};
+export const lineChartData = [
+    { name: 'Jan', desktop: 186, mobile: 80 },
+    { name: 'Feb', desktop: 305, mobile: 200 },
+    { name: 'Mar', desktop: 237, mobile: 120 },
+    { name: 'Apr', desktop: 73, mobile: 190 },
+    { name: 'May', desktop: 209, mobile: 130 },
+    { name: 'Jun', desktop: 214, mobile: 140 },
+];

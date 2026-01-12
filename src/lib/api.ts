@@ -1,109 +1,98 @@
 'use server';
 
-import { kpiData, barChartData, lineChartData, analysisReport } from "./data";
+import {
+  mockKpiData,
+  mockLineChartData,
+  mockBarChartData,
+  mockPieChartData,
+  mockFunnelData,
+} from './data';
 
-const API_URL = 'https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway';
-
-const defaultBody = {
-  ghlLocationId: 'demo_location_id',
-  userToken: 'demo_token',
-  dateRange: {
-    from: '2024-01-01',
-    to: '2024-01-31',
-  },
-};
+// This file simulates an API layer.
+// In a real application, this is where you would fetch data from your n8n backend.
+// Example: const API_URL = 'https://n8n.example.com/webhook/api/v1';
 
 export interface Kpi {
   title: string;
   value: string;
   change: string;
   changeType: 'increase' | 'decrease';
-  description: string;
 }
 
 export interface ChartData {
   name: string;
-  total?: number;
-  desktop?: number;
-  mobile?: number;
+  value?: number;
+  leads?: number;
+  conversions?: number;
 }
 
 export interface Chart {
-  chartType: 'bar' | 'line';
+  chartType: 'bar' | 'line' | 'pie';
   title: string;
   description?: string;
   data: ChartData[];
 }
 
+export interface FunnelStage {
+  name: string;
+  count: number;
+  percentage: number;
+}
+
 export interface DashboardData {
   kpis: Kpi[];
   charts: Chart[];
+  funnel: FunnelStage[];
 }
 
-export interface AnalysisData {
-  intelligenceReport: {
-    summary: string;
-    key_insight: string;
-    actionable_recommendation: string;
-  };
-}
+// Placeholder function to simulate fetching dashboard data.
+// Replace the mock data with actual API calls to your n8n endpoint.
+export const getDashboardData = async (): Promise<DashboardData> => {
+  console.log('Fetching dashboard data... (mocked)');
+  // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
-const fetchFromApi = async <T>(action: 'GET_DASHBOARD' | 'GET_ANALYSIS'): Promise<{ success: boolean; data?: T; message?: string }> => {
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+  // In a real implementation, you would make a POST request here.
+  // const response = await fetch(API_URL, {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({ action: 'GET_DASHBOARD', ... }),
+  // });
+  // const data = await response.json();
+  // return data.data;
+
+  return {
+    kpis: mockKpiData,
+    charts: [
+      {
+        chartType: 'line',
+        title: 'Performance Over Time',
+        description: 'Leads and conversions in the last 6 months.',
+        data: mockLineChartData,
       },
-      body: JSON.stringify({ ...defaultBody, action }),
-      cache: 'no-store',
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error(`HTTP error! status: ${response.status}`, errorBody);
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error(`Error fetching ${action}:`, error);
-    
-    if (action === 'GET_DASHBOARD') {
-      return {
-        success: true,
-        data: {
-          kpis: kpiData,
-          charts: [
-            { chartType: 'bar', title: 'Overview', data: barChartData },
-            { chartType: 'line', title: 'User Activity', description: 'Desktop vs. Mobile Users', data: lineChartData }
-          ]
-        } as unknown as T
-      };
-    }
-    
-    if (action === 'GET_ANALYSIS') {
-      return {
-        success: true,
-        data: {
-          intelligenceReport: analysisReport,
-        } as unknown as T
-      };
-    }
-    
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'An unknown error occurred' 
-    };
-  }
+      {
+        chartType: 'bar',
+        title: 'Pipeline Stages',
+        description: 'Current distribution of leads in the pipeline.',
+        data: mockBarChartData,
+      },
+      {
+        chartType: 'pie',
+        title: 'Lead Sources',
+        description: 'Distribution of leads by acquisition channel.',
+        data: mockPieChartData,
+      },
+    ],
+    funnel: mockFunnelData,
+  };
 };
 
-
-export const getDashboardData = async (): Promise<{ success: boolean; data?: DashboardData; message?: string }> => {
-  return fetchFromApi<DashboardData>('GET_DASHBOARD');
-};
-
-export const getAnalysisData = async (): Promise<{ success: boolean; data?: AnalysisData; message?: string }> => {
-  return fetchFromApi<AnalysisData>('GET_ANALYSIS');
+// Placeholder for AI-driven actions
+export const getAiInsights = async () => {
+  console.log('Fetching AI insights... (mocked)');
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  return {
+    success: true,
+    message: 'AI insights are not implemented yet.',
+  };
 };

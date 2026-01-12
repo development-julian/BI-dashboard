@@ -1,8 +1,7 @@
 'use client';
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import type { ChartData } from '@/lib/api';
-
 
 export default function OverviewBarChart({ data }: { data: ChartData[] }) {
   return (
@@ -20,7 +19,6 @@ export default function OverviewBarChart({ data }: { data: ChartData[] }) {
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value) => `$${value}`}
         />
         <Tooltip
             cursor={{ fill: 'hsl(var(--secondary))' }}
@@ -30,10 +28,12 @@ export default function OverviewBarChart({ data }: { data: ChartData[] }) {
                 borderRadius: 'var(--radius)',
              }}
         />
+        <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
         <Bar
-          dataKey="total"
+          dataKey="value"
           fill="hsl(var(--primary))"
           radius={[4, 4, 0, 0]}
+          name='Value'
         />
       </BarChart>
     </ResponsiveContainer>
