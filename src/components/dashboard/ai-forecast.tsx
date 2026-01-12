@@ -26,7 +26,7 @@ export default function AiForecast() {
         </div>
         <Button
           variant="secondary"
-          className="bg-white text-primary-foreground hover:bg-white/90 shrink-0"
+          className="bg-white text-primary hover:bg-white/90 shrink-0"
         >
           Restock Now &rarr;
         </Button>
