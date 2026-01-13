@@ -68,31 +68,32 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       cache: 'no-store'
     });
 
-    if (!res.ok) {
-      const errorBody = await res.text();
-      console.error(`❌ Error en la respuesta de n8n: ${res.status} ${res.statusText}`);
-      console.error(`📦 Cuerpo del error:`, errorBody);
-      return { error: `n8n respondió con estado ${res.status}: ${res.statusText}`, type: 'network' };
-    }
-
-    // Leer como texto plano primero para evitar errores de parseo directo
     const rawText = await res.text();
     console.log("📦 Respuesta cruda (texto) de n8n:", rawText);
 
+    if (!res.ok) {
+      console.error(`❌ Error en la respuesta de n8n: ${res.status} ${res.statusText}`);
+      return { error: `n8n respondió con estado ${res.status}: ${rawText}`, type: 'network' };
+    }
+    
     let jsonData;
     try {
-        // Intenta parsear la respuesta como JSON.
-        // Esto funcionará si n8n devuelve un JSON válido.
-        jsonData = JSON.parse(rawText);
+        // Si la respuesta empieza con '=', es un string que hay que limpiar.
+        if (rawText.startsWith('=')) {
+            const jsonString = rawText.substring(rawText.indexOf('=') + 1);
+            jsonData = JSON.parse(jsonString);
+        } else {
+            // Si no, es un JSON válido.
+            jsonData = JSON.parse(rawText);
+        }
     } catch (parseError) {
-        // Si el parseo directo falla, puede ser porque la respuesta no es un JSON válido.
         console.error("❌ Error de parseo JSON:", parseError);
         return { error: `La respuesta de n8n no es un JSON válido. Respuesta recibida: ${rawText}`, type: 'format' };
     }
     
     console.log("📦 Respuesta parseada de n8n:", JSON.stringify(jsonData, null, 2));
 
-    // La respuesta de n8n es un array, así que tomamos el primer elemento.
+    // La respuesta puede ser un array o un objeto. Si es un array, tomamos el primer elemento.
     const n8nResponseObject = Array.isArray(jsonData) ? jsonData[0] : jsonData;
 
     if (!n8nResponseObject) {
@@ -100,14 +101,15 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       return { error: 'El formato de respuesta de n8n está vacío o es inválido.', type: 'format' };
     }
     
-    const n8nData = n8nResponseObject.data;
+    // Ahora n8n está usando la clave 'payload' en lugar de 'data'.
+    const n8nData = n8nResponseObject.payload;
 
     if (!n8nData) {
-      console.error("❌ No se encontró la propiedad 'data' en el objeto de respuesta de n8n.");
-      return { error: 'No se encontró la propiedad "data" en la respuesta de n8n.', type: 'format' };
+      console.error("❌ No se encontró la propiedad 'payload' en el objeto de respuesta de n8n.");
+      return { error: 'No se encontró la propiedad "payload" en la respuesta de n8n.', type: 'format' };
     }
     
-    console.log("📊 Datos extraídos de n8n.data:", n8nData);
+    console.log("📊 Datos extraídos de n8n.payload:", n8nData);
     
     try {
         return {
