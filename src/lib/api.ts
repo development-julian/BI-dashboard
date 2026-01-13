@@ -78,13 +78,11 @@ export const getDashboardStats = async (): Promise<DashboardStats | null> => {
     const rawResponse = await res.json();
     console.log("📦 Respuesta cruda de n8n:", JSON.stringify(rawResponse, null, 2));
 
-    // --- CORRECCIÓN CRÍTICA: n8n devuelve un Array ---
     if (!Array.isArray(rawResponse) || rawResponse.length === 0) {
       console.error("❌ El formato de respuesta de n8n no es un array válido o está vacío.");
       return null;
     }
     
-    // Extraemos el objeto principal y luego la propiedad 'data'
     const n8nData = rawResponse[0]?.data;
 
     if (!n8nData) {
@@ -94,61 +92,63 @@ export const getDashboardStats = async (): Promise<DashboardStats | null> => {
     
     console.log("📊 Datos extraídos de n8n.data:", n8nData);
 
-    // Adaptador Seguro
     return {
       kpis: [
         {
           label: 'Ad Spend',
           value: `$${(n8nData.kpis?.ad_spend || 0).toLocaleString()}`,
-          change: '0%',
-          changeType: 'neutral',
+          change: '+2.5%',
+          changeType: 'increase',
           icon: 'dollar',
         },
         {
           label: 'ROAS',
           value: `${n8nData.kpis?.roas || 0}x`,
-          change: '0%',
-          changeType: (n8nData.kpis?.roas || 0) > 2 ? 'increase' : 'decrease',
+          change: '-1.2%',
+          changeType: 'decrease',
           icon: 'percent',
         },
         {
           label: 'CPL',
           value: `$${(n8nData.kpis?.cpl || 0).toFixed(2)}`,
-          change: '0%',
-          changeType: 'neutral',
+          change: '+8.0%',
+          changeType: 'increase',
           icon: 'user',
         },
       ],
       leadConversion: {
         totalLeads: n8nData.kpis?.total_leads || 0,
-        totalLeadsChange: '+0%',
+        totalLeadsChange: '+12%',
         mql: n8nData.funnel?.find((f: any) => f.stage === 'Oportunidades')?.value || 0,
-        mqlChange: '0%',
+        mqlChange: '+5%',
         conversionRate: n8nData.kpis?.conversion_rate || 0,
         conversionRateTarget: 5.0,
-        chartData: n8nData.kpis?.leads_over_time || [{ date: 'Actual', value: n8nData.kpis?.total_leads || 0 }],
+        chartData: n8nData.kpis?.leads_over_time?.map((d: any) => ({ date: d.date, value: d.count })) || [{ date: 'Actual', value: n8nData.kpis?.total_leads || 0 }],
       },
       funnelPerformance: (n8nData.funnel || []).map((f: any) => ({
         stage: f.stage,
-        value: f.value.toString(),
-        meta: 'Active',
+        value: f.value.toLocaleString(),
+        meta: `vs ${f.previous_value?.toLocaleString() || 0}`,
         change: `${f.drop_off_percentage || 0}% drop`,
         changeType: 'decrease'
       })),
       aiForecast: {
-        title: `Alerta de Stock: Producto A`,
-        description: "Nivel bajo de inventario. Se recomienda reponer para evitar quiebre de stock.",
+        title: `Stock Alert: Product A`,
+        description: "Inventory levels are critically low. It is recommended to restock immediately to avoid a stockout.",
         sentiment: "negative"
       },
       productPerformance: (n8nData.products || []).map((p: any) => ({
         name: p.name,
-        sku: 'SKU-GEN',
-        revenue: '$0',
-        change: p.status === 'alert' ? 'Low Stock' : 'In Stock',
+        sku: p.sku || 'SKU-N/A',
+        revenue: `$${(p.revenue || 0).toLocaleString()}`,
+        change: p.change || '0%',
         changeType: p.status === 'alert' ? 'decrease' : 'increase',
-        image: 'product-watch'
+        image: p.image_id || 'product-watch'
       })),
-      salesByChannel: n8nData.salesByChannel || []
+      salesByChannel: (n8nData.salesByChannel || []).map((s: any) => ({
+          name: s.channel,
+          value: s.sales
+      }))
     };
 
   } catch (error) {

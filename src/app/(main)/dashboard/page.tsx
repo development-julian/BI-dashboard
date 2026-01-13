@@ -10,29 +10,35 @@ import FunnelPerformance from '@/components/dashboard/funnel-performance';
 import SalesByChannel from '@/components/dashboard/sales-by-channel';
 import ProductPerformance from '@/components/dashboard/product-performance';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"; // Importamos Alert
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false); // Nuevo estado para error
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      const dashboardData = await getDashboardStats();
-      if (!dashboardData) {
+      try {
+        setLoading(true);
+        setError(false);
+        const dashboardData = await getDashboardStats();
+        if (dashboardData) {
+          setData(dashboardData);
+        } else {
+          setError(true);
+        }
+      } catch (e) {
+        console.error(e);
         setError(true);
-      } else {
-        setData(dashboardData);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchData();
   }, []);
 
-  // 1. Estado de Carga
   if (loading) {
     return (
       <div className="flex flex-col gap-6">
@@ -45,16 +51,17 @@ export default function DashboardPage() {
                 <Skeleton className="h-[120px] w-full" />
             </div>
             <Skeleton className="h-[400px] w-full" />
+            <Skeleton className="h-[250px] w-full" />
           </div>
           <div className="lg:col-span-4 flex flex-col gap-6">
              <Skeleton className="h-[400px] w-full" />
+             <Skeleton className="h-[300px] w-full" />
           </div>
         </div>
       </div>
     );
   }
 
-  // 2. Estado de Error (Si la API falla)
   if (error || !data) {
     return (
       <div className="flex h-[50vh] items-center justify-center p-4">
@@ -69,7 +76,6 @@ export default function DashboardPage() {
     );
   }
 
-  // 3. Estado de Éxito
   return (
     <div className="flex flex-col gap-6">
       <AiForecast 
