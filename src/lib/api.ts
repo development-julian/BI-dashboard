@@ -44,7 +44,7 @@ export interface DashboardStats {
 }
 
 // URL DE PRODUCCIÓN (Asegúrate de que n8n esté en modo "Active")
-const N8N_WEBHOOK_URL = 'https://willirv.app.n8n.cloud/webhook/api/v1/gateway';
+const N8N_WEBHOOK_URL = 'https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway';
 
 export const getDashboardStats = async (): Promise<DashboardStats | null> => {
   try {
@@ -57,7 +57,7 @@ export const getDashboardStats = async (): Promise<DashboardStats | null> => {
       },
       body: JSON.stringify({
         action: "GET_DASHBOARD",
-        ghlLocationId: "loc_test_123",
+        ghlLocationId: "Jg9gu3TzF3KKu2V8nwHl",
         userToken: "token_seguro_firebase",
         dateRange: {
           from: "2024-01-01",

@@ -206,12 +206,10 @@ const Sidebar = React.forwardRef<
             }
             side={side}
           >
-            {/* CORRECCIÓN: Título y descripción ocultos para accesibilidad */}
             <SheetHeader className="sr-only">
-              <SheetTitle>Menú de Navegación</SheetTitle>
-              <SheetDescription>Opciones del dashboard</SheetDescription>
+              <SheetTitle>Navigation Menu</SheetTitle>
+              <SheetDescription>Main navigation</SheetDescription>
             </SheetHeader>
-            
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>
         </Sheet>
