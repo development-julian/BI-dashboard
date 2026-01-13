@@ -3,7 +3,15 @@
 import { WandSparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export default function AiForecast() {
+// Definimos qué datos espera recibir este componente
+interface AiForecastProps {
+  title: string;
+  description: string;
+  sentiment?: 'positive' | 'negative' | 'neutral';
+}
+
+// Ahora el componente acepta "props" en lugar de estar vacío
+export default function AiForecast({ title, description, sentiment }: AiForecastProps) {
   return (
     <div className="relative overflow-hidden rounded-lg bg-primary/90 p-6 shadow-lg">
         <div
@@ -14,21 +22,20 @@ export default function AiForecast() {
         <div>
           <h2 className="flex items-center gap-2 text-lg font-semibold text-primary-foreground">
             <WandSparkles className="h-5 w-5" />
-            AI FORECAST
+            AI STRATEGIC COPILOT
           </h2>
           <p className="mt-1 text-2xl font-bold text-white">
-            Stock Alert: Product A
+            {title || "Analizando datos..."}
           </p>
-          <p className="max-w-xl text-sm text-primary-foreground/80">
-            Inventory expected to deplete by <span className="font-semibold text-white">Oct 12th</span> based on current sales velocity.
-            Increasing daily ad spend by <span className="font-semibold text-white">$200</span> is recommended to capitalize on demand before stock-out.
+          <p className="max-w-xl text-sm text-primary-foreground/80 mt-2">
+            {description || "Esperando insights de Gemini..."}
           </p>
         </div>
         <Button
           variant="secondary"
           className="bg-white text-primary hover:bg-white/90 shrink-0"
         >
-          Restock Now &rarr;
+          Ver Plan de Acción &rarr;
         </Button>
       </div>
     </div>
