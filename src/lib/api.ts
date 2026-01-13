@@ -1,3 +1,4 @@
+
 'use server';
 
 export interface KpiCard {
@@ -69,7 +70,7 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
     });
 
     const rawText = await res.text();
-    console.log("📦 Respuesta cruda (texto) de n8n:", rawText);
+    console.log("📦 Respuesta CRUDA (texto) de n8n:", rawText);
 
     if (!res.ok) {
       console.error(`❌ Error en la respuesta de n8n: ${res.status} ${res.statusText}`);
@@ -91,7 +92,7 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
         return { error: `La respuesta de n8n no es un JSON válido. Respuesta recibida: ${rawText}`, type: 'format' };
     }
     
-    console.log("📦 Respuesta parseada de n8n:", JSON.stringify(jsonData, null, 2));
+    console.log("✅ Respuesta PARSEADA de n8n:", JSON.stringify(jsonData, null, 2));
 
     const n8nResponseObject = Array.isArray(jsonData) ? jsonData[0] : jsonData;
      if (!n8nResponseObject) {
@@ -99,7 +100,6 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       return { error: 'El formato de respuesta de n8n está vacío o es inválido.', type: 'format' };
     }
     
-    // La data útil ahora está en la propiedad 'payload'
     const n8nData = n8nResponseObject.payload;
 
     if (!n8nData) {
@@ -107,10 +107,9 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       return { error: 'No se encontró la propiedad "payload" en la respuesta de n8n.', type: 'format' };
     }
     
-    console.log("📊 Datos extraídos de n8n.payload:", n8nData);
+    console.log("📊 Datos extraídos de n8n.payload:", JSON.stringify(n8nData, null, 2));
     
     try {
-        // Validación y mapeo del AI Forecast
         const aiReport = n8nData.intelligenceReport;
         const aiForecastData = {
           title: aiReport?.key_insight || 'Analizando datos estratégicos...',
@@ -173,12 +172,12 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
           }))
         };
     } catch (e: any) {
-        console.error("🔥 Error de procesamiento al mapear datos de n8n:", e);
+        console.error("🔥 Error de PROCESAMIENTO al mapear datos de n8n:", e);
         return { error: `Error al procesar los datos de n8n: ${e.message}`, type: 'processing' };
     }
 
   } catch (error: any) {
-    console.error("🔥 Error crítico en getDashboardStats (fetch):", error);
+    console.error("🔥 Error CRÍTICO en getDashboardStats (fetch):", error);
     return { error: `No se pudo conectar con el servidor: ${error.message}`, type: 'network' };
   }
 };
