@@ -78,12 +78,10 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
     
     let jsonData;
     try {
-        // Si la respuesta empieza con '=', es un string que hay que limpiar.
         if (rawText.startsWith('=')) {
             const jsonString = rawText.substring(rawText.indexOf('=') + 1);
             jsonData = JSON.parse(jsonString);
         } else {
-            // Si no, es un JSON válido.
             jsonData = JSON.parse(rawText);
         }
     } catch (parseError) {
@@ -93,15 +91,12 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
     
     console.log("📦 Respuesta parseada de n8n:", JSON.stringify(jsonData, null, 2));
 
-    // La respuesta puede ser un array o un objeto. Si es un array, tomamos el primer elemento.
     const n8nResponseObject = Array.isArray(jsonData) ? jsonData[0] : jsonData;
-
-    if (!n8nResponseObject) {
+     if (!n8nResponseObject) {
       console.error("❌ La respuesta de n8n está vacía o en un formato inesperado después de parsear.");
       return { error: 'El formato de respuesta de n8n está vacío o es inválido.', type: 'format' };
     }
     
-    // Ahora n8n está usando la clave 'payload' en lugar de 'data'.
     const n8nData = n8nResponseObject.payload;
 
     if (!n8nData) {
@@ -112,6 +107,14 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
     console.log("📊 Datos extraídos de n8n.payload:", n8nData);
     
     try {
+        // Validación y mapeo del AI Forecast
+        const aiReport = n8nData.intelligenceReport;
+        const aiForecastData = {
+          title: aiReport?.key_insight || 'Analizando datos estratégicos...',
+          description: aiReport?.actionable_recommendation || 'Esperando insights de Gemini para generar un plan de acción.',
+          sentiment: aiReport?.sentiment || 'neutral'
+        };
+
         return {
           kpis: [
             {
@@ -152,11 +155,7 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
             change: `${f.drop_off_percentage || 0}% drop`,
             changeType: 'decrease'
           })),
-          aiForecast: {
-            title: `Stock Alert: Product A`,
-            description: "Inventory levels are critically low. It is recommended to restock immediately to avoid a stockout.",
-            sentiment: "negative"
-          },
+          aiForecast: aiForecastData,
           productPerformance: (n8nData.products || []).map((p: any) => ({
             name: p.name,
             sku: p.sku || 'SKU-N/A',
