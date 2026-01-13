@@ -75,12 +75,38 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       return { error: `n8n respondió con estado ${res.status}: ${res.statusText}`, type: 'network' };
     }
 
-    const rawResponse = await res.json();
-    console.log("📦 Respuesta cruda de n8n:", JSON.stringify(rawResponse, null, 2));
+    // Leer como texto plano primero
+    const rawText = await res.text();
+    console.log("📦 Respuesta cruda (texto) de n8n:", rawText);
 
-    if (!Array.isArray(rawResponse) || rawResponse.length === 0) {
-      console.error("❌ El formato de respuesta de n8n no es un array válido o está vacío.");
-      return { error: 'El formato de respuesta de n8n no es un array válido o está vacío.', type: 'format' };
+    let jsonData;
+    try {
+      // Intentar parsear directamente
+      jsonData = JSON.parse(rawText);
+    } catch (e) {
+      // Si falla, es probable que tenga un prefijo (ej. data={...})
+      console.log("⚠️ El parseo directo falló, intentando limpiar la respuesta...");
+      const jsonStartIndex = rawText.indexOf('{');
+      if (jsonStartIndex === -1) {
+          console.error("❌ No se encontró un objeto JSON en la respuesta de texto.");
+          return { error: 'La respuesta de n8n no contiene un JSON válido.', type: 'format' };
+      }
+      const jsonString = rawText.substring(jsonStartIndex);
+      try {
+        jsonData = JSON.parse(jsonString);
+      } catch (finalError) {
+         console.error("❌ Error final de parseo después de limpiar:", finalError);
+         return { error: 'El formato de respuesta de n8n es inválido incluso después de limpiarlo.', type: 'format' };
+      }
+    }
+
+    console.log("📦 Respuesta parseada de n8n:", JSON.stringify(jsonData, null, 2));
+
+    const rawResponse = Array.isArray(jsonData) ? jsonData : [jsonData];
+
+    if (rawResponse.length === 0) {
+      console.error("❌ El formato de respuesta de n8n está vacío después de parsear.");
+      return { error: 'El formato de respuesta de n8n está vacío.', type: 'format' };
     }
     
     const n8nData = rawResponse[0]?.data;

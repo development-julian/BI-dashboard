@@ -80,7 +80,7 @@ export default function DashboardPage() {
           <AlertDescription>
             {error?.message || "No se pudieron cargar los datos del dashboard."}
             <div className="mt-2 text-xs">
-                <strong>URL Webhook:</strong> <code>{`https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway`}</code>
+                <strong>URL Webhook:</strong> <code>https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway</code>
             </div>
           </AlertDescription>
         </Alert>
