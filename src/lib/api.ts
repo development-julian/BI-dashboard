@@ -1,76 +1,90 @@
 'use server';
 
-// In a real application, this is where you would fetch data from your backend.
-// For this MVP, we're using static mock data.
-// Later, this could be replaced with calls to a Firebase Firestore collection `dashboard_stats`.
+// Reemplaza esto con tu URL de n8n (Webhook de Producción)
+const N8N_WEBHOOK_URL = 'https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway'; 
 
-import {
-  mockKpiData,
-  mockLeadConversionData,
-  mockSalesByChannel,
-  mockFunnelPerformance,
-  mockProductPerformance,
-} from './data';
+export const getDashboardStats = async (): Promise<any> => { // Cambié DashboardStats a any por flexibilidad inicial
+  try {
+    // 1. Llamar a tu Backend n8n
+    const res = await fetch(N8N_WEBHOOK_URL, { 
+      method: 'GET', // O POST si configuraste POST
+      cache: 'no-store' // Para tener datos frescos siempre
+    });
+    
+    if (!res.ok) throw new Error('Error fetching data from n8n');
+    
+    const n8nData = await res.json();
+    // Suponiendo que n8n devuelve: { kpis, funnel, products, intelligenceReport }
 
-export interface KpiCard {
-  label: string;
-  value: string;
-  change: string;
-  changeType: 'increase' | 'decrease';
-  icon: 'dollar' | 'percent' | 'user';
-}
+    // 2. ADAPTADOR: Transformar datos de n8n al formato del Frontend
+    return {
+      kpis: [
+        {
+          label: 'Ad Spend',
+          value: `$${n8nData.kpis.ad_spend}`,
+          change: '0%', // n8n no calcula cambio histórico aún
+          changeType: 'neutral',
+          icon: 'dollar',
+        },
+        {
+          label: 'ROAS',
+          value: `${n8nData.kpis.roas}x`,
+          change: '0%',
+          changeType: n8nData.kpis.roas > 2 ? 'increase' : 'decrease',
+          icon: 'percent',
+        },
+        {
+          label: 'Total Revenue', // Cambié CPL por Revenue que sí tienes
+          value: `$${n8nData.kpis.total_revenue}`,
+          change: '+100%',
+          changeType: 'increase',
+          icon: 'user',
+        },
+      ],
+      leadConversion: {
+        totalLeads: n8nData.kpis.total_leads,
+        totalLeadsChange: '+0%',
+        mql: n8nData.funnel.find((f: any) => f.stage === 'Oportunidades')?.value || 0,
+        mqlChange: '0%',
+        conversionRate: n8nData.kpis.conversion_rate,
+        conversionRateTarget: 5.0,
+        // Mockeamos la gráfica histórica por ahora
+        chartData: [
+          { date: 'Jan', value: 10 },
+          { date: 'Feb', value: 15 },
+          { date: 'Mar', value: n8nData.kpis.total_leads }, // El último es real
+        ],
+      },
+      funnelPerformance: n8nData.funnel.map((f: any) => ({
+        stage: f.stage,
+        value: f.value.toString(),
+        meta: 'Active',
+        change: '0%',
+        changeType: 'neutral'
+      })),
+      // Mapeamos el reporte de IA de Gemini
+      aiForecast: {
+        title: n8nData.intelligenceReport.analysis.key_insight,
+        description: n8nData.intelligenceReport.analysis.actionable_recommendation,
+        sentiment: n8nData.intelligenceReport.analysis.sentiment
+      },
+      // Usamos tus productos reales
+      productPerformance: n8nData.products.map((p: any) => ({
+        name: p.name,
+        sku: 'SKU-GEN', // GHL a veces no da SKU fácil
+        revenue: '$0', // GHL API simple no da revenue por producto fácil
+        change: p.status === 'alert' ? 'Low Stock' : 'In Stock',
+        changeType: p.status === 'alert' ? 'decrease' : 'increase',
+        image: 'product-watch' // Placeholder
+      })),
+      salesByChannel: [
+        { name: 'GHL Source', value: n8nData.kpis.total_revenue }
+      ]
+    };
 
-export interface ChartData {
-  date: string;
-  [key: string]: any;
-}
-
-export interface FunnelStage {
-  stage: string;
-  value: string;
-  meta: string;
-  change: string;
-  changeType: 'increase' | 'decrease' | 'neutral';
-}
-
-export interface ProductPerformance {
-  name: string;
-  sku: string;
-  revenue: string;
-  change: string;
-  changeType: 'increase' | 'decrease';
-  image: string;
-}
-
-export interface DashboardStats {
-  kpis: KpiCard[];
-  leadConversion: {
-    totalLeads: number;
-    totalLeadsChange: string;
-    mql: number;
-    mqlChange: string;
-    conversionRate: number;
-    conversionRateTarget: number;
-    chartData: ChartData[];
-  };
-  funnelPerformance: FunnelStage[];
-  salesByChannel: { name: string; value: number }[];
-  productPerformance: ProductPerformance[];
-}
-
-export const getDashboardStats = async (): Promise<DashboardStats> => {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // In a real implementation, you would fetch this from Firestore
-  // e.g., const docSnap = await getDoc(doc(db, "dashboard_stats", "latest"));
-  // if (docSnap.exists()) { return docSnap.data() as DashboardStats; }
-
-  return {
-    kpis: mockKpiData,
-    leadConversion: mockLeadConversionData,
-    funnelPerformance: mockFunnelPerformance,
-    salesByChannel: mockSalesByChannel,
-    productPerformance: mockProductPerformance,
-  };
+  } catch (error) {
+    console.error("Error loading dashboard:", error);
+    // Retornar datos vacíos o mock en caso de error
+    return null; 
+  }
 };
