@@ -43,42 +43,40 @@ export interface DashboardStats {
   }[];
 }
 
-
-const N8N_WEBHOOK_URL = 'https://willirv.app.n8n.cloud/webhook/api/v1/gateway'; 
+// URL DE PRODUCCIÓN (Asegúrate de que n8n esté en modo "Active")
+const N8N_WEBHOOK_URL = 'https://willirv.app.n8n.cloud/webhook/api/v1/gateway';
 
 export const getDashboardStats = async (): Promise<DashboardStats | null> => {
   try {
     console.log("🚀 Enviando petición POST a n8n...");
 
-    // 1. Llamada al Backend n8n con POST y el BODY requerido
     const res = await fetch(N8N_WEBHOOK_URL, { 
-      method: 'POST', // <--- AHORA SÍ ES POST
+      method: 'POST', // <--- ¡ESTO ES LO QUE FALTABA!
       headers: {
         'Content-Type': 'application/json',
       },
-      // Enviamos los datos que necesitas para filtrar
       body: JSON.stringify({
-        action: "GET_DASHBOARD",
-        ghlLocationId: "demo_location_id", // Cambia esto por el ID real si lo tienes
-        userToken: "demo_token",
+        action: "GET_DASHBOARD", // Actualizado según sugerencia de IA
+        ghlLocationId: "loc_test_123",
+        userToken: "token_seguro_firebase",
         dateRange: {
           from: "2024-01-01",
-          to: "2024-01-31" 
+          to: "2024-12-31"
         }
       }),
-      cache: 'no-store'
+      cache: 'no-store' // Evita que Next.js guarde respuestas viejas
     });
     
     if (!res.ok) {
       const errorText = await res.text();
       console.error(`❌ Error n8n (${res.status}): ${errorText}`);
-      throw new Error(`Error fetching data from n8n: ${res.status}`);
+      return null;
     }
     
     const n8nData = await res.json();
-    console.log("✅ Datos recibidos:", n8nData);
+    console.log("✅ Datos recibidos de n8n:", JSON.stringify(n8nData).substring(0, 200) + "...");
 
-    // 2. ADAPTADOR
+    // Adaptador de datos
     return {
       kpis: [
         {
@@ -123,7 +121,7 @@ export const getDashboardStats = async (): Promise<DashboardStats | null> => {
       })),
       aiForecast: {
         title: n8nData.intelligenceReport?.analysis?.key_insight || "Analizando...",
-        description: n8nData.intelligenceReport?.analysis?.actionable_recommendation || "Sin recomendaciones disponibles.",
+        description: n8nData.intelligenceReport?.analysis?.actionable_recommendation || "Esperando datos...",
         sentiment: n8nData.intelligenceReport?.analysis?.sentiment || "neutral"
       },
       productPerformance: (n8nData.products || []).map((p: any) => ({
