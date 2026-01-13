@@ -75,44 +75,35 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       return { error: `n8n respondió con estado ${res.status}: ${res.statusText}`, type: 'network' };
     }
 
-    // Leer como texto plano primero
+    // Leer como texto plano primero para evitar errores de parseo directo
     const rawText = await res.text();
     console.log("📦 Respuesta cruda (texto) de n8n:", rawText);
 
     let jsonData;
     try {
-      // Intentar parsear directamente
-      jsonData = JSON.parse(rawText);
-    } catch (e) {
-      // Si falla, es probable que tenga un prefijo (ej. data={...})
-      console.log("⚠️ El parseo directo falló, intentando limpiar la respuesta...");
-      const jsonStartIndex = rawText.indexOf('{');
-      if (jsonStartIndex === -1) {
-          console.error("❌ No se encontró un objeto JSON en la respuesta de texto.");
-          return { error: 'La respuesta de n8n no contiene un JSON válido.', type: 'format' };
-      }
-      const jsonString = rawText.substring(jsonStartIndex);
-      try {
-        jsonData = JSON.parse(jsonString);
-      } catch (finalError) {
-         console.error("❌ Error final de parseo después de limpiar:", finalError);
-         return { error: 'El formato de respuesta de n8n es inválido incluso después de limpiarlo.', type: 'format' };
-      }
-    }
-
-    console.log("📦 Respuesta parseada de n8n:", JSON.stringify(jsonData, null, 2));
-
-    const rawResponse = Array.isArray(jsonData) ? jsonData : [jsonData];
-
-    if (rawResponse.length === 0) {
-      console.error("❌ El formato de respuesta de n8n está vacío después de parsear.");
-      return { error: 'El formato de respuesta de n8n está vacío.', type: 'format' };
+        // Intenta parsear la respuesta como JSON.
+        // Esto funcionará si n8n devuelve un JSON válido.
+        jsonData = JSON.parse(rawText);
+    } catch (parseError) {
+        // Si el parseo directo falla, puede ser porque la respuesta no es un JSON válido.
+        console.error("❌ Error de parseo JSON:", parseError);
+        return { error: `La respuesta de n8n no es un JSON válido. Respuesta recibida: ${rawText}`, type: 'format' };
     }
     
-    const n8nData = rawResponse[0]?.data;
+    console.log("📦 Respuesta parseada de n8n:", JSON.stringify(jsonData, null, 2));
+
+    // La respuesta de n8n es un array, así que tomamos el primer elemento.
+    const n8nResponseObject = Array.isArray(jsonData) ? jsonData[0] : jsonData;
+
+    if (!n8nResponseObject) {
+      console.error("❌ La respuesta de n8n está vacía o en un formato inesperado después de parsear.");
+      return { error: 'El formato de respuesta de n8n está vacío o es inválido.', type: 'format' };
+    }
+    
+    const n8nData = n8nResponseObject.data;
 
     if (!n8nData) {
-      console.error("❌ No se encontró la propiedad 'data' en la respuesta de n8n.");
+      console.error("❌ No se encontró la propiedad 'data' en el objeto de respuesta de n8n.");
       return { error: 'No se encontró la propiedad "data" en la respuesta de n8n.', type: 'format' };
     }
     
@@ -173,8 +164,8 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
             image: p.image_id || 'product-watch'
           })),
           salesByChannel: (n8nData.salesByChannel || []).map((s: any) => ({
-              name: s.channel,
-              value: s.sales
+              name: s.channel || s.name,
+              value: s.sales || s.value
           }))
         };
     } catch (e: any) {
