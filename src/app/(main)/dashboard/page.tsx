@@ -13,25 +13,34 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
+type ErrorState = {
+  message: string;
+  type: 'network' | 'format' | 'processing';
+} | null;
+
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<ErrorState>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        setError(false);
-        const dashboardData = await getDashboardStats();
-        if (dashboardData) {
-          setData(dashboardData);
+        setError(null);
+        const result = await getDashboardStats();
+        
+        if (result && 'error' in result) {
+            setError({ message: result.error, type: result.type });
+        } else if (result) {
+          setData(result as DashboardStats);
         } else {
-          setError(true);
+          setError({ message: "La API devolvió una respuesta nula inesperada.", type: 'format' });
         }
-      } catch (e) {
+
+      } catch (e: any) {
         console.error(e);
-        setError(true);
+        setError({ message: `Error inesperado en el componente: ${e.message}`, type: 'processing' });
       } finally {
         setLoading(false);
       }
@@ -67,9 +76,12 @@ export default function DashboardPage() {
       <div className="flex h-[50vh] items-center justify-center p-4">
         <Alert variant="destructive" className="max-w-lg">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error de Conexión</AlertTitle>
+          <AlertTitle>Error: {error?.type || 'Desconocido'}</AlertTitle>
           <AlertDescription>
-            No pudimos conectar con n8n. Verifica que el Webhook esté activo y la URL sea correcta en <code>src/lib/api.ts</code>.
+            {error?.message || "No se pudieron cargar los datos del dashboard."}
+            <div className="mt-2 text-xs">
+                <strong>URL Webhook:</strong> <code>{`https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway`}</code>
+            </div>
           </AlertDescription>
         </Alert>
       </div>

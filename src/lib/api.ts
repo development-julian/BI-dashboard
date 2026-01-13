@@ -51,7 +51,7 @@ export interface DashboardStats {
 
 const N8N_WEBHOOK_URL = 'https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway';
 
-export const getDashboardStats = async (): Promise<DashboardStats | null> => {
+export const getDashboardStats = async (): Promise<DashboardStats | { error: string, type: 'format' | 'processing' | 'network' }> => {
   try {
     console.log("🚀 [API] Conectando a n8n con método POST...");
 
@@ -72,7 +72,7 @@ export const getDashboardStats = async (): Promise<DashboardStats | null> => {
       const errorBody = await res.text();
       console.error(`❌ Error en la respuesta de n8n: ${res.status} ${res.statusText}`);
       console.error(`📦 Cuerpo del error:`, errorBody);
-      return null;
+      return { error: `n8n respondió con estado ${res.status}: ${res.statusText}`, type: 'network' };
     }
 
     const rawResponse = await res.json();
@@ -80,79 +80,84 @@ export const getDashboardStats = async (): Promise<DashboardStats | null> => {
 
     if (!Array.isArray(rawResponse) || rawResponse.length === 0) {
       console.error("❌ El formato de respuesta de n8n no es un array válido o está vacío.");
-      return null;
+      return { error: 'El formato de respuesta de n8n no es un array válido o está vacío.', type: 'format' };
     }
     
     const n8nData = rawResponse[0]?.data;
 
     if (!n8nData) {
       console.error("❌ No se encontró la propiedad 'data' en la respuesta de n8n.");
-      return null;
+      return { error: 'No se encontró la propiedad "data" en la respuesta de n8n.', type: 'format' };
     }
     
     console.log("📊 Datos extraídos de n8n.data:", n8nData);
+    
+    try {
+        return {
+          kpis: [
+            {
+              label: 'Ad Spend',
+              value: `$${(n8nData.kpis?.ad_spend || 0).toLocaleString()}`,
+              change: '+2.5%',
+              changeType: 'increase',
+              icon: 'dollar',
+            },
+            {
+              label: 'ROAS',
+              value: `${n8nData.kpis?.roas || 0}x`,
+              change: '-1.2%',
+              changeType: 'decrease',
+              icon: 'percent',
+            },
+            {
+              label: 'CPL',
+              value: `$${(n8nData.kpis?.cpl || 0).toFixed(2)}`,
+              change: '+8.0%',
+              changeType: 'increase',
+              icon: 'user',
+            },
+          ],
+          leadConversion: {
+            totalLeads: n8nData.kpis?.total_leads || 0,
+            totalLeadsChange: '+12%',
+            mql: n8nData.funnel?.find((f: any) => f.stage === 'Oportunidades')?.value || 0,
+            mqlChange: '+5%',
+            conversionRate: n8nData.kpis?.conversion_rate || 0,
+            conversionRateTarget: 5.0,
+            chartData: (n8nData.kpis?.leads_over_time || []).map((d: any) => ({ date: d.date, value: d.count })),
+          },
+          funnelPerformance: (n8nData.funnel || []).map((f: any) => ({
+            stage: f.stage,
+            value: f.value.toLocaleString(),
+            meta: `vs ${f.previous_value?.toLocaleString() || 0}`,
+            change: `${f.drop_off_percentage || 0}% drop`,
+            changeType: 'decrease'
+          })),
+          aiForecast: {
+            title: `Stock Alert: Product A`,
+            description: "Inventory levels are critically low. It is recommended to restock immediately to avoid a stockout.",
+            sentiment: "negative"
+          },
+          productPerformance: (n8nData.products || []).map((p: any) => ({
+            name: p.name,
+            sku: p.sku || 'SKU-N/A',
+            revenue: `$${(p.revenue || 0).toLocaleString()}`,
+            change: p.change || '0%',
+            changeType: p.status === 'alert' ? 'decrease' : 'increase',
+            image: p.image_id || 'product-watch'
+          })),
+          salesByChannel: (n8nData.salesByChannel || []).map((s: any) => ({
+              name: s.channel,
+              value: s.sales
+          }))
+        };
+    } catch (e: any) {
+        console.error("🔥 Error de procesamiento al mapear datos de n8n:", e);
+        return { error: `Error al procesar los datos de n8n: ${e.message}`, type: 'processing' };
+    }
 
-    return {
-      kpis: [
-        {
-          label: 'Ad Spend',
-          value: `$${(n8nData.kpis?.ad_spend || 0).toLocaleString()}`,
-          change: '+2.5%',
-          changeType: 'increase',
-          icon: 'dollar',
-        },
-        {
-          label: 'ROAS',
-          value: `${n8nData.kpis?.roas || 0}x`,
-          change: '-1.2%',
-          changeType: 'decrease',
-          icon: 'percent',
-        },
-        {
-          label: 'CPL',
-          value: `$${(n8nData.kpis?.cpl || 0).toFixed(2)}`,
-          change: '+8.0%',
-          changeType: 'increase',
-          icon: 'user',
-        },
-      ],
-      leadConversion: {
-        totalLeads: n8nData.kpis?.total_leads || 0,
-        totalLeadsChange: '+12%',
-        mql: n8nData.funnel?.find((f: any) => f.stage === 'Oportunidades')?.value || 0,
-        mqlChange: '+5%',
-        conversionRate: n8nData.kpis?.conversion_rate || 0,
-        conversionRateTarget: 5.0,
-        chartData: n8nData.kpis?.leads_over_time?.map((d: any) => ({ date: d.date, value: d.count })) || [{ date: 'Actual', value: n8nData.kpis?.total_leads || 0 }],
-      },
-      funnelPerformance: (n8nData.funnel || []).map((f: any) => ({
-        stage: f.stage,
-        value: f.value.toLocaleString(),
-        meta: `vs ${f.previous_value?.toLocaleString() || 0}`,
-        change: `${f.drop_off_percentage || 0}% drop`,
-        changeType: 'decrease'
-      })),
-      aiForecast: {
-        title: `Stock Alert: Product A`,
-        description: "Inventory levels are critically low. It is recommended to restock immediately to avoid a stockout.",
-        sentiment: "negative"
-      },
-      productPerformance: (n8nData.products || []).map((p: any) => ({
-        name: p.name,
-        sku: p.sku || 'SKU-N/A',
-        revenue: `$${(p.revenue || 0).toLocaleString()}`,
-        change: p.change || '0%',
-        changeType: p.status === 'alert' ? 'decrease' : 'increase',
-        image: p.image_id || 'product-watch'
-      })),
-      salesByChannel: (n8nData.salesByChannel || []).map((s: any) => ({
-          name: s.channel,
-          value: s.sales
-      }))
-    };
-
-  } catch (error) {
-    console.error("🔥 Error crítico en getDashboardStats:", error);
-    return null;
+  } catch (error: any) {
+    console.error("🔥 Error crítico en getDashboardStats (fetch):", error);
+    return { error: `No se pudo conectar con el servidor: ${error.message}`, type: 'network' };
   }
 };
