@@ -79,9 +79,11 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
     let jsonData;
     try {
         if (rawText.startsWith('=')) {
+            // Limpia la cadena si empieza con '='
             const jsonString = rawText.substring(rawText.indexOf('=') + 1);
             jsonData = JSON.parse(jsonString);
         } else {
+            // Asume que es un JSON válido o un array JSON
             jsonData = JSON.parse(rawText);
         }
     } catch (parseError) {
@@ -97,6 +99,7 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       return { error: 'El formato de respuesta de n8n está vacío o es inválido.', type: 'format' };
     }
     
+    // La data útil ahora está en la propiedad 'payload'
     const n8nData = n8nResponseObject.payload;
 
     if (!n8nData) {
