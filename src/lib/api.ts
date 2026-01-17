@@ -63,7 +63,7 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       },
       body: JSON.stringify({
         action: "GET_DASHBOARD",
-        ghlLocationId: "Jg9gu3TzF3KKu2V8nwHl",
+        ghlLocationId: "PLsKcTpoijAF5iHuqikq",
         dateRange: { from: "2024-01-01", to: "2024-12-31" }
       }),
       cache: 'no-store'
