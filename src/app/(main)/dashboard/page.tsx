@@ -1,17 +1,6 @@
-'use client';
 
 import { Suspense } from 'react';
-import { getDashboardStats, type DashboardStats } from '@/lib/api';
-
-import AiForecast from '@/components/dashboard/ai-forecast';
-import KpiCards from '@/components/dashboard/kpi-cards';
-import LeadConversionTrends from '@/components/dashboard/lead-conversion-trends';
-import FunnelPerformance from '@/components/dashboard/funnel-performance';
-import SalesByChannel from '@/components/dashboard/sales-by-channel';
-import ProductPerformance from '@/components/dashboard/product-performance';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
 import DashboardContent from '@/components/dashboard/dashboard-content';
 
 
