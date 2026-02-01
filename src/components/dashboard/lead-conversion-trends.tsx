@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -27,6 +28,12 @@ interface LeadConversionTrendsProps {
 }
 
 export default function LeadConversionTrends({ data }: LeadConversionTrendsProps) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const conversionPercentage = (data.conversionRate / data.conversionRateTarget) * 100;
   
   return (
@@ -47,12 +54,12 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
         <div className="col-span-1 flex flex-col justify-between gap-4">
           <div className='p-4 rounded-lg bg-card-foreground/5'>
             <p className="text-xs text-muted-foreground">TOTAL LEADS</p>
-            <p className="text-2xl font-bold">{data.totalLeads.toLocaleString()}</p>
+            <p className="text-2xl font-bold">{isClient ? data.totalLeads.toLocaleString() : '...'}</p>
             <p className="text-xs font-semibold text-green-500">{data.totalLeadsChange}</p>
           </div>
           <div className='p-4 rounded-lg bg-card-foreground/5'>
             <p className="text-xs text-muted-foreground">MARKETING QUALIFIED (MQL)</p>
-            <p className="text-2xl font-bold">{data.mql.toLocaleString()}</p>
+            <p className="text-2xl font-bold">{isClient ? data.mql.toLocaleString() : '...'}</p>
             <p className="text-xs font-semibold text-green-500">{data.mqlChange}</p>
           </div>
           <div className='p-4 rounded-lg bg-card-foreground/5'>

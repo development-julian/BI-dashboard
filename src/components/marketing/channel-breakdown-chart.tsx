@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import type { MarketingData } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
@@ -13,6 +14,12 @@ import {
 const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))'];
 
 export default function ChannelBreakdownChart({ data }: { data: MarketingData['channelBreakdown']}) {
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
     const totalSpend = data.reduce((acc, item) => acc + item.spend, 0);
 
     return (
@@ -63,7 +70,7 @@ export default function ChannelBreakdownChart({ data }: { data: MarketingData['c
                  <div className="mt-4 flex flex-col gap-2 text-sm">
                     <div className="font-bold flex justify-between">
                         <span>Total Spend:</span>
-                        <span>${totalSpend.toLocaleString()}</span>
+                        <span>{isClient ? `$${totalSpend.toLocaleString()}` : '...'}</span>
                     </div>
                     <ul className="space-y-1">
                         {data.map((item, index) => (
@@ -72,7 +79,7 @@ export default function ChannelBreakdownChart({ data }: { data: MarketingData['c
                                     <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
                                     <span className="text-muted-foreground">{item.channel}</span>
                                 </div>
-                                <span className="font-medium">${item.spend.toLocaleString()}</span>
+                                <span className="font-medium">{isClient ? `$${item.spend.toLocaleString()}` : '...'}</span>
                             </li>
                         ))}
                     </ul>
