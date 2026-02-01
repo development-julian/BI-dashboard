@@ -52,7 +52,7 @@ export interface DashboardStats {
   }[];
 }
 
-const N8N_WEBHOOK_URL = 'https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway';
+const N8N_WEBHOOK_URL = 'https://n8n.growtzy.com/webhook/api/v1/gateway';
 
 const getDateRange = (range: string): { from: string; to: string } => {
   const to = new Date();
@@ -207,3 +207,4 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
     return { error: `No se pudo conectar con el servidor: ${error.message}`, type: 'network' };
   }
 };
+    
