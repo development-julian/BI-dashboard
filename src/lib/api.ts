@@ -52,6 +52,35 @@ export interface DashboardStats {
   }[];
 }
 
+export interface MarketingData {
+  campaignPerformance: {
+    id: string;
+    name: string;
+    spend: number;
+    cpc: number;
+    conversions: number;
+    roas: number;
+    status: 'active' | 'paused' | 'ended';
+  }[];
+  channelBreakdown: {
+    channel: string;
+    spend: number;
+    conversions: number;
+  }[];
+}
+
+export interface InventoryData {
+  products: {
+    name: string;
+    sku: string;
+    stockLevel: number;
+    stockStatus: 'In Stock' | 'Low Stock' | 'Out of Stock';
+    revenue: number;
+    image: string;
+  }[];
+}
+
+
 const N8N_WEBHOOK_URL = 'https://n8n.growtzy.com/webhook/api/v1/gateway';
 
 const getDateRange = (range: string): { from: string; to: string } => {
@@ -77,9 +106,8 @@ const getDateRange = (range: string): { from: string; to: string } => {
   };
 };
 
-export const getDashboardStats = async (range: string = '30d'): Promise<DashboardStats | { error: string, type: 'format' | 'processing' | 'network' }> => {
-  try {
-    console.log(`🚀 [API] Conectando a n8n con método POST para el rango: ${range}`);
+const fetchDataFromN8n = async (action: string, range: string) => {
+    console.log(`🚀 [API] Conectando a n8n con acción "${action}" para el rango: ${range}`);
     const dateRange = getDateRange(range);
 
     const res = await fetch(N8N_WEBHOOK_URL, {
@@ -88,7 +116,7 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        action: "GET_DASHBOARD",
+        action: action,
         ghlLocationId: "Jg9gu3TzF3KKu2V8nwHl",
         dateRange: dateRange
       }),
@@ -96,44 +124,44 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
     });
 
     const rawText = await res.text();
-    console.log("📦 Respuesta CRUDA (texto) de n8n:", rawText);
+    console.log(`📦 Respuesta CRUDA (texto) de n8n para acción "${action}":`, rawText);
 
     if (!res.ok) {
       console.error(`❌ Error en la respuesta de n8n: ${res.status} ${res.statusText}`);
-      return { error: `n8n respondió con estado ${res.status}: ${rawText}`, type: 'network' };
+      throw new Error(`n8n respondió con estado ${res.status}: ${rawText}`);
     }
     
     let jsonData;
     try {
-        if (rawText.startsWith('=')) {
-            // Limpia la cadena si empieza con '='
-            const jsonString = rawText.substring(rawText.indexOf('=') + 1);
-            jsonData = JSON.parse(jsonString);
-        } else {
-            // Asume que es un JSON válido o un array JSON
-            jsonData = JSON.parse(rawText);
-        }
+        // Limpia la cadena si empieza con un caracter inválido que a veces añade n8n
+        const jsonString = rawText.substring(rawText.indexOf('{'));
+        jsonData = JSON.parse(jsonString);
     } catch (parseError) {
         console.error("❌ Error de parseo JSON:", parseError);
-        return { error: `La respuesta de n8n no es un JSON válido. Respuesta recibida: ${rawText}`, type: 'format' };
+        throw new Error(`La respuesta de n8n no es un JSON válido. Respuesta recibida: ${rawText}`);
     }
     
-    console.log("✅ Respuesta PARSEADA de n8n:", JSON.stringify(jsonData, null, 2));
+    console.log(`✅ Respuesta PARSEADA de n8n para acción "${action}":`, JSON.stringify(jsonData, null, 2));
 
     const n8nResponseObject = Array.isArray(jsonData) ? jsonData[0] : jsonData;
      if (!n8nResponseObject) {
-      console.error("❌ La respuesta de n8n está vacía o en un formato inesperado después de parsear.");
-      return { error: 'El formato de respuesta de n8n está vacío o es inválido.', type: 'format' };
+      throw new Error('El formato de respuesta de n8n está vacío o es inválido.');
     }
     
     const n8nData = n8nResponseObject.payload;
 
     if (!n8nData) {
-      console.error("❌ No se encontró la propiedad 'payload' en el objeto de respuesta de n8n.");
-      return { error: 'No se encontró la propiedad "payload" en la respuesta de n8n.', type: 'format' };
+      throw new Error('No se encontró la propiedad "payload" en la respuesta de n8n.');
     }
     
-    console.log("📊 Datos extraídos de n8n.payload:", JSON.stringify(n8nData, null, 2));
+    console.log(`📊 Datos extraídos de n8n.payload para acción "${action}":`, JSON.stringify(n8nData, null, 2));
+    return n8nData;
+}
+
+
+export const getDashboardStats = async (range: string = '30d'): Promise<DashboardStats | { error: string, type: 'format' | 'processing' | 'network' }> => {
+  try {
+    const n8nData = await fetchDataFromN8n('GET_DASHBOARD', range);
     
     try {
         const aiReport = n8nData.intelligenceReport;
@@ -204,7 +232,54 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
 
   } catch (error: any) {
     console.error("🔥 Error CRÍTICO en getDashboardStats (fetch):", error);
-    return { error: `No se pudo conectar con el servidor: ${error.message}`, type: 'network' };
+    const type = error.message.includes('JSON') ? 'format' : 'network';
+    return { error: `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`, type };
   }
 };
+
+export const getMarketingData = async (range: string = '30d'): Promise<MarketingData | { error: string, type: string }> => {
+    try {
+        const n8nData = await fetchDataFromN8n('GET_MARKETING_DATA', range);
+        return {
+            campaignPerformance: (n8nData.campaignPerformance || []).map((c: any) => ({
+                id: c.id,
+                name: c.name,
+                spend: c.spend || 0,
+                cpc: c.cpc || 0,
+                conversions: c.conversions || 0,
+                roas: c.roas || 0,
+                status: c.status || 'paused',
+            })),
+            channelBreakdown: (n8nData.channelBreakdown || []).map((c: any) => ({
+                channel: c.channel,
+                spend: c.spend || 0,
+                conversions: c.conversions || 0,
+            })),
+        };
+    } catch (error: any) {
+        console.error("🔥 Error CRÍTICO en getMarketingData (fetch):", error);
+        const type = error.message.includes('JSON') ? 'format' : 'network';
+        return { error: `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`, type };
+    }
+}
+
+export const getInventoryData = async (range: string = '30d'): Promise<InventoryData | { error: string, type: string }> => {
+    try {
+        const n8nData = await fetchDataFromN8n('GET_INVENTORY_DATA', range);
+        return {
+            products: (n8nData.products || []).map((p: any) => ({
+                name: p.name,
+                sku: p.sku || 'SKU-N/A',
+                stockLevel: p.stockLevel || 0,
+                stockStatus: p.stockStatus || 'Out of Stock',
+                revenue: p.revenue || 0,
+                image: p.image_id || 'product-watch'
+            })),
+        };
+    } catch (error: any) {
+        console.error("🔥 Error CRÍTICO en getInventoryData (fetch):", error);
+        const type = error.message.includes('JSON') ? 'format' : 'network';
+        return { error: `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`, type };
+    }
+}
     
