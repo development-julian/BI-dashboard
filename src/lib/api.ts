@@ -1,6 +1,8 @@
 
 'use server';
 
+import { subDays, format } from 'date-fns';
+
 export interface KpiCard {
   label: string;
   value: string;
@@ -52,9 +54,33 @@ export interface DashboardStats {
 
 const N8N_WEBHOOK_URL = 'https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway';
 
-export const getDashboardStats = async (): Promise<DashboardStats | { error: string, type: 'format' | 'processing' | 'network' }> => {
+const getDateRange = (range: string): { from: string; to: string } => {
+  const to = new Date();
+  let from: Date;
+
+  switch (range) {
+    case '7d':
+      from = subDays(to, 7);
+      break;
+    case '90d':
+      from = subDays(to, 90);
+      break;
+    case '30d':
+    default:
+      from = subDays(to, 30);
+      break;
+  }
+
+  return {
+    from: format(from, 'yyyy-MM-dd'),
+    to: format(to, 'yyyy-MM-dd'),
+  };
+};
+
+export const getDashboardStats = async (range: string = '30d'): Promise<DashboardStats | { error: string, type: 'format' | 'processing' | 'network' }> => {
   try {
-    console.log("🚀 [API] Conectando a n8n con método POST...");
+    console.log(`🚀 [API] Conectando a n8n con método POST para el rango: ${range}`);
+    const dateRange = getDateRange(range);
 
     const res = await fetch(N8N_WEBHOOK_URL, {
       method: 'POST',
@@ -63,8 +89,8 @@ export const getDashboardStats = async (): Promise<DashboardStats | { error: str
       },
       body: JSON.stringify({
         action: "GET_DASHBOARD",
-        ghlLocationId: "PLsKcTpoijAF5iHuqikq",
-        dateRange: { from: "2024-01-01", to: "2024-12-31" }
+        ghlLocationId: "Jg9gu3TzF3KKu2V8nwHl",
+        dateRange: dateRange
       }),
       cache: 'no-store'
     });

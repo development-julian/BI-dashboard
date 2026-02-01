@@ -9,8 +9,8 @@ import ProductPerformance from '@/components/dashboard/product-performance';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
-export default async function DashboardContent() {
-  const result = await getDashboardStats();
+export default async function DashboardContent({ dateRange }: { dateRange: string }) {
+  const result = await getDashboardStats(dateRange);
 
   if (!result || (result && 'error' in result)) {
     const error = result || { message: "No se pudieron cargar los datos del dashboard.", type: 'Desconocido' };
