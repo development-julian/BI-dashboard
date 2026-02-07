@@ -123,13 +123,11 @@ const fetchDataFromN8n = async (action: string, range: string) => {
 
     if (!res.ok) {
         const errorText = await res.text().catch(() => 'Could not read error response body');
-        console.error(`❌ n8n responded with non-OK status: ${res.status}`, errorText);
         throw new Error(`The backend service responded with status ${res.status}. Please check the n8n workflow. Response: ${errorText}`);
     }
     
     const responseText = await res.text();
     if (!responseText) {
-        console.error("❌ Empty response from n8n.");
         throw new Error("The backend returned an empty response. Please verify the n8n workflow output.");
     }
 
@@ -137,15 +135,13 @@ const fetchDataFromN8n = async (action: string, range: string) => {
     try {
         responseData = JSON.parse(responseText);
     } catch (parseError) {
-        console.error("❌ JSON Parsing Error:", parseError, "Raw Response:", responseText);
-        throw new Error("The backend did not return valid JSON. Please verify the n8n workflow output.");
+        throw new Error(`The backend did not return valid JSON. Please verify the n8n workflow output. Raw Response: ${responseText}`);
     }
     
     console.log(`✅ Received response from n8n for action "${action}":`, JSON.stringify(responseData, null, 2));
 
     if (responseData.success === false) {
         const errorMessage = responseData.message || 'The backend reported an unspecified error.';
-        console.error(`❌ n8n reported failure for action "${action}":`, errorMessage);
         throw new Error(errorMessage);
     }
     
@@ -154,7 +150,6 @@ const fetchDataFromN8n = async (action: string, range: string) => {
         return responseData.payload;
     }
 
-    console.error('❌ Invalid response format from n8n (missing success flag or payload):', responseData);
     throw new Error('The backend returned data in an unexpected format. Please verify the n8n workflow output.');
 }
 
