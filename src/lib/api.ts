@@ -1,6 +1,4 @@
 
-'use server';
-
 import { subDays, format } from 'date-fns';
 
 export interface KpiCard {
@@ -81,7 +79,7 @@ export interface InventoryData {
 }
 
 
-const N8N_WEBHOOK_URL = 'https://n8n.growtzy.com/webhook/api/v1/gateway';
+export const N8N_WEBHOOK_URL = 'https://n8n.growtzy.com/webhook/api/v1/gateway';
 
 const getDateRange = (range: string): { from: string; to: string } => {
   const to = new Date();
@@ -159,7 +157,7 @@ const fetchDataFromN8n = async (action: string, range: string) => {
 }
 
 
-export const getDashboardStats = async (range: string = '30d'): Promise<DashboardStats | { error: string, type: 'format' | 'processing' | 'network' }> => {
+export const getDashboardStats = async (range: string = '30d'): Promise<DashboardStats | { error: string, type: string }> => {
   try {
     const n8nData = await fetchDataFromN8n('GET_DASHBOARD', range);
     
@@ -232,8 +230,18 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
 
   } catch (error: any) {
     console.error("🔥 Error CRÍTICO en getDashboardStats (fetch):", error);
-    const type = error.message.includes('JSON') ? 'format' : 'network';
-    return { error: `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`, type };
+    let type: 'format' | 'network' | 'processing' = 'network';
+    let message = `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`;
+
+    if (error.message.includes('JSON válido')) {
+        type = 'format';
+        message = `El backend (n8n) no devolvió un JSON válido. Esto puede ocurrir si el workflow no está activo o la URL es incorrecta. Por favor, verifica la configuración en n8n.`;
+    } else if (error.message.includes('payload')) {
+        type = 'processing';
+        message = `El backend (n8n) devolvió datos, pero con un formato inesperado (faltaba la propiedad "payload"). Verifica la salida del workflow en n8n.`;
+    }
+    
+    return { error: message, type };
   }
 };
 
@@ -258,8 +266,17 @@ export const getMarketingData = async (range: string = '30d'): Promise<Marketing
         };
     } catch (error: any) {
         console.error("🔥 Error CRÍTICO en getMarketingData (fetch):", error);
-        const type = error.message.includes('JSON') ? 'format' : 'network';
-        return { error: `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`, type };
+        let type: 'format' | 'network' | 'processing' = 'network';
+        let message = `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`;
+
+        if (error.message.includes('JSON válido')) {
+            type = 'format';
+            message = `El backend (n8n) no devolvió un JSON válido para los datos de marketing. Verifica el workflow en n8n.`;
+        } else if (error.message.includes('payload')) {
+            type = 'processing';
+            message = `El formato de datos de marketing de n8n es incorrecto (falta "payload").`;
+        }
+        return { error: message, type };
     }
 }
 
@@ -278,8 +295,17 @@ export const getInventoryData = async (range: string = '30d'): Promise<Inventory
         };
     } catch (error: any) {
         console.error("🔥 Error CRÍTICO en getInventoryData (fetch):", error);
-        const type = error.message.includes('JSON') ? 'format' : 'network';
-        return { error: `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`, type };
+        let type: 'format' | 'network' | 'processing' = 'network';
+        let message = `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`;
+
+        if (error.message.includes('JSON válido')) {
+            type = 'format';
+            message = `El backend (n8n) no devolvió un JSON válido para los datos de inventario. Verifica el workflow en n8n.`;
+        } else if (error.message.includes('payload')) {
+            type = 'processing';
+            message = `El formato de datos de inventario de n8n es incorrecto (falta "payload").`;
+        }
+        return { error: message, type };
     }
 }
     

@@ -1,5 +1,5 @@
 
-import { getMarketingData, type MarketingData } from '@/lib/api';
+import { getMarketingData, type MarketingData, N8N_WEBHOOK_URL } from '@/lib/api';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -72,6 +72,9 @@ export default async function MarketingPage({
           <AlertTitle>Error: {error.type}</AlertTitle>
           <AlertDescription>
             {error.message}
+            <div className="mt-2 text-xs">
+                <strong>URL Webhook:</strong> <code>{N8N_WEBHOOK_URL}</code>
+            </div>
           </AlertDescription>
         </Alert>
       </div>

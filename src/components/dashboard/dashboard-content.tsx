@@ -1,4 +1,4 @@
-import { getDashboardStats, type DashboardStats } from '@/lib/api';
+import { getDashboardStats, type DashboardStats, N8N_WEBHOOK_URL } from '@/lib/api';
 
 import AiForecast from '@/components/dashboard/ai-forecast';
 import KpiCards from '@/components/dashboard/kpi-cards';
@@ -22,7 +22,7 @@ export default async function DashboardContent({ dateRange }: { dateRange: strin
           <AlertDescription>
             {error.message}
             <div className="mt-2 text-xs">
-                <strong>URL Webhook:</strong> <code>https://growtzy-dev1.app.n8n.cloud/webhook/api/v1/gateway</code>
+                <strong>URL Webhook:</strong> <code>{N8N_WEBHOOK_URL}</code>
             </div>
           </AlertDescription>
         </Alert>
