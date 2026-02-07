@@ -106,7 +106,6 @@ const getDateRange = (range: string): { from: string; to: string } => {
 
 const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?: any; error?: string }> => {
     try {
-        console.log(`🚀 [API] Connecting to n8n with action "${action}" for range: ${range}`);
         const dateRange = getDateRange(range);
 
         const res = await fetch(N8N_WEBHOOK_URL, {
@@ -116,7 +115,7 @@ const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?:
         },
         body: JSON.stringify({
             action: action,
-            ghlLocationId: "Jg9gu3TzF3KKu2V8nwHl",
+            ghlLocationId: "PLsKcTpoijAF5iHuqikq",
             dateRange: dateRange
         }),
         cache: 'no-store'
@@ -139,15 +138,12 @@ const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?:
             return { error: `The backend did not return valid JSON. Please verify the n8n workflow output. Raw Response: ${responseText}` };
         }
         
-        console.log(`✅ Received response from n8n for action "${action}":`, JSON.stringify(responseData, null, 2));
-
         if (responseData.success === false) {
             const errorMessage = responseData.message || 'The backend reported an unspecified error.';
             return { error: errorMessage };
         }
         
         if (responseData.success === true && responseData.payload) {
-            console.log(`📊 Extracted payload from n8n for action "${action}":`, JSON.stringify(responseData.payload, null, 2));
             return { data: responseData.payload };
         }
 
@@ -210,7 +206,7 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
     },
     funnelPerformance: (n8nData.funnel || []).map((f: any) => ({
       stage: f.stage,
-      value: f.value.toLocaleString(),
+      value: (f.value || 0).toLocaleString(),
       meta: `vs ${f.previous_value?.toLocaleString() || 0}`,
       change: `${f.drop_off_percentage || 0}% drop`,
       changeType: 'decrease'
