@@ -154,7 +154,8 @@ const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?:
         return { error: 'The backend returned data in an unexpected format. Please verify the n8n workflow output.' };
 
     } catch (error: any) {
-        return { error: error.message || 'An unknown network error occurred.' };
+        const networkErrorMessage = `A network error occurred while trying to connect to the backend. Please check your connection and ensure the backend is running. Details: ${error.message || 'An unknown network error occurred.'}`
+        return { error: networkErrorMessage };
     }
 }
 
@@ -163,7 +164,7 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
   const result = await fetchDataFromN8n('GET_DASHBOARD', range);
   
   if (result.error || !result.data) {
-    return { error: result.error || 'No data returned from backend.', type: 'network' };
+    return { error: result.error || 'No data returned from backend.', type: 'Backend Communication' };
   }
   
   const n8nData = result.data;
@@ -234,7 +235,7 @@ export const getMarketingData = async (range: string = '30d'): Promise<Marketing
     const result = await fetchDataFromN8n('GET_MARKETING_DATA', range);
 
     if (result.error || !result.data) {
-        return { error: result.error || 'No data returned from backend.', type: 'network' };
+        return { error: result.error || 'No data returned from backend.', type: 'Backend Communication' };
     }
 
     const n8nData = result.data;
@@ -260,7 +261,7 @@ export const getInventoryData = async (range: string = '30d'): Promise<Inventory
     const result = await fetchDataFromN8n('GET_INVENTORY_DATA', range);
     
     if (result.error || !result.data) {
-        return { error: result.error || 'No data returned from backend.', type: 'network' };
+        return { error: result.error || 'No data returned from backend.', type: 'Backend Communication' };
     }
 
     const n8nData = result.data;
