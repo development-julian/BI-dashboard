@@ -127,11 +127,17 @@ const fetchDataFromN8n = async (action: string, range: string) => {
         throw new Error(`The backend service responded with status ${res.status}. Please check the n8n workflow. Response: ${errorText}`);
     }
     
+    const responseText = await res.text();
+    if (!responseText) {
+        console.error("❌ Empty response from n8n.");
+        throw new Error("The backend returned an empty response. Please verify the n8n workflow output.");
+    }
+
     let responseData;
     try {
-        responseData = await res.json();
+        responseData = JSON.parse(responseText);
     } catch (parseError) {
-        console.error("❌ JSON Parsing Error:", parseError);
+        console.error("❌ JSON Parsing Error:", parseError, "Raw Response:", responseText);
         throw new Error("The backend did not return valid JSON. Please verify the n8n workflow output.");
     }
     
