@@ -105,7 +105,7 @@ const getDateRange = (range: string): { from: string; to: string } => {
 };
 
 const fetchDataFromN8n = async (action: string, range: string) => {
-    console.log(`🚀 [API] Conectando a n8n con acción "${action}" para el rango: ${range}`);
+    console.log(`🚀 [API] Connecting to n8n with action "${action}" for range: ${range}`);
     const dateRange = getDateRange(range);
 
     const res = await fetch(N8N_WEBHOOK_URL, {
@@ -121,39 +121,35 @@ const fetchDataFromN8n = async (action: string, range: string) => {
       cache: 'no-store'
     });
 
-    const rawText = await res.text();
-    console.log(`📦 Respuesta CRUDA (texto) de n8n para acción "${action}":`, rawText);
-
     if (!res.ok) {
-      console.error(`❌ Error en la respuesta de n8n: ${res.status} ${res.statusText}`);
-      throw new Error(`n8n respondió con estado ${res.status}: ${rawText}`);
+        const errorText = await res.text().catch(() => 'Could not read error response body');
+        console.error(`❌ n8n responded with non-OK status: ${res.status}`, errorText);
+        throw new Error(`The backend service responded with status ${res.status}. Please check the n8n workflow. Response: ${errorText}`);
     }
     
-    let jsonData;
+    let responseData;
     try {
-        // Limpia la cadena si empieza con un caracter inválido que a veces añade n8n
-        const jsonString = rawText.substring(rawText.indexOf('{'));
-        jsonData = JSON.parse(jsonString);
+        responseData = await res.json();
     } catch (parseError) {
-        console.error("❌ Error de parseo JSON:", parseError);
-        throw new Error(`La respuesta de n8n no es un JSON válido. Respuesta recibida: ${rawText}`);
+        console.error("❌ JSON Parsing Error:", parseError);
+        throw new Error("The backend did not return valid JSON. Please verify the n8n workflow output.");
     }
     
-    console.log(`✅ Respuesta PARSEADA de n8n para acción "${action}":`, JSON.stringify(jsonData, null, 2));
+    console.log(`✅ Received response from n8n for action "${action}":`, JSON.stringify(responseData, null, 2));
 
-    const n8nResponseObject = Array.isArray(jsonData) ? jsonData[0] : jsonData;
-     if (!n8nResponseObject) {
-      throw new Error('El formato de respuesta de n8n está vacío o es inválido.');
+    if (responseData.success === false) {
+        const errorMessage = responseData.message || 'The backend reported an unspecified error.';
+        console.error(`❌ n8n reported failure for action "${action}":`, errorMessage);
+        throw new Error(errorMessage);
     }
     
-    const n8nData = n8nResponseObject.payload;
+    if (responseData.success === true && responseData.payload) {
+        console.log(`📊 Extracted payload from n8n for action "${action}":`, JSON.stringify(responseData.payload, null, 2));
+        return responseData.payload;
+    }
 
-    if (!n8nData) {
-      throw new Error('No se encontró la propiedad "payload" en la respuesta de n8n.');
-    }
-    
-    console.log(`📊 Datos extraídos de n8n.payload para acción "${action}":`, JSON.stringify(n8nData, null, 2));
-    return n8nData;
+    console.error('❌ Invalid response format from n8n (missing success flag or payload):', responseData);
+    throw new Error('The backend returned data in an unexpected format. Please verify the n8n workflow output.');
 }
 
 
@@ -161,87 +157,71 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
   try {
     const n8nData = await fetchDataFromN8n('GET_DASHBOARD', range);
     
-    try {
-        const aiReport = n8nData.intelligenceReport;
-        const aiForecastData = {
-          title: aiReport?.key_insight || 'Analizando datos estratégicos...',
-          description: aiReport?.actionable_recommendation || 'Esperando insights de Gemini para generar un plan de acción.',
-          sentiment: aiReport?.sentiment || 'neutral'
-        };
+    const aiReport = n8nData.intelligenceReport;
+    const aiForecastData = {
+      title: aiReport?.key_insight || 'Analizando datos estratégicos...',
+      description: aiReport?.actionable_recommendation || 'Esperando insights de Gemini para generar un plan de acción.',
+      sentiment: aiReport?.sentiment || 'neutral'
+    };
 
-        return {
-          kpis: [
-            {
-              label: 'Ad Spend',
-              value: `$${(n8nData.kpis?.ad_spend || 0).toLocaleString()}`,
-              change: '+2.5%',
-              changeType: 'increase',
-              icon: 'dollar',
-            },
-            {
-              label: 'ROAS',
-              value: `${n8nData.kpis?.roas || 0}x`,
-              change: '-1.2%',
-              changeType: 'decrease',
-              icon: 'percent',
-            },
-            {
-              label: 'CPL',
-              value: `$${(n8nData.kpis?.cpl || 0).toFixed(2)}`,
-              change: '+8.0%',
-              changeType: 'increase',
-              icon: 'user',
-            },
-          ],
-          leadConversion: {
-            totalLeads: n8nData.kpis?.total_leads || 0,
-            totalLeadsChange: '+12%',
-            mql: n8nData.funnel?.find((f: any) => f.stage === 'Oportunidades')?.value || 0,
-            mqlChange: '+5%',
-            conversionRate: n8nData.kpis?.conversion_rate || 0,
-            conversionRateTarget: 5.0,
-            chartData: (n8nData.kpis?.leads_over_time || []).map((d: any) => ({ date: d.date, value: d.count })),
-          },
-          funnelPerformance: (n8nData.funnel || []).map((f: any) => ({
-            stage: f.stage,
-            value: f.value.toLocaleString(),
-            meta: `vs ${f.previous_value?.toLocaleString() || 0}`,
-            change: `${f.drop_off_percentage || 0}% drop`,
-            changeType: 'decrease'
-          })),
-          aiForecast: aiForecastData,
-          productPerformance: (n8nData.products || []).map((p: any) => ({
-            name: p.name,
-            sku: p.sku || 'SKU-N/A',
-            revenue: `$${(p.revenue || 0).toLocaleString()}`,
-            change: p.change || '0%',
-            changeType: p.status === 'alert' ? 'decrease' : 'increase',
-            image: p.image_id || 'product-watch'
-          })),
-          salesByChannel: (n8nData.salesByChannel || []).map((s: any) => ({
-              name: s.channel || s.name,
-              value: s.sales || s.value
-          }))
-        };
-    } catch (e: any) {
-        console.error("🔥 Error de PROCESAMIENTO al mapear datos de n8n:", e);
-        return { error: `Error al procesar los datos de n8n: ${e.message}`, type: 'processing' };
-    }
+    return {
+      kpis: [
+        {
+          label: 'Ad Spend',
+          value: `$${(n8nData.kpis?.ad_spend || 0).toLocaleString()}`,
+          change: '+2.5%',
+          changeType: 'increase',
+          icon: 'dollar',
+        },
+        {
+          label: 'ROAS',
+          value: `${n8nData.kpis?.roas || 0}x`,
+          change: '-1.2%',
+          changeType: 'decrease',
+          icon: 'percent',
+        },
+        {
+          label: 'CPL',
+          value: `$${(n8nData.kpis?.cpl || 0).toFixed(2)}`,
+          change: '+8.0%',
+          changeType: 'increase',
+          icon: 'user',
+        },
+      ],
+      leadConversion: {
+        totalLeads: n8nData.kpis?.total_leads || 0,
+        totalLeadsChange: '+12%',
+        mql: n8nData.funnel?.find((f: any) => f.stage === 'Oportunidades')?.value || 0,
+        mqlChange: '+5%',
+        conversionRate: n8nData.kpis?.conversion_rate || 0,
+        conversionRateTarget: 5.0,
+        chartData: (n8nData.kpis?.leads_over_time || []).map((d: any) => ({ date: d.date, value: d.count })),
+      },
+      funnelPerformance: (n8nData.funnel || []).map((f: any) => ({
+        stage: f.stage,
+        value: f.value.toLocaleString(),
+        meta: `vs ${f.previous_value?.toLocaleString() || 0}`,
+        change: `${f.drop_off_percentage || 0}% drop`,
+        changeType: 'decrease'
+      })),
+      aiForecast: aiForecastData,
+      productPerformance: (n8nData.products || []).map((p: any) => ({
+        name: p.name,
+        sku: p.sku || 'SKU-N/A',
+        revenue: `$${(p.revenue || 0).toLocaleString()}`,
+        change: p.change || '0%',
+        changeType: p.status === 'alert' ? 'decrease' : 'increase',
+        image: p.image_id || 'product-watch'
+      })),
+      salesByChannel: (n8nData.salesByChannel || []).map((s: any) => ({
+          name: s.channel || s.name,
+          value: s.sales || s.value
+      }))
+    };
 
   } catch (error: any) {
-    console.error("🔥 Error CRÍTICO en getDashboardStats (fetch):", error);
-    let type: 'format' | 'network' | 'processing' = 'network';
-    let message = `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`;
-
-    if (error.message.includes('JSON válido')) {
-        type = 'format';
-        message = `El backend (n8n) no devolvió un JSON válido. Esto puede ocurrir si el workflow no está activo o la URL es incorrecta. Por favor, verifica la configuración en n8n.`;
-    } else if (error.message.includes('payload')) {
-        type = 'processing';
-        message = `El backend (n8n) devolvió datos, pero con un formato inesperado (faltaba la propiedad "payload"). Verifica la salida del workflow en n8n.`;
-    }
-    
-    return { error: message, type };
+    console.error(`🔥 Critical error in getDashboardStats for range "${range}":`, error);
+    return { error: error.message || 'An unknown error occurred.', type: 'network' };
   }
 };
 
@@ -265,18 +245,8 @@ export const getMarketingData = async (range: string = '30d'): Promise<Marketing
             })),
         };
     } catch (error: any) {
-        console.error("🔥 Error CRÍTICO en getMarketingData (fetch):", error);
-        let type: 'format' | 'network' | 'processing' = 'network';
-        let message = `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`;
-
-        if (error.message.includes('JSON válido')) {
-            type = 'format';
-            message = `El backend (n8n) no devolvió un JSON válido para los datos de marketing. Verifica el workflow en n8n.`;
-        } else if (error.message.includes('payload')) {
-            type = 'processing';
-            message = `El formato de datos de marketing de n8n es incorrecto (falta "payload").`;
-        }
-        return { error: message, type };
+        console.error(`🔥 Critical error in getMarketingData for range "${range}":`, error);
+        return { error: error.message || 'An unknown error occurred.', type: 'network' };
     }
 }
 
@@ -294,18 +264,8 @@ export const getInventoryData = async (range: string = '30d'): Promise<Inventory
             })),
         };
     } catch (error: any) {
-        console.error("🔥 Error CRÍTICO en getInventoryData (fetch):", error);
-        let type: 'format' | 'network' | 'processing' = 'network';
-        let message = `No se pudo conectar o procesar la respuesta del servidor: ${error.message}`;
-
-        if (error.message.includes('JSON válido')) {
-            type = 'format';
-            message = `El backend (n8n) no devolvió un JSON válido para los datos de inventario. Verifica el workflow en n8n.`;
-        } else if (error.message.includes('payload')) {
-            type = 'processing';
-            message = `El formato de datos de inventario de n8n es incorrecto (falta "payload").`;
-        }
-        return { error: message, type };
+        console.error(`🔥 Critical error in getInventoryData for range "${range}":`, error);
+        return { error: error.message || 'An unknown error occurred.', type: 'network' };
     }
 }
     
