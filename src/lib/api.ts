@@ -86,15 +86,15 @@ const getDateRange = (range: string): { from: string; to: string } => {
   let from: Date;
 
   switch (range) {
-    case '7d':
-      from = subDays(to, 7);
+    case '30d':
+      from = subDays(to, 30);
       break;
     case '90d':
       from = subDays(to, 90);
       break;
-    case '30d':
+    case '7d':
     default:
-      from = subDays(to, 30);
+      from = subDays(to, 7);
       break;
   }
 
@@ -156,7 +156,7 @@ const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?:
 }
 
 
-export const getDashboardStats = async (range: string = '30d'): Promise<DashboardStats | { error: string, type: string }> => {
+export const getDashboardStats = async (range: string = '7d'): Promise<DashboardStats | { error: string, type: string }> => {
   const result = await fetchDataFromN8n('GET_DASHBOARD', range);
   
   if (result.error || !result.data) {
@@ -166,8 +166,8 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
   const n8nData = result.data;
   const aiReport = n8nData.intelligenceReport;
   const aiForecastData = {
-    title: aiReport?.key_insight || 'Analizando datos estratégicos...',
-    description: aiReport?.actionable_recommendation || 'Esperando insights de Gemini para generar un plan de acción.',
+    title: aiReport?.key_insight || 'Analyzing strategic data...',
+    description: aiReport?.actionable_recommendation || 'Awaiting insights from Gemini to generate an action plan.',
     sentiment: aiReport?.sentiment || 'neutral'
   };
 
@@ -222,12 +222,12 @@ export const getDashboardStats = async (range: string = '30d'): Promise<Dashboar
     })),
     salesByChannel: (n8nData.salesByChannel || []).map((s: any) => ({
         name: s.channel || s.name,
-        value: s.sales || s.value
+        value: s.value
     }))
   };
 };
 
-export const getMarketingData = async (range: string = '30d'): Promise<MarketingData | { error: string, type: string }> => {
+export const getMarketingData = async (range: string = '7d'): Promise<MarketingData | { error: string, type: string }> => {
     const result = await fetchDataFromN8n('GET_MARKETING_DATA', range);
 
     if (result.error || !result.data) {
@@ -253,7 +253,7 @@ export const getMarketingData = async (range: string = '30d'): Promise<Marketing
     };
 }
 
-export const getInventoryData = async (range: string = '30d'): Promise<InventoryData | { error: string, type: string }> => {
+export const getInventoryData = async (range: string = '7d'): Promise<InventoryData | { error: string, type: string }> => {
     const result = await fetchDataFromN8n('GET_INVENTORY_DATA', range);
     
     if (result.error || !result.data) {

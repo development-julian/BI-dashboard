@@ -3,14 +3,12 @@
 import { WandSparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Definimos qué datos espera recibir este componente
 interface AiForecastProps {
   title: string;
   description: string;
   sentiment?: 'positive' | 'negative' | 'neutral';
 }
 
-// Ahora el componente acepta "props" en lugar de estar vacío
 export default function AiForecast({ title, description, sentiment }: AiForecastProps) {
   return (
     <div className="relative overflow-hidden rounded-lg bg-primary/90 p-6 shadow-lg">
@@ -25,17 +23,17 @@ export default function AiForecast({ title, description, sentiment }: AiForecast
             AI STRATEGIC COPILOT
           </h2>
           <p className="mt-1 text-2xl font-bold text-white">
-            {title || "Analizando datos..."}
+            {title || "Analyzing data..."}
           </p>
           <p className="max-w-xl text-sm text-primary-foreground/80 mt-2">
-            {description || "Esperando insights de Gemini..."}
+            {description || "Waiting for Gemini insights..."}
           </p>
         </div>
         <Button
           variant="secondary"
           className="bg-white text-primary hover:bg-white/90 shrink-0"
         >
-          Ver Plan de Acción &rarr;
+          View Action Plan &rarr;
         </Button>
       </div>
     </div>

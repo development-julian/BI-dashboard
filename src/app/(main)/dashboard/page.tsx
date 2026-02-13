@@ -32,7 +32,7 @@ export default function DashboardPage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const range = typeof searchParams?.range === 'string' ? searchParams.range : '30d';
+  const range = typeof searchParams?.range === 'string' ? searchParams.range : '7d';
 
   return (
     <Suspense fallback={<DashboardSkeleton />} key={range}>

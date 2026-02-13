@@ -9,8 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -18,6 +16,8 @@ import {
   CartesianGrid,
   Area,
   AreaChart,
+  BarChart,
+  Bar,
 } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import type { DashboardStats } from '@/lib/api';
@@ -34,8 +34,10 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
     setIsClient(true);
   }, []);
 
-  const conversionPercentage = (data.conversionRate / data.conversionRateTarget) * 100;
+  const conversionPercentage = data.conversionRateTarget > 0 ? (data.conversionRate / data.conversionRateTarget) * 100 : 0;
   
+  const showBarChart = data.chartData.length < 10;
+
   return (
     <Card>
       <CardHeader>
@@ -75,43 +77,77 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
         </div>
         <div className="col-span-1 md:col-span-3">
           <ResponsiveContainer width="100%" height={260}>
-            <AreaChart data={data.chartData}>
-              <defs>
-                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-              <XAxis
-                dataKey="date"
-                stroke="hsl(var(--muted-foreground))"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                stroke="hsl(var(--muted-foreground))"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-                hide
-              />
-              <Tooltip
-                contentStyle={{
-                  background: 'hsl(var(--background))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: 'var(--radius)',
-                }}
-              />
-              <Area
-                type="monotone"
-                dataKey="value"
-                stroke="hsl(var(--primary))"
-                strokeWidth={2}
-                fill="url(#colorValue)"
-              />
-            </AreaChart>
+            {showBarChart ? (
+                 <BarChart data={data.chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                    <XAxis
+                        dataKey="date"
+                        stroke="hsl(var(--muted-foreground))"
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                    />
+                    <YAxis
+                        stroke="hsl(var(--muted-foreground))"
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                        hide
+                    />
+                    <Tooltip
+                        contentStyle={{
+                            background: 'hsl(var(--background))',
+                            border: '1px solid hsl(var(--border))',
+                            borderRadius: 'var(--radius)',
+                        }}
+                    />
+                    <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} barSize={30} />
+                </BarChart>
+            ) : (
+                <AreaChart data={data.chartData}>
+                <defs>
+                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                    </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                <XAxis
+                    dataKey="date"
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                />
+                <YAxis
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    hide
+                />
+                <Tooltip
+                    contentStyle={{
+                    background: 'hsl(var(--background))',
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: 'var(--radius)',
+                    }}
+                />
+                <Area
+                    type="monotone"
+                    dataKey="value"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={2}
+                    fill="url(#colorValue)"
+                    dot={{
+                        r: 4,
+                        fill: 'hsl(var(--primary))',
+                        stroke: 'hsl(var(--card))',
+                        strokeWidth: 2,
+                    }}
+                />
+                </AreaChart>
+            )}
           </ResponsiveContainer>
           <div className="text-xs text-muted-foreground mt-2 flex items-center justify-center gap-4">
               <span className='font-bold text-foreground'>QUALITY SCORE BREAKDOWN:</span>

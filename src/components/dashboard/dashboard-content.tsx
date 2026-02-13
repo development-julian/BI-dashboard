@@ -13,7 +13,7 @@ export default async function DashboardContent({ dateRange }: { dateRange: strin
   const result = await getDashboardStats(dateRange);
 
   if (!result || (result && 'error' in result)) {
-    const error = result || { message: "No se pudieron cargar los datos del dashboard.", type: 'Desconocido' };
+    const error = result || { message: "Could not load dashboard data.", type: 'Unknown' };
     return (
       <div className="flex h-[50vh] items-center justify-center p-4">
         <Alert variant="destructive" className="max-w-lg">
