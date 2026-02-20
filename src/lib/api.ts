@@ -155,6 +155,15 @@ const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?:
     }
 }
 
+const stageMapping: { [key: string]: string } = {
+    'Interesado': 'Interested',
+    'Comprador': 'Purchased',
+    'Seguimiento': 'Follow-up',
+    'Recordatorio': 'Reminder',
+    'Oportunidades': 'Leads'
+};
+
+const translateStage = (stage: string) => stageMapping[stage] || stage;
 
 export const getDashboardStats = async (range: string = '7d'): Promise<DashboardStats | { error: string, type: string }> => {
   const result = await fetchDataFromN8n('GET_DASHBOARD', range);
@@ -170,6 +179,11 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
     description: aiReport?.actionable_recommendation || 'Awaiting insights from Gemini to generate an action plan.',
     sentiment: aiReport?.sentiment || 'neutral'
   };
+
+  const funnelData = (n8nData.funnel || []).map((f: any) => ({
+    ...f,
+    stage: translateStage(f.stage),
+  }));
 
   return {
     kpis: [
@@ -198,16 +212,16 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
     leadConversion: {
       totalLeads: n8nData.kpis?.total_leads || 0,
       totalLeadsChange: '+12%',
-      mql: n8nData.funnel?.find((f: any) => f.stage === 'Oportunidades')?.value || 0,
+      mql: funnelData?.find((f: any) => f.stage === 'Leads')?.value || 0,
       mqlChange: '+5%',
       conversionRate: n8nData.kpis?.conversion_rate || 0,
       conversionRateTarget: 5.0,
       chartData: (n8nData.kpis?.leads_over_time || []).map((d: any) => ({ date: d.date, value: d.count })),
     },
-    funnelPerformance: (n8nData.funnel || []).map((f: any) => ({
+    funnelPerformance: funnelData.map((f: any) => ({
       stage: f.stage,
       value: (f.value || 0).toLocaleString(),
-      meta: `vs ${f.previous_value?.toLocaleString() || 0}`,
+      meta: `vs ${(f.previous_value || 0).toLocaleString()}`,
       change: `${f.drop_off_percentage || 0}% drop`,
       changeType: 'decrease'
     })),

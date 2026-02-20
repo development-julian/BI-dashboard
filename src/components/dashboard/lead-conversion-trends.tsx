@@ -52,9 +52,9 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
 
   // Dynamic properties for Area chart
   const areaChartProps = {
-    dot: dataPoints <= VOLUME_THRESHOLDS.MEDIUM 
+    dot: dataPoints > 0 && dataPoints <= VOLUME_THRESHOLDS.MEDIUM 
       ? { r: 4, fill: 'hsl(var(--primary))', stroke: 'hsl(var(--card))', strokeWidth: 2 } 
-      : { r: 0 },
+      : false,
     strokeWidth: 2,
   };
 

@@ -9,13 +9,17 @@ import { Button } from '@/components/ui/button';
 import type { FunnelStage } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { Badge } from '../ui/badge';
-import { ArrowDown, ArrowRight, ShoppingCart, Target, MousePointerClick, TrendingUp } from 'lucide-react';
+import { ArrowDown, ArrowRight, ShoppingCart, Target, MousePointerClick, TrendingUp, UserCheck, BellRing } from 'lucide-react';
 
-const iconMap = {
+const iconMap: { [key: string]: React.ElementType } = {
     Impressions: Target,
     Clicks: MousePointerClick,
     Leads: TrendingUp,
     Sales: ShoppingCart,
+    Interested: Target,
+    Purchased: ShoppingCart,
+    'Follow-up': UserCheck,
+    Reminder: BellRing,
 }
 
 export default function FunnelPerformance({ data }: { data: FunnelStage[] }) {
@@ -30,7 +34,7 @@ export default function FunnelPerformance({ data }: { data: FunnelStage[] }) {
       <CardContent>
         <ul className="space-y-4">
           {data.map((item, index) => {
-             const Icon = iconMap[item.stage as keyof typeof iconMap] || Target;
+             const Icon = iconMap[item.stage] || Target;
              const isLast = index === data.length - 1;
              const changeColor = item.changeType === 'increase' ? 'text-green-400' : 'text-red-400';
 
