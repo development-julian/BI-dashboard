@@ -27,6 +27,12 @@ interface LeadConversionTrendsProps {
   data: DashboardStats['leadConversion'];
 }
 
+// Define data volume thresholds
+const VOLUME_THRESHOLDS = {
+  LOW: 20,
+  MEDIUM: 100,
+};
+
 export default function LeadConversionTrends({ data }: LeadConversionTrendsProps) {
   const [isClient, setIsClient] = useState(false);
 
@@ -36,7 +42,22 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
 
   const conversionPercentage = data.conversionRateTarget > 0 ? (data.conversionRate / data.conversionRateTarget) * 100 : 0;
   
-  const showBarChart = data.chartData.length < 10;
+  const dataPoints = data.chartData.length;
+  let chartType: 'bar' | 'area' = 'area';
+  
+  // Dynamic Chart Selection based on data volume
+  if (dataPoints <= VOLUME_THRESHOLDS.LOW) {
+    chartType = 'bar';
+  }
+
+  // Dynamic properties for Area chart
+  const areaChartProps = {
+    dot: dataPoints <= VOLUME_THRESHOLDS.MEDIUM 
+      ? { r: 4, fill: 'hsl(var(--primary))', stroke: 'hsl(var(--card))', strokeWidth: 2 } 
+      : { r: 0 },
+    strokeWidth: 2,
+  };
+
 
   return (
     <Card>
@@ -77,7 +98,7 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
         </div>
         <div className="col-span-1 md:col-span-3">
           <ResponsiveContainer width="100%" height={260}>
-            {showBarChart ? (
+            {chartType === 'bar' ? (
                  <BarChart data={data.chartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                     <XAxis
@@ -137,14 +158,8 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
                     type="monotone"
                     dataKey="value"
                     stroke="hsl(var(--primary))"
-                    strokeWidth={2}
                     fill="url(#colorValue)"
-                    dot={{
-                        r: 4,
-                        fill: 'hsl(var(--primary))',
-                        stroke: 'hsl(var(--card))',
-                        strokeWidth: 2,
-                    }}
+                    {...areaChartProps}
                 />
                 </AreaChart>
             )}
