@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { DollarSign, Percent, User, TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { KpiCard as KpiCardType } from '@/lib/api';
+import { useDashboard } from './DashboardContext';
 
 const iconMap = {
   dollar: DollarSign,
@@ -10,14 +11,29 @@ const iconMap = {
   user: User,
 };
 
+const labelToMetricId: Record<string, string> = {
+    'Total Revenue': 'total_revenue',
+    'Total Leads': 'total_leads',
+    'Conversion Rate': 'conversion_rate',
+};
+
 interface KpiCardsProps {
     kpis: KpiCardType[];
 }
 
 export default function KpiCards({ kpis }: KpiCardsProps) {
+  const { enabledMetrics } = useDashboard();
+
+  const visibleKpis = kpis.filter(kpi => {
+      const metricId = labelToMetricId[kpi.label];
+      // If a metric is not in our toggleable list, always show it.
+      // Otherwise, check if it's enabled.
+      return !metricId || enabledMetrics[metricId];
+  });
+
   return (
     <>
-      {kpis.map((kpi) => (
+      {visibleKpis.map((kpi) => (
         <KpiCard key={kpi.label} {...kpi} />
       ))}
     </>

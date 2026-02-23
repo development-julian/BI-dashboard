@@ -262,6 +262,11 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
       baselineTarget: Math.floor(Math.random() * 5) + 10
     };
   });
+
+  const salesByChannelData = (charts.win_rate_by_source || []).map((s: any) => ({
+    name: s.source,
+    value: s.total_revenue || 0,
+  }));
   
   return {
     kpis: [
@@ -311,7 +316,7 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
     },
     aiForecast: aiForecastData,
     productPerformance: [],
-    salesByChannel: [], 
+    salesByChannel: salesByChannelData, 
     metadata: {
       status: totalVolume >= 20 ? 'ok' : 'insufficient_data',
       dataPointsCount: totalVolume,

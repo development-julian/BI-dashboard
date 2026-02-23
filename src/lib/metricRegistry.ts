@@ -34,14 +34,6 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         category: "sales",
         defaultVisible: true
     },
-    average_ticket: {
-        id: "average_ticket",
-        label: "Average Ticket",
-        type: "kpi",
-        minDataRequired: 5,
-        category: "sales",
-        defaultVisible: true
-    },
     lead_trend: {
         id: "lead_trend",
         label: "Lead Conversion Trend",
@@ -67,7 +59,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 5,
         category: "marketing",
         chartComponent: "ScatterChart",
-        defaultVisible: true
+        defaultVisible: false
     },
     win_rate_by_source: {
         id: "win_rate_by_source",
@@ -76,7 +68,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 5,
         category: "marketing",
         chartComponent: "BarChart",
-        defaultVisible: true
+        defaultVisible: false
     },
     pipeline_value: {
         id: "pipeline_value",
@@ -85,7 +77,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 1,
         category: "sales",
         chartComponent: "BarChart",
-        defaultVisible: true
+        defaultVisible: false
     },
     marketing_kpis: {
         id: "marketing_kpis",
@@ -94,5 +86,21 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 1,
         category: "marketing",
         defaultVisible: true
-    }
+    },
+    product_performance: {
+        id: "product_performance",
+        label: "Product Performance",
+        type: "chart",
+        minDataRequired: 1,
+        category: "inventory",
+        defaultVisible: true,
+    },
+    sales_by_channel: {
+        id: "sales_by_channel",
+        label: "Sales by Channel",
+        type: "chart",
+        minDataRequired: 1,
+        category: "sales",
+        defaultVisible: true,
+    },
 };
