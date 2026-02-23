@@ -185,141 +185,133 @@ const translateStage = (stage: string) => stageMapping[stage] || stage;
 
 export const getDashboardStats = async (range: string = '7d'): Promise<DashboardStats | { error: string, type: string }> => {
   const result = await fetchDataFromN8n('GET_DASHBOARD', range);
-  
-  let n8nData: any;
 
   if (result.error || !result.data) {
-    n8nData = {
-      kpis: {
-        total_leads: 7,
-        total_revenue: 2000,
-        avg_response_time: 75,
-        avg_engagement: 54.29,
-        cpa: 550
-      },
-      charts: {
-        sales_funnel: [
-          { stage: "New Lead", count: 2 },
-          { stage: "Contacted", count: 1 },
-          { stage: "Qualified", count: 1 },
-          { stage: "Proposal", count: 1 },
-          { stage: "Won", count: 2 }
-        ],
-        cluster_data: [
-          { id: "opp_1", x_engagement: 20, y_value: 500, category: "Facebook Ads", status: "open" },
-          { id: "opp_2", x_engagement: 90, y_value: 1200, category: "Google Ads", status: "won" },
-          { id: "opp_3", x_engagement: 40, y_value: 300, category: "Organic", status: "open" },
-          { id: "opp_4", x_engagement: 85, y_value: 800, category: "Organic", status: "won" },
-          { id: "opp_5", x_engagement: 60, y_value: 1500, category: "Facebook Ads", status: "open" },
-          { id: "opp_6", x_engagement: 75, y_value: 2000, category: "Google Ads", status: "open" },
-          { id: "opp_7", x_engagement: 10, y_value: 400, category: "Facebook Ads", status: "lost" }
-        ],
-        win_rate_by_source: [
-          { source: "Facebook Ads", win_rate: 0, total_revenue: 0, roi: -100 },
-          { source: "Google Ads", win_rate: 50, total_revenue: 1200, roi: 100 },
-          { source: "Organic", win_rate: 50, total_revenue: 800, roi: 100 }
-        ],
-        pipeline_value_by_stage: [
-          { stage: "New Lead", value: 900 },
-          { stage: "Won", value: 2000 },
-          { stage: "Contacted", value: 300 },
-          { stage: "Qualified", value: 1500 },
-          { stage: "Proposal", value: 2000 }
-        ]
-      },
-      metadata: {
-        total_records_processed: 7,
-        status: "success",
-        totalVolume: 7
-      },
-      intelligenceReport: {
-        key_insight: 'Fallback data is being used.',
-        actionable_recommendation: 'The connection to the n8n backend failed. Please check the workflow and API gateway.',
-        sentiment: 'neutral'
-      }
-    };
-  } else {
-    n8nData = result.data;
+    return { error: result.error || 'No data returned from backend.', type: 'Backend Communication' };
   }
-  
-  const kpis = n8nData.kpis || {};
-  const charts = n8nData.charts || {};
-  const totalVolume = kpis.total_leads || (charts.sales_funnel || []).reduce((acc: number, s: any) => acc + (s.count || 0), 0);
 
+  const n8nData = result.data;
+
+  // ── Extract KPIs from the real payload ──
+  const kpis = n8nData.kpis || {};
+  const totalLeads = kpis.total_leads || 0;
+  const totalRevenue = kpis.total_revenue || 0;
+  const wonDeals = kpis.won_deals || 0;
+  const conversionRate = totalLeads > 0 ? (wonDeals / totalLeads) * 100 : (kpis.conversion_rate || 0);
+
+  // ── AI intelligence report (real payload nests under .analysis) ──
+  const report = n8nData.intelligenceReport?.analysis || n8nData.intelligenceReport || {};
   const aiForecastData = {
-    title: n8nData.intelligenceReport?.key_insight || 'No AI insights available.',
-    description: n8nData.intelligenceReport?.actionable_recommendation || 'AI Copilot is analyzing the data. Check back later for strategic recommendations.',
-    sentiment: n8nData.intelligenceReport?.sentiment || 'neutral'
+    title: report.key_insight || 'No AI insights available.',
+    description: report.actionable_recommendation || 'AI Copilot is analyzing the data. Check back later for strategic recommendations.',
+    sentiment: (n8nData.intelligenceReport?.sentiment || 'neutral') as 'positive' | 'negative' | 'neutral'
   };
 
+  // ── Build lead conversion trend from real kpis (deterministic, NOT random) ──
   const today = new Date();
-  const chartData = Array.from({ length: 7 }).map((_, i) => {
-    const date = subDays(today, 6 - i);
-    const value = (kpis.total_leads || 0) > 0 ? Math.floor(Math.random() * (kpis.total_leads / 2)) + 5 : Math.floor(Math.random() * 10);
+  const daysInRange = range === '90d' ? 90 : range === '30d' ? 30 : 7;
+  const dailyAvg = totalLeads > 0 ? totalLeads / daysInRange : 0;
+  const chartData = Array.from({ length: Math.min(daysInRange, 14) }).map((_, i) => {
+    const date = subDays(today, Math.min(daysInRange, 14) - 1 - i);
+    // Distribute leads across days using a simple hash for determinism
+    const seed = (date.getDate() * 7 + date.getMonth() * 13) % 5;
+    const value = Math.max(0, Math.round(dailyAvg + seed - 2));
     return {
       date: format(date, 'MMM d'),
-      value: value,
-      baselineTarget: Math.floor(Math.random() * 5) + 10
+      value,
+      baselineTarget: Math.round(dailyAvg * 2) || 5
     };
   });
 
-  const salesByChannelData = (charts.win_rate_by_source || []).map((s: any) => ({
-    name: s.source,
-    value: s.total_revenue || 0,
+  // ── Funnel: real payload uses `funnel[]` with {stage, value}, not `charts.sales_funnel` ──
+  const realFunnel = n8nData.funnel || [];
+  // Also support the restructured workflow format (charts.sales_funnel with {stage, count})
+  const chartsFunnel = n8nData.charts?.sales_funnel || [];
+  const funnelSource = realFunnel.length > 0 ? realFunnel : chartsFunnel;
+  const funnelPerformance = funnelSource.map((f: any) => ({
+    stage: translateStage(f.stage),
+    count: f.value ?? f.count ?? 0,
   }));
-  
+
+  // ── Sales by channel: real payload uses `salesByChannel[].label`, not `.name` ──
+  const realSalesByChannel = (n8nData.salesByChannel || []).map((s: any) => ({
+    name: s.label || s.name || s.channel || 'Unknown',
+    value: s.value || 0,
+  }));
+
+  // ── Cluster data (from restructured workflow, if available) ──
+  const clusterData = n8nData.charts?.cluster_data || [];
+
+  // ── Win rate by source (from restructured workflow, if available) ──
+  const winRateBySource = n8nData.charts?.win_rate_by_source || [];
+
+  // ── Pipeline value by stage (from restructured workflow, if available) ──
+  const pipelineValueByStage = n8nData.charts?.pipeline_value_by_stage || [];
+
+  // ── Advanced KPIs (from restructured workflow, if available) ──
+  const extraKpis = {
+    avgResponseTime: kpis.avg_response_time || 0,
+    avgEngagement: kpis.avg_engagement || 0,
+    cpa: totalLeads > 0 && kpis.total_revenue !== undefined
+      ? (kpis.cpa || (totalRevenue > 0 ? Math.round(totalRevenue / wonDeals) : 0))
+      : 0,
+  };
+
+  // ── Product performance (real payload provides products[]) ──
+  const productPerformance = (n8nData.products || []).map((p: any) => ({
+    name: p.name,
+    sku: p.sku || 'SKU-N/A',
+    revenue: `$${(p.revenue || 0).toLocaleString()}`,
+    change: p.change || '0%',
+    changeType: (p.status === 'alert' ? 'decrease' : 'increase') as 'increase' | 'decrease' | 'neutral',
+    image: p.image_id || 'product-watch'
+  }));
+
   return {
     kpis: [
       {
         label: 'Total Revenue',
-        value: `$${(kpis.total_revenue || 0).toLocaleString()}`,
-        change: '+2.5%',
-        changeType: 'increase',
+        value: `$${totalRevenue.toLocaleString()}`,
+        change: totalRevenue > 0 ? '+2.5%' : '0%',
+        changeType: totalRevenue > 0 ? 'increase' : 'neutral',
         icon: 'dollar',
       },
       {
         label: 'Total Leads',
-        value: `${(kpis.total_leads || 0).toLocaleString()}`,
-        change: '+8.0%',
-        changeType: 'increase',
+        value: `${totalLeads.toLocaleString()}`,
+        change: totalLeads > 0 ? '+8.0%' : '0%',
+        changeType: totalLeads > 0 ? 'increase' : 'neutral',
         icon: 'user',
       },
       {
         label: 'Conversion Rate',
-        value: `${(kpis.total_revenue && kpis.total_leads ? (kpis.total_revenue / kpis.total_leads) : 0).toFixed(1)}%`,
-        change: '-1.2%',
-        changeType: 'decrease',
+        value: `${conversionRate.toFixed(1)}%`,
+        change: conversionRate > 0 ? '+1.2%' : '0%',
+        changeType: conversionRate > 0 ? 'increase' : 'neutral',
         icon: 'percent',
       },
     ],
     leadConversion: {
-      totalLeads: kpis.total_leads || 0,
-      totalLeadsChange: '+12%',
-      mql: Math.floor((kpis.total_leads || 0) * 0.75),
+      totalLeads,
+      totalLeadsChange: totalLeads > 0 ? '+12%' : '0%',
+      mql: Math.floor(totalLeads * 0.75),
       mqlChange: '+5%',
-      conversionRate: (kpis.total_revenue && kpis.total_leads ? (kpis.total_revenue / kpis.total_leads) : 0),
+      conversionRate,
       conversionRateTarget: 5.0,
-      chartData: chartData,
-      status: totalVolume >= 20 ? 'ok' : 'insufficient_data',
+      chartData,
+      status: totalLeads >= 20 ? 'ok' : 'insufficient_data',
     },
-    funnelPerformance: (charts.sales_funnel || []).map((f: any) => ({
-      stage: translateStage(f.stage),
-      count: f.count || 0,
-    })),
-    clusterData: charts.cluster_data || [],
-    winRateBySource: charts.win_rate_by_source || [],
-    pipelineValueByStage: charts.pipeline_value_by_stage || [],
-    extraKpis: {
-      avgResponseTime: kpis.avg_response_time || 0,
-      avgEngagement: kpis.avg_engagement || 0,
-      cpa: kpis.cpa || 0,
-    },
+    funnelPerformance,
+    clusterData,
+    winRateBySource,
+    pipelineValueByStage,
+    extraKpis,
     aiForecast: aiForecastData,
-    productPerformance: [],
-    salesByChannel: salesByChannelData, 
+    productPerformance,
+    salesByChannel: realSalesByChannel,
     metadata: {
-      status: totalVolume >= 20 ? 'ok' : 'insufficient_data',
-      dataPointsCount: totalVolume,
+      status: totalLeads >= 20 ? 'ok' : 'insufficient_data',
+      dataPointsCount: totalLeads,
       dateRangeApplied: range
     }
   };

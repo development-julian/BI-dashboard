@@ -24,12 +24,26 @@ interface WinRateData {
     roi: number;
 }
 
-const COLORS = ['#10b981', '#f59e0b', '#3b82f6', '#8b5cf6'];
+const COLORS = ['#4285F4', '#34A853', '#FBBC04', '#F4A236', '#EA4335'];
 
 export default function WinRateChart({ data }: { data: WinRateData[] }) {
-    if (!data || data.length === 0) return null;
+    if (!data || data.length === 0) {
+        return (
+            <Card className="col-span-1">
+                <CardHeader>
+                    <CardTitle className="font-headline">Win Rate by Source</CardTitle>
+                    <CardDescription>Conversion percentage of Leads to Won Deals</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center justify-center h-[280px] text-muted-foreground text-sm">
+                        No win rate data available yet. This chart requires won deals to populate.
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
 
-    const formatPercent = (value: number) => value + '%';
+    const formatPercent = (value: number) => `${value}%`;
 
     return (
         <Card className="col-span-1">
@@ -52,9 +66,9 @@ export default function WinRateChart({ data }: { data: WinRateData[] }) {
                                 formatter={(value: number) => [formatPercent(value), 'Win Rate']}
                                 itemStyle={{ color: 'hsl(var(--foreground))' }}
                             />
-                            <Bar dataKey="win_rate" radius={[4, 4, 0, 0]}>
+                            <Bar dataKey="win_rate" radius={[6, 6, 0, 0]}>
                                 {data.map((_, index) => (
-                                    <Cell key={'cell-' + index} fill={COLORS[index % COLORS.length]} />
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Bar>
                         </BarChart>

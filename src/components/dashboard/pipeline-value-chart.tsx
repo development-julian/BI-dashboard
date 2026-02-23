@@ -22,12 +22,26 @@ interface PipelineValueData {
     value: number;
 }
 
-const COLORS = ['#eab308', '#f97316', '#ec4899', '#8b5cf6', '#06b6d4'];
+const COLORS = ['#4285F4', '#34A853', '#FBBC04', '#F4A236', '#EA4335'];
 
 export default function PipelineValueChart({ data }: { data: PipelineValueData[] }) {
-    if (!data || data.length === 0) return null;
+    if (!data || data.length === 0) {
+        return (
+            <Card className="col-span-1">
+                <CardHeader>
+                    <CardTitle className="font-headline">Pipeline Value</CardTitle>
+                    <CardDescription>Monetary valuation grouped by current stage</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center justify-center h-[220px] text-muted-foreground text-sm">
+                        No pipeline value data available yet. This chart requires deal values to populate.
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
 
-    const formatDollar = (val: number) => '$' + val;
+    const formatDollar = (val: number) => `$${val.toLocaleString()}`;
 
     return (
         <Card className="col-span-1">
@@ -47,12 +61,12 @@ export default function PipelineValueChart({ data }: { data: PipelineValueData[]
                             <YAxis tickFormatter={formatDollar} tickLine={false} axisLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: '12px' }} />
                             <Tooltip
                                 contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
-                                formatter={(value: number) => ['$' + value, 'Value']}
+                                formatter={(value: number) => [formatDollar(value), 'Value']}
                                 itemStyle={{ color: 'hsl(var(--foreground))' }}
                             />
-                            <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                            <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                                 {data.map((_, index) => (
-                                    <Cell key={'cell-' + index} fill={COLORS[index % COLORS.length]} />
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Bar>
                         </BarChart>

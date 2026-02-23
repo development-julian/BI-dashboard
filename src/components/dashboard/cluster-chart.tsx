@@ -14,7 +14,8 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
-    Cell,
+    Legend,
+    ZAxis
 } from 'recharts';
 
 interface ClusterData {
@@ -25,19 +26,42 @@ interface ClusterData {
     status: string;
 }
 
-const COLORS: Record<string, string> = {
-    'Facebook Ads': '#1877F2',
-    'Google Ads': '#DB4437',
-    'Organic': '#0F9D58',
-    'Direct': '#F4B400'
+const CATEGORY_COLORS: Record<string, string> = {
+    'Facebook Ads': '#4285F4',
+    'Google Ads': '#FBBC04',
+    'Organic': '#34A853',
+    'Direct': '#F4A236',
+    'Email': '#EA4335',
+    'Referral': '#A259FF',
 };
+
+const getColor = (category: string) => CATEGORY_COLORS[category] || '#60a5fa';
 
 export default function ClusterChart({ data }: { data: ClusterData[] }) {
     if (!data || data.length === 0) {
-        return null;
+        return (
+            <Card className="col-span-1">
+                <CardHeader>
+                    <CardTitle className="font-headline">Engagement vs Value (Cluster)</CardTitle>
+                    <CardDescription>Identifying high-value, high-engagement segments by source</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center justify-center h-[280px] text-muted-foreground text-sm">
+                        No cluster data available yet. This chart populates as lead engagement is tracked.
+                    </div>
+                </CardContent>
+            </Card>
+        );
     }
 
-    const formatDollar = (val: number) => '$' + val;
+    const categories = [...new Set(data.map(d => d.category))];
+    const grouped = categories.map(cat => ({
+        name: cat,
+        data: data.filter(d => d.category === cat),
+        fill: getColor(cat)
+    }));
+
+    const formatDollar = (val: number) => `$${val.toLocaleString()}`;
 
     return (
         <Card className="col-span-1">
@@ -48,40 +72,47 @@ export default function ClusterChart({ data }: { data: ClusterData[] }) {
             <CardContent>
                 <div className="h-[350px]">
                     <ResponsiveContainer width="100%" height="100%">
-                        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                        <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 10 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                             <XAxis
                                 type="number"
                                 dataKey="x_engagement"
-                                name="Engagement Score"
-                                domain={[0, 100]}
-                                tick={{ fill: 'hsl(var(--foreground))', fontSize: '12px' }}
-                                label={{ value: 'Engagement Score', position: 'insideBottom', offset: -10, fill: 'hsl(var(--muted-foreground))' }}
+                                name="Engagement"
+                                tickLine={false}
+                                axisLine={false}
+                                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: '11px' }}
+                                label={{ value: 'Engagement Score', position: 'insideBottom', offset: -10, style: { fill: 'hsl(var(--muted-foreground))', fontSize: '11px' } }}
                             />
                             <YAxis
                                 type="number"
                                 dataKey="y_value"
-                                name="Pipeline Value"
-                                tick={{ fill: 'hsl(var(--foreground))', fontSize: '12px' }}
-                                label={{ value: 'Value ($)', angle: -90, position: 'insideLeft', fill: 'hsl(var(--muted-foreground))' }}
+                                name="Value"
                                 tickFormatter={formatDollar}
+                                tickLine={false}
+                                axisLine={false}
+                                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: '11px' }}
+                                label={{ value: 'Value ($)', angle: -90, position: 'insideLeft', offset: 5, style: { fill: 'hsl(var(--muted-foreground))', fontSize: '11px' } }}
                             />
+                            <ZAxis range={[80, 200]} />
                             <Tooltip
                                 cursor={{ strokeDasharray: '3 3' }}
                                 contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
+                                itemStyle={{ color: 'hsl(var(--foreground))' }}
                             />
-                            <Scatter name="Opportunities" data={data} fill="#8884d8">
-                                {data.map((entry, index) => (
-                                    <Cell key={'cell-' + index} fill={COLORS[entry.category] || '#8884d8'} />
-                                ))}
-                            </Scatter>
+                            <Legend
+                                wrapperStyle={{ fontSize: '12px', color: 'hsl(var(--muted-foreground))' }}
+                            />
+                            {grouped.map((group) => (
+                                <Scatter
+                                    key={group.name}
+                                    name={group.name}
+                                    data={group.data}
+                                    fill={group.fill}
+                                    shape="circle"
+                                />
+                            ))}
                         </ScatterChart>
                     </ResponsiveContainer>
-                </div>
-                <div className="flex justify-center mt-4 gap-4 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#1877F2]"></span> Facebook Ads</div>
-                    <div className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#DB4437]"></span> Google Ads</div>
-                    <div className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#0F9D58]"></span> Organic</div>
                 </div>
             </CardContent>
         </Card>

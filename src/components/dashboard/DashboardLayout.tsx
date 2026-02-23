@@ -38,8 +38,8 @@ export function DashboardLayout({ data }: { data: DashboardStats }) {
             <div className="lg:col-span-4 flex flex-col gap-6">
                 {enabledMetrics?.sales_funnel && <FunnelPerformance data={data.funnelPerformance} />}
                 {enabledMetrics?.pipeline_value && <PipelineValueChart data={data.pipelineValueByStage} />}
-                {enabledMetrics?.product_performance && data.productPerformance.length > 0 && <ProductPerformance data={data.productPerformance} />}
-                {enabledMetrics?.sales_by_channel && data.salesByChannel.length > 0 && <SalesByChannel data={data.salesByChannel} />}
+                {enabledMetrics?.product_performance && <ProductPerformance data={data.productPerformance} />}
+                {enabledMetrics?.sales_by_channel && <SalesByChannel data={data.salesByChannel} />}
             </div>
         </div>
     );
