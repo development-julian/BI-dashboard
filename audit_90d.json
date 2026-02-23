@@ -1,0 +1,59 @@
+{
+  "success": true,
+  "payload": {
+    "kpis": {
+      "total_revenue": 0,
+      "total_leads": 14,
+      "average_ticket": 0,
+      "conversion_rate": 0,
+      "won_deals": 0,
+      "social_reach": 0,
+      "social_impressions": 0,
+      "date_range_debug": {
+        "from": "2025-11-24",
+        "to": "2026-02-22"
+      }
+    },
+    "funnel": [
+      {
+        "stage": "Interesado💫",
+        "value": 48,
+        "previous_value": 0,
+        "drop_off_percentage": 0
+      },
+      {
+        "stage": "Comprador🎉",
+        "value": 0,
+        "previous_value": 48,
+        "drop_off_percentage": 100
+      },
+      {
+        "stage": "Seguimiento⭐",
+        "value": 0,
+        "previous_value": 0,
+        "drop_off_percentage": 0
+      },
+      {
+        "stage": "Recordatorio✅",
+        "value": 0,
+        "previous_value": 0,
+        "drop_off_percentage": 0
+      }
+    ],
+    "salesByChannel": [
+      {
+        "label": "Direct",
+        "value": 14
+      }
+    ],
+    "products": [],
+    "intelligenceReport": {
+      "analysis": {
+        "summary": "El negocio no ha generado ingresos ni cerrado deals, a pesar de tener 14 leads.",
+        "key_insight": "La ausencia total de ingresos y deals ganados, con 14 leads existentes, indica que el embudo de ventas no está funcionando en absoluto o no se ha iniciado.",
+        "actionable_recommendation": "Contactar urgentemente a los 14 leads existentes para entender su interés y moverlos a través de las primeras etapas del embudo de ventas."
+      },
+      "sentiment": "negative"
+    }
+  }
+}

@@ -4,67 +4,60 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import type { FunnelStage } from '@/lib/api';
-import { cn } from '@/lib/utils';
-import { Badge } from '../ui/badge';
-import { ArrowDown, ArrowRight, ShoppingCart, Target, MousePointerClick, TrendingUp, UserCheck, BellRing } from 'lucide-react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
 
-const iconMap: { [key: string]: React.ElementType } = {
-    Impressions: Target,
-    Clicks: MousePointerClick,
-    Leads: TrendingUp,
-    Sales: ShoppingCart,
-    Interested: Target,
-    Purchased: ShoppingCart,
-    'Follow-up': UserCheck,
-    Reminder: BellRing,
+interface FunnelData {
+  stage: string;
+  count: number;
 }
 
-export default function FunnelPerformance({ data }: { data: FunnelStage[] }) {
+const COLORS = ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe'];
+
+export default function FunnelPerformance({ data }: { data: FunnelData[] }) {
+  if (!data || data.length === 0) {
+    return null;
+  }
+
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="font-headline">Funnel Performance</CardTitle>
-        <Button variant="link" className="text-primary">
-          View Detail
-        </Button>
+    <Card className="col-span-1">
+      <CardHeader>
+        <CardTitle className="font-headline">Sales Funnel</CardTitle>
+        <CardDescription>Opportunity progression count by stage</CardDescription>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-4">
-          {data.map((item, index) => {
-             const Icon = iconMap[item.stage] || Target;
-             const isLast = index === data.length - 1;
-             const changeColor = item.changeType === 'increase' ? 'text-green-400' : 'text-red-400';
-
-            return (
-                <li key={item.stage} className="relative">
-                    <div className='flex gap-4 items-start'>
-                        <div className='flex flex-col items-center'>
-                           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                <Icon className="h-5 w-5" />
-                            </div>
-                            {!isLast && (
-                                <div className="mt-2 h-8 w-px bg-border" />
-                            )}
-                        </div>
-
-                        <div className='flex-1'>
-                            <div className='flex justify-between items-center'>
-                                <p className="text-sm text-muted-foreground">{item.stage}</p>
-                                 <span className={cn('text-xs font-semibold', changeColor)}>
-                                    {item.change}
-                                </span>
-                            </div>
-                            <p className="text-xl font-bold">{item.value}</p>
-                            <p className="text-xs text-muted-foreground">{item.meta}</p>
-                        </div>
-                    </div>
-                </li>
-            );
-          })}
-        </ul>
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={data}
+              layout="vertical"
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="hsl(var(--border))" />
+              <XAxis type="number" hide />
+              <YAxis dataKey="stage" type="category" axisLine={false} tickLine={false} width={80} style={{ fill: 'hsl(var(--foreground))', fontSize: '12px' }} />
+              <Tooltip
+                contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
+                itemStyle={{ color: 'hsl(var(--foreground))' }}
+              />
+              <Bar dataKey="count" radius={[0, 4, 4, 0]}>
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );

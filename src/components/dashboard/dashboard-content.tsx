@@ -8,6 +8,9 @@ import SalesByChannel from '@/components/dashboard/sales-by-channel';
 import ProductPerformance from '@/components/dashboard/product-performance';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { DashboardProvider } from "@/components/dashboard/DashboardContext";
+import MetricPanel from "@/components/dashboard/MetricPanel";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 
 export default async function DashboardContent({ dateRange }: { dateRange: string }) {
   const result = await getDashboardStats(dateRange);
@@ -20,9 +23,9 @@ export default async function DashboardContent({ dateRange }: { dateRange: strin
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error: {error.type}</AlertTitle>
           <AlertDescription>
-            {error.message}
+            {error.error}
             <div className="mt-2 text-xs">
-                <strong>URL Webhook:</strong> <code>{N8N_WEBHOOK_URL}</code>
+              <strong>URL Webhook:</strong> <code>{N8N_WEBHOOK_URL}</code>
             </div>
           </AlertDescription>
         </Alert>
@@ -33,26 +36,17 @@ export default async function DashboardContent({ dateRange }: { dateRange: strin
   const data = result as DashboardStats;
 
   return (
-    <div className="flex flex-col gap-6">
-      <AiForecast 
-        title={data.aiForecast?.title} 
-        description={data.aiForecast?.description} 
-        sentiment={data.aiForecast?.sentiment}
-      />
+    <DashboardProvider>
+      <div className="flex flex-col gap-6">
+        <AiForecast
+          title={data.aiForecast?.title}
+          description={data.aiForecast?.description}
+          sentiment={data.aiForecast?.sentiment}
+        />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="lg:col-span-8 flex flex-col gap-6">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <KpiCards kpis={data.kpis} />
-          </div>
-          <LeadConversionTrends data={data.leadConversion} />
-          <SalesByChannel data={data.salesByChannel} />
-        </div>
-        <div className="lg:col-span-4 flex flex-col gap-6">
-          <FunnelPerformance data={data.funnelPerformance} />
-          <ProductPerformance data={data.productPerformance} />
-        </div>
+        <MetricPanel />
+        <DashboardLayout data={data} />
       </div>
-    </div>
+    </DashboardProvider>
   );
 }

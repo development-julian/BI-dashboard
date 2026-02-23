@@ -1,0 +1,59 @@
+{
+  "success": true,
+  "payload": {
+    "kpis": {
+      "total_revenue": 0,
+      "total_leads": 14,
+      "average_ticket": 0,
+      "conversion_rate": 0,
+      "won_deals": 0,
+      "social_reach": 0,
+      "social_impressions": 0,
+      "date_range_debug": {
+        "from": "2026-01-23",
+        "to": "2026-02-22"
+      }
+    },
+    "funnel": [
+      {
+        "stage": "Interesado💫",
+        "value": 23,
+        "previous_value": 0,
+        "drop_off_percentage": 0
+      },
+      {
+        "stage": "Comprador🎉",
+        "value": 0,
+        "previous_value": 23,
+        "drop_off_percentage": 100
+      },
+      {
+        "stage": "Seguimiento⭐",
+        "value": 0,
+        "previous_value": 0,
+        "drop_off_percentage": 0
+      },
+      {
+        "stage": "Recordatorio✅",
+        "value": 0,
+        "previous_value": 0,
+        "drop_off_percentage": 0
+      }
+    ],
+    "salesByChannel": [
+      {
+        "label": "Direct",
+        "value": 14
+      }
+    ],
+    "products": [],
+    "intelligenceReport": {
+      "analysis": {
+        "summary": "El negocio tiene 14 leads pero no ha generado ingresos ni conversiones. El estado actual es de estancamiento total.",
+        "key_insight": "A pesar de tener 14 leads, la conversión es del 0% y no hay ingresos, lo que sugiere una interrupción crítica en el embudo de ventas o la propuesta de valor.",
+        "actionable_recommendation": "Contactar inmediatamente a los 14 leads existentes para entender las razones de la no conversión y validar la propuesta de valor del producto/servicio."
+      },
+      "sentiment": "negative"
+    }
+  }
+}

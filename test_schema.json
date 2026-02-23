@@ -1,0 +1,130 @@
+{
+  "kpis": {
+    "total_leads": 7,
+    "total_revenue": 2000,
+    "avg_response_time": 75,
+    "avg_engagement": 54.29,
+    "cpa": 550
+  },
+  "charts": {
+    "sales_funnel": [
+      {
+        "stage": "New Lead",
+        "count": 2
+      },
+      {
+        "stage": "Contacted",
+        "count": 1
+      },
+      {
+        "stage": "Qualified",
+        "count": 1
+      },
+      {
+        "stage": "Proposal",
+        "count": 1
+      },
+      {
+        "stage": "Won",
+        "count": 2
+      }
+    ],
+    "cluster_data": [
+      {
+        "id": "opp_1",
+        "x_engagement": 20,
+        "y_value": 500,
+        "category": "Facebook Ads",
+        "status": "open"
+      },
+      {
+        "id": "opp_2",
+        "x_engagement": 90,
+        "y_value": 1200,
+        "category": "Google Ads",
+        "status": "won"
+      },
+      {
+        "id": "opp_3",
+        "x_engagement": 40,
+        "y_value": 300,
+        "category": "Organic",
+        "status": "open"
+      },
+      {
+        "id": "opp_4",
+        "x_engagement": 85,
+        "y_value": 800,
+        "category": "Organic",
+        "status": "won"
+      },
+      {
+        "id": "opp_5",
+        "x_engagement": 60,
+        "y_value": 1500,
+        "category": "Facebook Ads",
+        "status": "open"
+      },
+      {
+        "id": "opp_6",
+        "x_engagement": 75,
+        "y_value": 2000,
+        "category": "Google Ads",
+        "status": "open"
+      },
+      {
+        "id": "opp_7",
+        "x_engagement": 10,
+        "y_value": 400,
+        "category": "Facebook Ads",
+        "status": "lost"
+      }
+    ],
+    "win_rate_by_source": [
+      {
+        "source": "Facebook Ads",
+        "win_rate": 0,
+        "total_revenue": 0,
+        "roi": -100
+      },
+      {
+        "source": "Google Ads",
+        "win_rate": 50,
+        "total_revenue": 1200,
+        "roi": 100
+      },
+      {
+        "source": "Organic",
+        "win_rate": 50,
+        "total_revenue": 800,
+        "roi": 100
+      }
+    ],
+    "pipeline_value_by_stage": [
+      {
+        "stage": "New Lead",
+        "value": 900
+      },
+      {
+        "stage": "Won",
+        "value": 2000
+      },
+      {
+        "stage": "Contacted",
+        "value": 300
+      },
+      {
+        "stage": "Qualified",
+        "value": 1500
+      },
+      {
+        "stage": "Proposal",
+        "value": 2000
+      }
+    ]
+  },
+  "metadata": {
+    "total_records_processed": 7,
+    "status": "success"
+  }
+}

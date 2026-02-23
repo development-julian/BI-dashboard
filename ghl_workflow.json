@@ -1,0 +1,150 @@
+{
+  "updatedAt": "2026-02-07T21:48:35.000Z",
+  "createdAt": "2026-01-31T19:07:04.647Z",
+  "id": "3vr1yqZS0HMXl8oI",
+  "name": "Capa 2 - GHL Data Ingestion",
+  "description": null,
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "d99605a6-78bb-4026-9b7a-aa4da58d8da0",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        336,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      pipelines: [\n        {\n          id: \"pipeline_1\",\n          stages: [\n            { id: \"stage_1\", name: \"New Lead\" },\n            { id: \"stage_2\", name: \"Contacted\" },\n            { id: \"stage_3\", name: \"Won\" }\n          ]\n        }\n      ],\n      opportunities: [\n        {\n          id: \"opp_1\",\n          pipelineStageId: \"stage_1\",\n          status: \"open\",\n          monetaryValue: 0,\n          createdAt: \"2024-01-01T10:00:00Z\"\n        },\n        {\n          id: \"opp_2\",\n          pipelineStageId: \"stage_3\",\n          status: \"won\",\n          monetaryValue: 1200,\n          dateWon: \"2024-01-03T12:00:00Z\"\n        }\n      ],\n      contacts: [\n        { id: \"c1\", source: \"Facebook Ads\" },\n        { id: \"c2\", source: \"Google Ads\" },\n        { id: \"c3\", source: \"Facebook Ads\" }\n      ]\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        432
+      ],
+      "id": "52b0383f-f89a-4da3-9395-ec31fa69644d",
+      "name": "Mock GHL API Response"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Defensive defaults\nconst pipelinesData = data.pipelines || [];\nconst opportunitiesData = data.opportunities || [];\nconst contactsData = data.contacts || [];\n\n/* ======================================================\n   1. MAPEAR STAGES (stageId -> stageName)\n====================================================== */\nconst stageMap = {};\n\npipelinesData.forEach(pipeline => {\n  (pipeline.stages || []).forEach(stage => {\n    stageMap[stage.id] = stage.name;\n  });\n});\n\n/* ======================================================\n   2. PROCESAR OPORTUNIDADES\n====================================================== */\nlet totalRevenue = 0;\nlet wonDeals = 0;\n\nconst funnelCount = {};\nconst revenueTrend = {};\n\nopportunitiesData.forEach(opp => {\n  const stageName = stageMap[opp.pipelineStageId] || \"Unknown Stage\";\n\n  // Funnel\n  funnelCount[stageName] = (funnelCount[stageName] || 0) + 1;\n\n  // Revenue & Won deals\n  if (opp.status === \"won\") {\n    wonDeals++;\n\n    const value = Number(opp.monetaryValue || 0);\n    totalRevenue += value;\n\n    const date =\n      (opp.dateWon || opp.createdAt || \"\").split(\"T\")[0] || \"Unknown Date\";\n\n    revenueTrend[date] = (revenueTrend[date] || 0) + value;\n  }\n});\n\n/* ======================================================\n   3. PROCESAR CONTACTOS\n====================================================== */\nconst leadSources = {};\n\ncontactsData.forEach(contact => {\n  const source = contact.source || \"Direct\";\n  leadSources[source] = (leadSources[source] || 0) + 1;\n});\n\n/* ======================================================\n   4. FORMATEAR PARA GRÁFICOS\n====================================================== */\nconst salesFunnel = Object.entries(funnelCount).map(\n  ([stage, count]) => ({ stage, count })\n);\n\nconst leadsBySource = Object.entries(leadSources).map(\n  ([label, value]) => ({ label, value })\n);\n\nconst revenueTrendChart = Object.entries(revenueTrend).map(\n  ([date, value]) => ({ date, value })\n);\n\n/* ======================================================\n   5. INSIGHTS SIMPLES PARA IA\n====================================================== */\nconst topSource =\n  leadsBySource.sort((a, b) => b.value - a.value)[0]?.label || null;\n\nconst worstStage =\n  salesFunnel.sort((a, b) => a.count - b.count)[0]?.stage || null;\n\n/* ======================================================\n   6. OUTPUT FINAL (CONTRATO DE LA CAPA)\n====================================================== */\nreturn [\n  {\n    json: {\n      kpis: {\n        total_revenue: totalRevenue,\n        total_leads: contactsData.length,\n        conversion_rate: opportunitiesData.length\n          ? Number(((wonDeals / opportunitiesData.length) * 100).toFixed(2))\n          : 0,\n        won_deals: wonDeals\n      },\n      charts: {\n        sales_funnel: salesFunnel,\n        leads_by_source: leadsBySource,\n        revenue_trend: revenueTrendChart\n      },\n      raw_summary_for_ai: {\n        top_source: topSource,\n        worst_stage: worstStage\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        432
+      ],
+      "id": "ebc605ae-915c-4699-a62b-4260c3d1a9be",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Mock GHL API Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock GHL API Response": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "a1d1ba8e-47d3-4340-b1a0-2bf7cdb5af32",
+  "activeVersionId": null,
+  "versionCounter": 5,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T19:07:04.655Z",
+      "createdAt": "2026-01-31T19:07:04.655Z",
+      "role": "workflow:owner",
+      "workflowId": "3vr1yqZS0HMXl8oI",
+      "projectId": "swOM41KmOGXoccrR",
+      "project": {
+        "updatedAt": "2026-01-22T21:25:12.796Z",
+        "createdAt": "2026-01-22T21:23:46.844Z",
+        "id": "swOM41KmOGXoccrR",
+        "name": "Julian Velasquez <development@growtzy.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "90c8481b-6333-4410-a070-fbd9f9b71a87",
+        "projectRelations": [
+          {
+            "updatedAt": "2026-01-22T21:23:46.857Z",
+            "createdAt": "2026-01-22T21:23:46.857Z",
+            "userId": "90c8481b-6333-4410-a070-fbd9f9b71a87",
+            "projectId": "swOM41KmOGXoccrR",
+            "user": {
+              "updatedAt": "2026-02-22T15:50:10.000Z",
+              "createdAt": "2026-01-22T21:23:46.826Z",
+              "id": "90c8481b-6333-4410-a070-fbd9f9b71a87",
+              "email": "development@growtzy.com",
+              "firstName": "Julian",
+              "lastName": "Velasquez",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2026-01-22T21:26:52.919Z",
+                "personalization_survey_n8n_version": "2.2.3",
+                "automationGoalDevops": [
+                  "data-syncing",
+                  "ci-cd"
+                ],
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "it",
+                "reportedSource": "friend"
+              },
+              "settings": {
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "mKYWjQpm5cEw_8sAr7UOX",
+                "userActivated": true,
+                "userActivatedAt": 1769887153327,
+                "npsSurvey": {
+                  "waitingForResponse": true,
+                  "ignoredCount": 2,
+                  "lastShownAt": 1771180217590
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-02-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
