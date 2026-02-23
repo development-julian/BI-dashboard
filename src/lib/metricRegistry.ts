@@ -1,3 +1,4 @@
+
 export interface MetricDefinition {
     id: string;
     label: string;
@@ -39,7 +40,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         type: "kpi",
         minDataRequired: 5,
         category: "sales",
-        defaultVisible: false
+        defaultVisible: true
     },
     lead_trend: {
         id: "lead_trend",
@@ -48,7 +49,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 20,
         category: "sales",
         chartComponent: "LineChart",
-        defaultVisible: false
+        defaultVisible: true
     },
     sales_funnel: {
         id: "sales_funnel",
@@ -57,7 +58,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 1,
         category: "sales",
         chartComponent: "BarChart",
-        defaultVisible: false
+        defaultVisible: true
     },
     cluster_view: {
         id: "cluster_view",
@@ -66,7 +67,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 5,
         category: "marketing",
         chartComponent: "ScatterChart",
-        defaultVisible: false
+        defaultVisible: true
     },
     win_rate_by_source: {
         id: "win_rate_by_source",
@@ -75,7 +76,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 5,
         category: "marketing",
         chartComponent: "BarChart",
-        defaultVisible: false
+        defaultVisible: true
     },
     pipeline_value: {
         id: "pipeline_value",
@@ -84,7 +85,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         minDataRequired: 1,
         category: "sales",
         chartComponent: "BarChart",
-        defaultVisible: false
+        defaultVisible: true
     },
     marketing_kpis: {
         id: "marketing_kpis",
@@ -92,6 +93,6 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         type: "kpi",
         minDataRequired: 1,
         category: "marketing",
-        defaultVisible: false
+        defaultVisible: true
     }
 };
