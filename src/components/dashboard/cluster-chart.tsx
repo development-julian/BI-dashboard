@@ -42,7 +42,7 @@ export default function ClusterChart({ data }: { data: ClusterData[] }) {
         return (
             <Card className="col-span-1">
                 <CardHeader>
-                    <CardTitle className="font-headline">Engagement vs Value (Cluster)</CardTitle>
+                    <CardTitle className="font-headline">Engagement vs Value</CardTitle>
                     <CardDescription>Identifying high-value, high-engagement segments by source</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -66,13 +66,13 @@ export default function ClusterChart({ data }: { data: ClusterData[] }) {
     return (
         <Card className="col-span-1">
             <CardHeader>
-                <CardTitle className="font-headline">Engagement vs Value (Cluster)</CardTitle>
+                <CardTitle className="font-headline">Engagement vs Value</CardTitle>
                 <CardDescription>Identifying high-value, high-engagement segments by source</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="h-[350px]">
                     <ResponsiveContainer width="100%" height="100%">
-                        <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 10 }}>
+                        <ScatterChart margin={{ top: 10, right: 10, bottom: 45, left: 20 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                             <XAxis
                                 type="number"
@@ -81,7 +81,7 @@ export default function ClusterChart({ data }: { data: ClusterData[] }) {
                                 tickLine={false}
                                 axisLine={false}
                                 tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: '11px' }}
-                                label={{ value: 'Engagement Score', position: 'insideBottom', offset: -10, style: { fill: 'hsl(var(--muted-foreground))', fontSize: '11px' } }}
+                                label={{ value: 'Engagement Score', position: 'insideBottom', offset: -25, style: { fill: 'hsl(var(--muted-foreground))', fontSize: '11px' } }}
                             />
                             <YAxis
                                 type="number"
@@ -91,7 +91,7 @@ export default function ClusterChart({ data }: { data: ClusterData[] }) {
                                 tickLine={false}
                                 axisLine={false}
                                 tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: '11px' }}
-                                label={{ value: 'Value ($)', angle: -90, position: 'insideLeft', offset: 5, style: { fill: 'hsl(var(--muted-foreground))', fontSize: '11px' } }}
+                                label={{ value: 'Value ($)', angle: -90, position: 'insideLeft', offset: 10, style: { fill: 'hsl(var(--muted-foreground))', fontSize: '11px' } }}
                             />
                             <ZAxis range={[80, 200]} />
                             <Tooltip
@@ -100,7 +100,9 @@ export default function ClusterChart({ data }: { data: ClusterData[] }) {
                                 itemStyle={{ color: 'hsl(var(--foreground))' }}
                             />
                             <Legend
-                                wrapperStyle={{ fontSize: '12px', color: 'hsl(var(--muted-foreground))' }}
+                                verticalAlign="top"
+                                align="right"
+                                wrapperStyle={{ fontSize: '11px', color: 'hsl(var(--muted-foreground))', paddingBottom: '8px' }}
                             />
                             {grouped.map((group) => (
                                 <Scatter

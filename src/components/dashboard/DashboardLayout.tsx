@@ -37,7 +37,7 @@ export function DashboardLayout({ data }: { data: DashboardStats }) {
             </div>
             <div className="lg:col-span-4 flex flex-col gap-6">
                 {enabledMetrics?.sales_funnel && <FunnelPerformance data={data.funnelPerformance} />}
-                {enabledMetrics?.pipeline_value && <PipelineValueChart data={data.pipelineValueByStage} />}
+                {/* {enabledMetrics?.pipeline_value && <PipelineValueChart data={data.pipelineValueByStage} />} */}
                 {enabledMetrics?.product_performance && <ProductPerformance data={data.productPerformance} />}
                 {enabledMetrics?.sales_by_channel && <SalesByChannel data={data.salesByChannel} />}
             </div>

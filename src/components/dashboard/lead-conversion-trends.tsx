@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Card,
   CardContent,
@@ -14,27 +14,40 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-  Area,
-  AreaChart,
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
+  Legend
 } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import type { DashboardStats } from '@/lib/api';
 import { Progress } from '../ui/progress';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface LeadConversionTrendsProps {
   data: DashboardStats['leadConversion'];
 }
 
-// Define data volume thresholds
-const VOLUME_THRESHOLDS = {
-  LOW: 20,
-  MEDIUM: 100,
-};
+// Generate distinct colors for channels based on predefined sequence
+const COLORS = [
+  'hsl(var(--primary))',
+  '#10b981', // green
+  '#3b82f6', // blue
+  '#f59e0b', // amber
+  '#ef4444', // red
+  '#8b5cf6', // purple
+  '#ec4899', // pink
+  '#06b6d4', // cyan
+];
 
 export default function LeadConversionTrends({ data }: LeadConversionTrendsProps) {
   const [isClient, setIsClient] = useState(false);
+  const [selectedChannel, setSelectedChannel] = useState<string>('All');
 
   useEffect(() => {
     setIsClient(true);
@@ -42,22 +55,24 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
 
   const conversionPercentage = data.conversionRateTarget > 0 ? (data.conversionRate / data.conversionRateTarget) * 100 : 0;
 
-  const dataPoints = data.chartData.length;
-  let chartType: 'bar' | 'area' = 'area';
+  // Extract unique channels from data
+  const channels = useMemo(() => {
+    const channelSet = new Set<string>();
+    data.chartData.forEach(item => {
+      Object.keys(item).forEach(key => {
+        if (key !== 'date' && key !== 'baselineTarget' && key !== 'value') {
+          channelSet.add(key);
+        }
+      });
+    });
+    return Array.from(channelSet);
+  }, [data.chartData]);
 
-  // Dynamic Chart Selection based on data volume
-  if (dataPoints <= VOLUME_THRESHOLDS.LOW) {
-    chartType = 'bar';
+  // Handle fallback where data comes as 'value' (from missing Excel or standard data)
+  const isFallback = channels.length === 0 && data.chartData.length > 0 && data.chartData[0].value !== undefined;
+  if (isFallback) {
+    channels.push('value');
   }
-
-  // Dynamic properties for Area chart
-  const areaChartProps = {
-    dot: dataPoints > 0 && dataPoints <= VOLUME_THRESHOLDS.MEDIUM
-      ? { r: 4, fill: 'hsl(var(--primary))', stroke: 'hsl(var(--card))', strokeWidth: 2 }
-      : false,
-    strokeWidth: 2,
-  };
-
 
   return (
     <Card>
@@ -65,7 +80,7 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
         <div className='flex justify-between items-start'>
           <div>
             <CardTitle className="font-headline flex items-center gap-2">
-              Lead Conversion Trends
+              Leads Conversion Trends
               {data.status === 'insufficient_data' && (
                 <Badge variant="outline" className="text-yellow-500 border-yellow-500 bg-yellow-500/10 ml-2">
                   Low Volume (Need 20+)
@@ -75,13 +90,29 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
             <CardDescription>
               {data.status === 'insufficient_data'
                 ? "Displaying against target baseline due to insufficient data."
-                : "Daily lead volume and quality analysis"}
+                : "Monthly total sales breakdown by channel"}
             </CardDescription>
           </div>
-          <Badge variant="secondary" className='bg-green-500/10 text-green-400 border-green-500/20'>
-            <div className="h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
-            Live Updates
-          </Badge>
+          <div className="flex items-center gap-4">
+            {channels.length > 0 && !isFallback && (
+              <Select value={selectedChannel} onValueChange={setSelectedChannel}>
+                <SelectTrigger className="w-[180px] h-8 text-xs">
+                  <SelectValue placeholder="Select Channel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All Channels</SelectItem>
+                  {channels.map((ch) => (
+                    <SelectItem key={ch} value={ch}>{ch}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+
+            <Badge variant="secondary" className='bg-green-500/10 text-green-400 border-green-500/20'>
+              <div className="h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
+              Live Updates
+            </Badge>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-4">
@@ -109,92 +140,49 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
         </div>
         <div className="col-span-1 md:col-span-3">
           <ResponsiveContainer width="100%" height={260}>
-            {chartType === 'bar' ? (
-              <BarChart data={data.chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis
-                  dataKey="date"
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  hide
-                />
-                <Tooltip
-                  contentStyle={{
-                    background: 'hsl(var(--background))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: 'var(--radius)',
-                  }}
-                />
-                <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} barSize={30} />
-              </BarChart>
-            ) : (
-              <AreaChart data={data.chartData}>
-                <defs>
-                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorBaseline" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis
-                  dataKey="date"
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  hide
-                />
-                <Tooltip
-                  contentStyle={{
-                    background: 'hsl(var(--background))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: 'var(--radius)',
-                  }}
-                />
+            <LineChart data={data.chartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+              <XAxis
+                dataKey="date"
+                stroke="hsl(var(--muted-foreground))"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                stroke="hsl(var(--muted-foreground))"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+                hide
+              />
+              <Tooltip
+                contentStyle={{
+                  background: 'hsl(var(--background))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: 'var(--radius)',
+                }}
+              />
+              <Legend wrapperStyle={{ fontSize: '12px', marginTop: '10px' }} />
 
-                {/* Static Background Graph / Target Baseline Overlay */}
-                {data.status === 'insufficient_data' && (
-                  <Area
+              {/* Render lines dynamically based on selected channel */}
+              {channels.map((channel, idx) => {
+                if (selectedChannel !== 'All' && selectedChannel !== channel) return null;
+
+                return (
+                  <Line
+                    key={channel}
                     type="monotone"
-                    dataKey="baselineTarget"
-                    stroke="hsl(var(--muted-foreground))"
-                    strokeDasharray="5 5"
-                    fill="url(#colorBaseline)"
-                    strokeWidth={1}
-                    name="Target Baseline"
-                    isAnimationActive={false}
+                    dataKey={channel}
+                    name={isFallback ? "Leads" : channel}
+                    stroke={COLORS[idx % COLORS.length]}
+                    strokeWidth={selectedChannel === 'All' ? 2 : 3}
+                    dot={{ r: 4, strokeWidth: 2 }}
+                    activeDot={{ r: 6 }}
                   />
-                )}
-
-                {/* Actual Data Graph */}
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="hsl(var(--primary))"
-                  fill="url(#colorValue)"
-                  name="Actual Leads"
-                  {...areaChartProps}
-                />
-              </AreaChart>
-            )}
+                )
+              })}
+            </LineChart>
           </ResponsiveContainer>
           <div className="text-xs text-muted-foreground mt-2 flex items-center justify-center gap-4">
             <span className='font-bold text-foreground'>QUALITY SCORE BREAKDOWN:</span>

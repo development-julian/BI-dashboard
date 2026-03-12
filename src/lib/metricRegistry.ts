@@ -54,7 +54,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
     },
     cluster_view: {
         id: "cluster_view",
-        label: "Engagement vs Value (Cluster)",
+        label: "Engagement vs Value",
         type: "chart",
         minDataRequired: 5,
         category: "marketing",
@@ -85,7 +85,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         type: "kpi",
         minDataRequired: 1,
         category: "marketing",
-        defaultVisible: true
+        defaultVisible: false
     },
     product_performance: {
         id: "product_performance",
@@ -93,7 +93,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
         type: "chart",
         minDataRequired: 1,
         category: "inventory",
-        defaultVisible: true,
+        defaultVisible: false,
     },
     sales_by_channel: {
         id: "sales_by_channel",

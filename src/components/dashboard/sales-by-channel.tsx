@@ -20,10 +20,10 @@ interface SalesByChannelProps {
 }
 
 const formatValue = (value: number) => {
-    if (value >= 1000) {
-        return `$${(value / 1000).toFixed(1)}k`;
-    }
-    return `$${value}`;
+  if (value >= 1000) {
+    return `${(value / 1000).toFixed(1)}k`;
+  }
+  return `${value}`;
 }
 
 
@@ -31,22 +31,22 @@ export default function SalesByChannel({ data }: SalesByChannelProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline">Sales by Channel</CardTitle>
+        <CardTitle className="font-headline">De dónde llegan tus clientes</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={200}>
           <BarChart data={data} layout="vertical" margin={{ left: 10, right: 30, top: 5, bottom: 0 }}>
-            <XAxis 
+            <XAxis
               type="number"
               hide
-             />
+            />
             <YAxis
-                dataKey="name"
-                type="category"
-                axisLine={false}
-                tickLine={false}
-                tick={false}
-                width={10}
+              dataKey="name"
+              type="category"
+              axisLine={false}
+              tickLine={false}
+              tick={false}
+              width={10}
             />
             <Tooltip
               cursor={{ fill: 'hsl(var(--secondary))' }}
@@ -55,7 +55,7 @@ export default function SalesByChannel({ data }: SalesByChannelProps) {
                 border: '1px solid hsl(var(--border))',
                 borderRadius: 'var(--radius)',
               }}
-              formatter={(value) => [`$${(value as number).toLocaleString()}`]}
+              formatter={(value) => [`${(value as number).toLocaleString()} leads`]}
               labelStyle={{ fontWeight: 'bold' }}
             />
             <Bar
@@ -64,15 +64,15 @@ export default function SalesByChannel({ data }: SalesByChannelProps) {
               radius={[4, 4, 0, 0]}
               layout="vertical"
             >
-                <LabelList dataKey="name" position="insideLeft" offset={10} className="fill-background font-semibold" fontSize={12} />
-                 <LabelList 
-                    dataKey="value" 
-                    position="right" 
-                    offset={10} 
-                    className="fill-foreground font-bold" 
-                    fontSize={14}
-                    formatter={formatValue}
-                 />
+              <LabelList dataKey="name" position="insideLeft" offset={10} className="fill-background font-semibold" fontSize={12} />
+              <LabelList
+                dataKey="value"
+                position="right"
+                offset={10}
+                className="fill-foreground font-bold"
+                fontSize={14}
+                formatter={formatValue}
+              />
             </Bar>
           </BarChart>
         </ResponsiveContainer>

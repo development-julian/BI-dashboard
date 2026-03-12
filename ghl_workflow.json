@@ -113,7 +113,7 @@
               "lastName": "Velasquez",
               "personalizationAnswers": {
                 "version": "v4",
-                "personalization_survey_submitted_at": "2026-01-22T21:26:52.919Z",
+                "personalization_survey_submitted_at": "2026-01-22T21:26:52.919Z", 
                 "personalization_survey_n8n_version": "2.2.3",
                 "automationGoalDevops": [
                   "data-syncing",

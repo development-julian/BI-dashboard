@@ -35,7 +35,7 @@ export interface DashboardStats {
     mqlChange: string;
     conversionRate: number;
     conversionRateTarget: number;
-    chartData: { date: string; value: number; baselineTarget?: number }[];
+    chartData: any[]; // Dynamic { date, [channelTitle]: number }
     status: 'ok' | 'insufficient_data';
   };
   funnelPerformance: { stage: string; count: number }[];
@@ -130,7 +130,8 @@ const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?:
       body: JSON.stringify({
         action: action,
         ghlLocationId: "PLsKcTpoijAF5iHuqikq",
-        dateRange: dateRange
+        dateRange: dateRange,
+        userToken: "default_token"
       }),
       cache: 'no-store'
     });
@@ -178,7 +179,11 @@ const stageMapping: { [key: string]: string } = {
   'Contacted': 'Contacted',
   'Qualified': 'Qualified',
   'Proposal': 'Proposal',
-  'Won': 'Won'
+  'Won': 'Won',
+  'Agendado': 'Scheduled',
+  'Cotización': 'Quote',
+  'Cerrado': 'Closed',
+  'Perdido': 'Lost'
 };
 
 const translateStage = (stage: string) => stageMapping[stage] || stage;
@@ -207,21 +212,38 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
     sentiment: (n8nData.intelligenceReport?.sentiment || 'neutral') as 'positive' | 'negative' | 'neutral'
   };
 
-  // ── Build lead conversion trend from real kpis (deterministic, NOT random) ──
-  const today = new Date();
-  const daysInRange = range === '90d' ? 90 : range === '30d' ? 30 : 7;
-  const dailyAvg = totalLeads > 0 ? totalLeads / daysInRange : 0;
-  const chartData = Array.from({ length: Math.min(daysInRange, 14) }).map((_, i) => {
-    const date = subDays(today, Math.min(daysInRange, 14) - 1 - i);
-    // Distribute leads across days using a simple hash for determinism
-    const seed = (date.getDate() * 7 + date.getMonth() * 13) % 5;
-    const value = Math.max(0, Math.round(dailyAvg + seed - 2));
-    return {
-      date: format(date, 'MMM d'),
-      value,
-      baselineTarget: Math.round(dailyAvg * 2) || 5
-    };
-  });
+  // ── Build lead conversion trend from real lead_conversion_trends data ──
+  // The backend now provides an array of { month, metrics: { [channel]: value } }
+  const realConversionTrends = n8nData.charts?.lead_conversion_trends || [];
+  let chartData: any[] = [];
+
+  if (realConversionTrends.length > 0) {
+    chartData = realConversionTrends.map((item: any) => {
+      // Create a flat object with month and all channel metrics
+      const flatItem: any = { date: item.month };
+      if (item.metrics) {
+        Object.keys(item.metrics).forEach(key => {
+          flatItem[key] = item.metrics[key];
+        });
+      }
+      return flatItem;
+    });
+  } else {
+    // Fallback if no data
+    const today = new Date();
+    const daysInRange = range === '90d' ? 90 : range === '30d' ? 30 : 7;
+    const dailyAvg = totalLeads > 0 ? totalLeads / daysInRange : 0;
+    chartData = Array.from({ length: Math.min(daysInRange, 14) }).map((_, i) => {
+      const date = subDays(today, Math.min(daysInRange, 14) - 1 - i);
+      const seed = (date.getDate() * 7 + date.getMonth() * 13) % 5;
+      const value = Math.max(0, Math.round(dailyAvg + seed - 2));
+      return {
+        date: format(date, 'MMM d'),
+        value,
+        baselineTarget: Math.round(dailyAvg * 2) || 5
+      };
+    });
+  }
 
   // ── Funnel: real payload uses `funnel[]` with {stage, value}, not `charts.sales_funnel` ──
   const realFunnel = n8nData.funnel || [];
@@ -239,14 +261,20 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
     value: s.value || 0,
   }));
 
-  // ── Cluster data (from restructured workflow, if available) ──
-  const clusterData = n8nData.charts?.cluster_data || [];
+  // ── Cluster data: use real data if available, otherwise default to empty array ──
+  const clusterData = (n8nData.charts?.cluster_data && n8nData.charts.cluster_data.length > 0)
+    ? n8nData.charts.cluster_data
+    : [];
 
-  // ── Win rate by source (from restructured workflow, if available) ──
-  const winRateBySource = n8nData.charts?.win_rate_by_source || [];
+  // ── Win rate by source: use real data if available, otherwise default to empty array ──
+  const winRateBySource = (n8nData.charts?.win_rate_by_source && n8nData.charts.win_rate_by_source.length > 0)
+    ? n8nData.charts.win_rate_by_source
+    : [];
 
-  // ── Pipeline value by stage (from restructured workflow, if available) ──
-  const pipelineValueByStage = n8nData.charts?.pipeline_value_by_stage || [];
+  // ── Pipeline value by stage: use real data if available, otherwise default to empty array ──
+  const pipelineValueByStage = (n8nData.charts?.pipeline_value_by_stage && n8nData.charts.pipeline_value_by_stage.length > 0)
+    ? n8nData.charts.pipeline_value_by_stage
+    : [];
 
   // ── Advanced KPIs (from restructured workflow, if available) ──
   const extraKpis = {
