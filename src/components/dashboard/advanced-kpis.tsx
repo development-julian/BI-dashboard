@@ -42,7 +42,9 @@ export default function AdvancedKpis({ data }: AdvancedKpisProps) {
                     <TrendingDown className="h-4 w-4 text-orange-400" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold font-headline">${data.cpa}</div>
+                    <div className="text-2xl font-bold font-headline">
+                        {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 1 }).format(data.cpa)}
+                    </div>
                     <p className="text-xs text-muted-foreground mt-1">Cost Per Acquisition</p>
                 </CardContent>
             </Card>

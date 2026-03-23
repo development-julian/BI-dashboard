@@ -10,24 +10,31 @@ const defaultMetricsState = Object.keys(metricRegistry).reduce((acc, key) => {
 }, {} as Record<string, boolean>);
 
 interface DashboardContextType {
-    dateRange: '7d' | '30d' | '90d';
-    setDateRange: (range: '7d' | '30d' | '90d') => void;
+    dateRange: '5m' | '1y' | 'all';
+    setDateRange: (range: '5m' | '1y' | 'all') => void;
     enabledMetrics: Record<string, boolean>;
     toggleMetric: (metricId: string) => void;
     metadataStatus: 'ok' | 'insufficient_data';
-    setMetadataStatus: (status: 'ok' | 'insufficient_data') => void;
+    setMetadataStatus: (status: 'ok' | 'insufficient_data', dataCounts?: Record<string, number>) => void;
+    dataCounts: Record<string, number>;
 }
 
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
 export function DashboardProvider({ children }: { children: React.ReactNode }) {
-    const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d'>('30d');
+    const [dateRange, setDateRange] = useState<'5m' | '1y' | 'all'>('5m');
 
     // Initialize with defaults first (SSR-safe), then hydrate from localStorage in useEffect
     const [enabledMetrics, setEnabledMetrics] = useState<Record<string, boolean>>(defaultMetricsState);
     const [isHydrated, setIsHydrated] = useState(false);
 
-    const [metadataStatus, setMetadataStatus] = useState<'ok' | 'insufficient_data'>('ok');
+    const [metadataStatus, setMetadataStatusInternal] = useState<'ok' | 'insufficient_data'>('ok');
+    const [dataCounts, setDataCounts] = useState<Record<string, number>>({});
+
+    const setMetadataStatus = (status: 'ok' | 'insufficient_data', counts?: Record<string, number>) => {
+        setMetadataStatusInternal(status);
+        if (counts) setDataCounts(counts);
+    };
 
     // Hydrate from localStorage AFTER mount to prevent SSR mismatch
     useEffect(() => {
@@ -66,7 +73,8 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             enabledMetrics,
             toggleMetric,
             metadataStatus,
-            setMetadataStatus
+            setMetadataStatus,
+            dataCounts
         }}>
             {children}
         </DashboardContext.Provider>

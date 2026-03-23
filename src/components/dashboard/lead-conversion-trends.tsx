@@ -118,22 +118,22 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
       <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-4">
         <div className="col-span-1 flex flex-col justify-between gap-4">
           <div className='p-4 rounded-lg bg-card-foreground/5'>
-            <p className="text-xs text-muted-foreground">TOTAL LEADS</p>
-            <p className="text-2xl font-bold">{isClient ? data.totalLeads.toLocaleString() : '...'}</p>
-            <p className="text-xs font-semibold text-green-500">{data.totalLeadsChange}</p>
+            <p className="text-xs text-muted-foreground">UNITS SOLD</p>
+            <p className="text-2xl font-bold">{isClient ? data.totalUnits?.toLocaleString() : '...'}</p>
+            <p className="text-xs font-semibold text-green-500">{data.totalUnitsChange}</p>
           </div>
           <div className='p-4 rounded-lg bg-card-foreground/5'>
-            <p className="text-xs text-muted-foreground">WON DEALS</p>
-            <p className="text-2xl font-bold">{isClient ? data.mql.toLocaleString() : '...'}</p>
-            <p className="text-xs font-semibold text-green-500">{data.mqlChange}</p>
+            <p className="text-xs text-muted-foreground">AVERAGE TICKET</p>
+            <p className="text-2xl font-bold">{isClient ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.averageTicket || 0) : '...'}</p>
+            <p className="text-xs font-semibold text-green-500">{data.averageTicketChange}</p>
           </div>
           <div className='p-4 rounded-lg bg-card-foreground/5'>
-            <p className="text-xs text-muted-foreground">CONVERSION RATE</p>
-            <p className="text-2xl font-bold">{data.conversionRate}%</p>
+            <p className="text-xs text-muted-foreground">TOTAL SALES</p>
+            <p className="text-2xl font-bold">{isClient ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((data.totalUnits || 0) * (data.averageTicket || 0)) : '...'}</p>
             <div className="relative mt-2 pt-2">
-              <Progress value={conversionPercentage} className='h-2' />
+              <Progress value={75} className='h-2' />
               <div className="text-xs text-muted-foreground text-right mt-1">
-                Target: {data.conversionRateTarget}%
+                Target: {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(((data.totalUnits || 0) * (data.averageTicket || 0)) * 1.25)}
               </div>
             </div>
           </div>

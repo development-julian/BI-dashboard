@@ -21,8 +21,8 @@ export function DashboardLayout({ data }: { data: DashboardStats }) {
     const { enabledMetrics, setMetadataStatus } = useDashboard();
 
     useEffect(() => {
-        setMetadataStatus(data.metadata?.status || 'ok');
-    }, [data.metadata?.status, setMetadataStatus]);
+        setMetadataStatus(data.metadata?.status || 'ok', data.metadata?.dataCounts);
+    }, [data.metadata?.status, data.metadata?.dataCounts, setMetadataStatus]);
 
     return (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">

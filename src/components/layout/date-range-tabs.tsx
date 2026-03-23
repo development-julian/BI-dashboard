@@ -16,7 +16,7 @@ export default function DateRangeTabs() {
     router.push(`${pathname}${query}`);
   };
 
-  const defaultRange = searchParams.get('range') || '7d';
+  const defaultRange = searchParams.get('range') || '5m';
 
   return (
     <Tabs
@@ -25,9 +25,9 @@ export default function DateRangeTabs() {
       className="hidden md:block"
     >
       <TabsList>
-        <TabsTrigger value="7d">7D</TabsTrigger>
-        <TabsTrigger value="30d">30D</TabsTrigger>
-        <TabsTrigger value="90d">90D</TabsTrigger>
+        <TabsTrigger value="5m">Últimos 5 meses</TabsTrigger>
+        <TabsTrigger value="1y">Último año</TabsTrigger>
+        <TabsTrigger value="all">Todo</TabsTrigger>
       </TabsList>
     </Tabs>
   );

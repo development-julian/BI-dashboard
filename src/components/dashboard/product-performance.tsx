@@ -1,12 +1,7 @@
 'use client';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { ImageIcon } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import type { ProductPerformance as ProductPerformanceType } from '@/lib/api';
@@ -28,20 +23,22 @@ export default function ProductPerformance({ data }: ProductPerformanceProps) {
         <ul className="space-y-4">
           {data.map((product) => {
             const isIncrease = product.changeType === 'increase';
-            const productImage = PlaceHolderImages.find(p => p.id === product.image);
+            // Valid dynamic image check (ignore default old placeholders if passed)
+            const hasRealImage = product.image && product.image !== 'product-watch' && product.image.startsWith('http');
 
             return (
               <li key={product.sku} className="flex items-center gap-4">
-                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  {productImage && (
+                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary overflow-hidden">
+                  {hasRealImage ? (
                     <Image
-                      src={productImage.imageUrl}
+                      src={product.image}
                       alt={product.name}
-                      width={40}
-                      height={40}
-                      className="rounded-md"
-                      data-ai-hint={productImage.imageHint}
+                      width={48}
+                      height={48}
+                      className="object-cover w-full h-full"
                     />
+                  ) : (
+                    <ImageIcon className="h-6 w-6 opacity-40" />
                   )}
                 </div>
                 <div className="flex-1">

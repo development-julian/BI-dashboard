@@ -64,14 +64,14 @@ export default async function MarketingPage({
   const result = await getMarketingData(range);
 
   if (!result || (result && 'error' in result)) {
-    const error = result || { message: "Could not load marketing data.", type: 'Unknown' };
+    const error = result || { error: "Could not load marketing data.", type: 'Unknown' };
     return (
       <div className="flex h-[50vh] items-center justify-center p-4">
         <Alert variant="destructive" className="max-w-lg">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error: {error.type}</AlertTitle>
           <AlertDescription>
-            {error.message}
+            {error.error}
             <div className="mt-2 text-xs">
                 <strong>URL Webhook:</strong> <code>{N8N_WEBHOOK_URL}</code>
             </div>

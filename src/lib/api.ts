@@ -35,6 +35,10 @@ export interface DashboardStats {
     mqlChange: string;
     conversionRate: number;
     conversionRateTarget: number;
+    totalUnits: number;
+    totalUnitsChange: string;
+    averageTicket: number;
+    averageTicketChange: string;
     chartData: any[]; // Dynamic { date, [channelTitle]: number }
     status: 'ok' | 'insufficient_data';
   };
@@ -61,6 +65,7 @@ export interface DashboardStats {
     status: 'ok' | 'insufficient_data';
     dataPointsCount: number;
     dateRangeApplied: string;
+    dataCounts: Record<string, number>;
   };
 }
 
@@ -92,6 +97,18 @@ export interface InventoryData {
   }[];
 }
 
+export const AD_CHANNELS = [
+  'Facebook', 'Facebook Ads', 'Google', 'Google Ads', 'Instagram', 'Instagram Ads', 
+  'TikTok', 'TikTok Ads', 'LinkedIn', 'LinkedIn Ads', 'Organic', 'Organic Search', 
+  'Paid Search', 'Social Media', 'Email', 'Referral', 'YouTube', 'Pinterest'
+];
+
+export const isAdChannel = (channel: string) => {
+  if (!channel) return false;
+  const norm = channel.toLowerCase();
+  return AD_CHANNELS.some(ad => norm.includes(ad.toLowerCase()) || ad.toLowerCase().includes(norm));
+};
+
 
 export const N8N_WEBHOOK_URL = 'https://n8n.growtzy.com/webhook/api/v1/gateway';
 
@@ -100,15 +117,16 @@ const getDateRange = (range: string): { from: string; to: string } => {
   let from: Date;
 
   switch (range) {
-    case '30d':
-      from = subDays(to, 30);
+    case '1y':
+      from = subDays(to, 365);
       break;
-    case '90d':
-      from = subDays(to, 90);
+    case 'all':
+      // Fetching everything, providing a date far into the past (e.g., 2020)
+      from = new Date(2020, 0, 1);
       break;
-    case '7d':
+    case '5m':
     default:
-      from = subDays(to, 7);
+      from = subDays(to, 150); // Approx 5 months
       break;
   }
 
@@ -188,7 +206,7 @@ const stageMapping: { [key: string]: string } = {
 
 const translateStage = (stage: string) => stageMapping[stage] || stage;
 
-export const getDashboardStats = async (range: string = '7d'): Promise<DashboardStats | { error: string, type: string }> => {
+export const getDashboardStats = async (range: string = '5m'): Promise<DashboardStats | { error: string, type: string }> => {
   const result = await fetchDataFromN8n('GET_DASHBOARD', range);
 
   if (result.error || !result.data) {
@@ -237,7 +255,7 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
   } else {
     // Fallback if no data
     const today = new Date();
-    const daysInRange = range === '90d' ? 90 : range === '30d' ? 30 : 7;
+    const daysInRange = range === '1y' ? 365 : range === 'all' ? 730 : 150;
     const dailyAvg = totalLeads > 0 ? totalLeads / daysInRange : 0;
     chartData = Array.from({ length: Math.min(daysInRange, 14) }).map((_, i) => {
       const date = subDays(today, Math.min(daysInRange, 14) - 1 - i);
@@ -259,22 +277,26 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
   const funnelPerformance = funnelSource.map((f: any) => ({
     stage: translateStage(f.stage),
     count: f.value ?? f.count ?? 0,
+    organic_count: f.organic_count,
+    paid_count: f.paid_count,
   }));
 
-  // ── Sales by channel: real payload uses `salesByChannel[].label`, not `.name` ──
-  const realSalesByChannel = (n8nData.salesByChannel || []).map((s: any) => ({
-    name: s.label || s.name || s.channel || 'Unknown',
-    value: s.value || 0,
-  }));
+  // ── Source Acquisition by channel: real payload uses `salesByChannel[].label`, not `.name` ──
+  const realSalesByChannel = (n8nData.salesByChannel || [])
+    .map((s: any) => ({
+      name: s.label || s.name || s.channel || 'Unknown',
+      value: s.value || 0,
+    }))
+    .filter((s: { name: string }) => isAdChannel(s.name));
 
-  // ── Cluster data: use real data if available, otherwise default to empty array ──
+  // ── Cluster data: filter ONLY advertising channels ──
   const clusterData = (n8nData.charts?.cluster_data && n8nData.charts.cluster_data.length > 0)
-    ? n8nData.charts.cluster_data
+    ? n8nData.charts.cluster_data.filter((d: any) => isAdChannel(d.category || d.name))
     : [];
 
-  // ── Win rate by source: use real data if available, otherwise default to empty array ──
+  // ── Win rate by source: visually separate/exclude sales channels (ONLY ad channels) ──
   const winRateBySource = (n8nData.charts?.win_rate_by_source && n8nData.charts.win_rate_by_source.length > 0)
-    ? n8nData.charts.win_rate_by_source
+    ? n8nData.charts.win_rate_by_source.filter((d: any) => isAdChannel(d.source))
     : [];
 
   // ── Pipeline value by stage: use real data if available, otherwise default to empty array ──
@@ -298,7 +320,7 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
     revenue: `$${(p.revenue || 0).toLocaleString()}`,
     change: p.change || '0%',
     changeType: (p.status === 'alert' ? 'decrease' : 'increase') as 'increase' | 'decrease' | 'neutral',
-    image: p.image_id || 'product-watch'
+    image: p.image_url || p.image || ''
   }));
 
   return {
@@ -332,6 +354,10 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
       mqlChange: wonDeals > 0 ? '+5%' : '0%',
       conversionRate,
       conversionRateTarget: 5.0,
+      totalUnits: kpis.total_units !== undefined ? kpis.total_units : wonDeals,
+      totalUnitsChange: wonDeals > 0 ? '+5%' : '0%',
+      averageTicket: kpis.average_ticket !== undefined ? kpis.average_ticket : (wonDeals > 0 ? totalRevenue / wonDeals : 0),
+      averageTicketChange: totalRevenue > 0 ? '+2%' : '0%',
       chartData,
       status: totalLeads >= 20 ? 'ok' : 'insufficient_data',
     },
@@ -346,12 +372,25 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
     metadata: {
       status: totalLeads >= 20 ? 'ok' : 'insufficient_data',
       dataPointsCount: totalLeads,
-      dateRangeApplied: range
+      dateRangeApplied: range,
+      dataCounts: {
+        total_leads: totalLeads,
+        conversion_rate: wonDeals,
+        total_revenue: totalRevenue,
+        lead_trend: chartData.length > 0 ? totalLeads : 0, 
+        sales_funnel: funnelPerformance.reduce((acc: number, f: any) => acc + f.count, 0),
+        cluster_view: clusterData.length,
+        win_rate_by_source: winRateBySource.length,
+        pipeline_value: pipelineValueByStage.length,
+        marketing_kpis: totalLeads,
+        product_performance: productPerformance.length,
+        sales_by_channel: realSalesByChannel.length
+      }
     }
   };
 };
 
-export const getMarketingData = async (range: string = '7d'): Promise<MarketingData | { error: string, type: string }> => {
+export const getMarketingData = async (range: string = '5m'): Promise<MarketingData | { error: string, type: string }> => {
   const result = await fetchDataFromN8n('GET_MARKETING_DATA', range);
 
   if (result.error || !result.data) {
@@ -377,7 +416,7 @@ export const getMarketingData = async (range: string = '7d'): Promise<MarketingD
   };
 }
 
-export const getInventoryData = async (range: string = '7d'): Promise<InventoryData | { error: string, type: string }> => {
+export const getInventoryData = async (range: string = '5m'): Promise<InventoryData | { error: string, type: string }> => {
   const result = await fetchDataFromN8n('GET_INVENTORY_DATA', range);
 
   if (result.error || !result.data) {

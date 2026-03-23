@@ -10,6 +10,8 @@ import {
 interface FunnelData {
   stage: string;
   count: number;
+  organic_count?: number;
+  paid_count?: number;
 }
 
 // Classic funnel colors matching the reference: blue→orange→gray→amber→green
@@ -88,11 +90,19 @@ export default function FunnelPerformance({ data }: { data: FunnelData[] }) {
                   hidden group-hover:block bg-popover text-popover-foreground
                   text-xs px-3 py-1.5 rounded-md shadow-lg border border-border
                   whitespace-nowrap z-20">
-                  {stage.stage}: {stage.count.toLocaleString()} leads
-                  {maxCount > 0 && (
-                    <span className="ml-1 text-muted-foreground">
-                      ({Math.round((stage.count / maxCount) * 100)}%)
-                    </span>
+                  <div className={(stage.organic_count !== undefined || stage.paid_count !== undefined) ? "font-semibold pb-1 mb-1 border-b border-border" : ""}>
+                    {stage.stage}: {stage.count.toLocaleString()}
+                    {maxCount > 0 && (
+                      <span className="ml-1 text-muted-foreground font-normal">
+                        ({Math.round((stage.count / maxCount) * 100)}%)
+                      </span>
+                    )}
+                  </div>
+                  {(stage.organic_count !== undefined || stage.paid_count !== undefined) && (
+                    <div className="flex flex-col gap-0.5 text-muted-foreground mt-1">
+                      <span className="flex justify-between gap-4"><span>Organic:</span> <span className="font-medium text-foreground">{stage.organic_count?.toLocaleString() || 0}</span></span>
+                      <span className="flex justify-between gap-4"><span>Paid:</span> <span className="font-medium text-foreground">{stage.paid_count?.toLocaleString() || 0}</span></span>
+                    </div>
                   )}
                 </div>
               </div>

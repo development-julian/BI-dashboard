@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export default function MetricPanel() {
-    const { enabledMetrics, toggleMetric, metadataStatus } = useDashboard();
+    const { enabledMetrics, toggleMetric, metadataStatus, dataCounts } = useDashboard();
     const [isOpen, setIsOpen] = useState(false);
 
     const entries: MetricDefinition[] = Object.values(metricRegistry);
@@ -57,7 +57,11 @@ export default function MetricPanel() {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {entries.map((metric) => {
                                 const isEnabled = enabledMetrics[metric.id];
-                                const isLowConfidence = metadataStatus === 'insufficient_data' && metric.minDataRequired > 5;
+                                
+                                const currentDataRows = dataCounts?.[metric.id];
+                                const isLowConfidence = currentDataRows !== undefined 
+                                    ? currentDataRows < metric.minDataRequired 
+                                    : (metadataStatus === 'insufficient_data' && metric.minDataRequired > 5);
 
                                 return (
                                     <div key={metric.id} className="flex items-center justify-between rounded-md border p-4">
