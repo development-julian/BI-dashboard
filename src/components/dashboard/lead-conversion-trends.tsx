@@ -80,7 +80,7 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
         <div className='flex justify-between items-start'>
           <div>
             <CardTitle className="font-headline flex items-center gap-2">
-              Leads Conversion Trends
+              Monthly Sales by Channel
               {data.status === 'insufficient_data' && (
                 <Badge variant="outline" className="text-yellow-500 border-yellow-500 bg-yellow-500/10 ml-2">
                   Low Volume (Need 20+)
@@ -90,7 +90,7 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
             <CardDescription>
               {data.status === 'insufficient_data'
                 ? "Displaying against target baseline due to insufficient data."
-                : "Monthly total sales breakdown by channel"}
+                : "Monthly metrics breakdown by channel"}
             </CardDescription>
           </div>
           <div className="flex items-center gap-4">
@@ -123,7 +123,7 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
             <p className="text-xs font-semibold text-green-500">{data.totalLeadsChange}</p>
           </div>
           <div className='p-4 rounded-lg bg-card-foreground/5'>
-            <p className="text-xs text-muted-foreground">MARKETING QUALIFIED (MQL)</p>
+            <p className="text-xs text-muted-foreground">WON DEALS</p>
             <p className="text-2xl font-bold">{isClient ? data.mql.toLocaleString() : '...'}</p>
             <p className="text-xs font-semibold text-green-500">{data.mqlChange}</p>
           </div>
@@ -154,7 +154,7 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                hide
+                tickFormatter={(value: number) => value >= 1000 ? `${(value / 1000).toFixed(0)}k` : String(value)}
               />
               <Tooltip
                 contentStyle={{
@@ -162,6 +162,7 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
                   border: '1px solid hsl(var(--border))',
                   borderRadius: 'var(--radius)',
                 }}
+                formatter={(value: number, name: string) => [value.toLocaleString(), name]}
               />
               <Legend wrapperStyle={{ fontSize: '12px', marginTop: '10px' }} />
 
@@ -184,17 +185,17 @@ export default function LeadConversionTrends({ data }: LeadConversionTrendsProps
               })}
             </LineChart>
           </ResponsiveContainer>
-          <div className="text-xs text-muted-foreground mt-2 flex items-center justify-center gap-4">
-            <span className='font-bold text-foreground'>QUALITY SCORE BREAKDOWN:</span>
-            <div className='flex items-center gap-1.5'>
-              <span className='h-2 w-2 rounded-full bg-green-500'></span>
-              <span>High (45%)</span>
+          {channels.length > 0 && (
+            <div className="text-xs text-muted-foreground mt-2 flex items-center justify-center gap-4">
+              <span className='font-bold text-foreground'>CHANNELS:</span>
+              {channels.filter(ch => ch !== 'value').map((ch, idx) => (
+                <div key={ch} className='flex items-center gap-1.5'>
+                  <span className='h-2 w-2 rounded-full' style={{ backgroundColor: COLORS[idx % COLORS.length] }}></span>
+                  <span>{ch}</span>
+                </div>
+              ))}
             </div>
-            <div className='flex items-center gap-1.5'>
-              <span className='h-2 w-2 rounded-full bg-blue-500'></span>
-              <span>Med (35%)</span>
-            </div>
-          </div>
+          )}
         </div>
       </CardContent>
     </Card>

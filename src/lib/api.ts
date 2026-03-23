@@ -219,11 +219,17 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
 
   if (realConversionTrends.length > 0) {
     chartData = realConversionTrends.map((item: any) => {
-      // Create a flat object with month and all channel metrics
-      const flatItem: any = { date: item.month };
+      // Create a flat object supporting both old (month+metrics) and new (date+flat keys) structures
+      const flatItem: any = { date: item.date || item.month };
       if (item.metrics) {
         Object.keys(item.metrics).forEach(key => {
           flatItem[key] = item.metrics[key];
+        });
+      } else {
+        Object.keys(item).forEach(key => {
+          if (key !== 'date' && key !== 'month') {
+            flatItem[key] = item[key];
+          }
         });
       }
       return flatItem;
@@ -322,8 +328,8 @@ export const getDashboardStats = async (range: string = '7d'): Promise<Dashboard
     leadConversion: {
       totalLeads,
       totalLeadsChange: totalLeads > 0 ? '+12%' : '0%',
-      mql: Math.floor(totalLeads * 0.75),
-      mqlChange: '+5%',
+      mql: wonDeals,
+      mqlChange: wonDeals > 0 ? '+5%' : '0%',
       conversionRate,
       conversionRateTarget: 5.0,
       chartData,

@@ -36,7 +36,7 @@ export const metricRegistry: Record<string, MetricDefinition> = {
     },
     lead_trend: {
         id: "lead_trend",
-        label: "Lead Conversion Trend",
+        label: "Monthly Sales by Channel",
         type: "chart",
         minDataRequired: 20,
         category: "sales",
