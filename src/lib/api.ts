@@ -281,22 +281,21 @@ export const getDashboardStats = async (range: string = '5m'): Promise<Dashboard
     paid_count: f.paid_count,
   }));
 
-  // ── Source Acquisition by channel: real payload uses `salesByChannel[].label`, not `.name` ──
+  // ── Source Acquisition by channel (De dónde llegan tus clientes) ──
   const realSalesByChannel = (n8nData.salesByChannel || [])
     .map((s: any) => ({
       name: s.label || s.name || s.channel || 'Unknown',
       value: s.value || 0,
-    }))
-    .filter((s: { name: string }) => isAdChannel(s.name));
+    }));
 
-  // ── Cluster data: filter ONLY advertising channels ──
+  // ── Cluster data ──
   const clusterData = (n8nData.charts?.cluster_data && n8nData.charts.cluster_data.length > 0)
-    ? n8nData.charts.cluster_data.filter((d: any) => isAdChannel(d.category || d.name))
+    ? n8nData.charts.cluster_data
     : [];
 
-  // ── Win rate by source: visually separate/exclude sales channels (ONLY ad channels) ──
+  // ── Win rate by source ──
   const winRateBySource = (n8nData.charts?.win_rate_by_source && n8nData.charts.win_rate_by_source.length > 0)
-    ? n8nData.charts.win_rate_by_source.filter((d: any) => isAdChannel(d.source))
+    ? n8nData.charts.win_rate_by_source
     : [];
 
   // ── Pipeline value by stage: use real data if available, otherwise default to empty array ──
