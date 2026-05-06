@@ -1,0 +1,3683 @@
+
+================================================================================
+TESTING RANGE: 5m
+Date range: 2025-11-09 to 2026-04-08
+================================================================================
+
+--- KPIs ---
+{
+  "total_revenue": 44737106,
+  "total_leads": 17,
+  "leads_chart_status": "ok",
+  "won_deals": 9,
+  "social_reach": 0,
+  "social_impressions": 0
+}
+
+--- Funnel ---
+[
+  {
+    "stage": "Comprador🎉",
+    "value": 0,
+    "previous_value": 1,
+    "drop_off_percentage": 100,
+    "change": "-100%",
+    "changeType": "decrease",
+    "meta": "1 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  },
+  {
+    "stage": "Interesado💫",
+    "value": 1,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "+1",
+    "changeType": "increase",
+    "meta": "Top of funnel",
+    "paid_count": 0,
+    "organic_count": 1
+  },
+  {
+    "stage": "Frío🥶",
+    "value": 0,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "0%",
+    "changeType": "increase",
+    "meta": "0 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  },
+  {
+    "stage": "Seguimiento⭐",
+    "value": 0,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "0%",
+    "changeType": "increase",
+    "meta": "0 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  }
+]
+
+--- SalesByChannel ---
+[
+  {
+    "label": "Meta Ads",
+    "value": 142,
+    "channelType": "advertising"
+  },
+  {
+    "label": "Google Ads",
+    "value": 98,
+    "channelType": "advertising"
+  },
+  {
+    "label": "WhatsApp",
+    "value": 87,
+    "channelType": "sales"
+  },
+  {
+    "label": "Instagram Organic",
+    "value": 63,
+    "channelType": "sales"
+  },
+  {
+    "label": "TikTok Ads",
+    "value": 41,
+    "channelType": "advertising"
+  },
+  {
+    "label": "Email Marketing",
+    "value": 35,
+    "channelType": "sales"
+  },
+  {
+    "label": "Voice AI Chat Widget",
+    "value": 1,
+    "channelType": "sales"
+  }
+]
+
+--- Lead Conversion Trends ---
+  Total months: 22
+[
+  {
+    "date": "2024-05",
+    "Tienda Vasanna": 4655800
+  },
+  {
+    "date": "2024-06",
+    "Tienda Vasanna": 6543500
+  },
+  {
+    "date": "2024-07",
+    "Tienda Vasanna": 4871690,
+    "Uroccidente": 2094240
+  },
+  {
+    "date": "2024-08",
+    "Tienda Vasanna": 2999280,
+    "Uroccidente": 6041200
+  },
+  {
+    "date": "2024-09",
+    "Tienda Vasanna": 3477250,
+    "Uroccidente": 3756640
+  },
+  {
+    "date": "2024-10",
+    "Tienda Vasanna": 4181440,
+    "Uroccidente": 6475760
+  },
+  {
+    "date": "2024-11",
+    "Tienda Vasanna": 5215949,
+    "Uroccidente": 9526000
+  },
+  {
+    "date": "2024-12",
+    "Tienda Vasanna": 3926220,
+    "Uroccidente": 5833040
+  },
+  {
+    "date": "2025-01",
+    "Tienda Vasanna": 2472700,
+    "Uroccidente": 8883280
+  },
+  {
+    "date": "2025-02",
+    "Tienda Vasanna": 3530450,
+    "Uroccidente": 8118110,
+    "Dr Mama": 941556,
+    "Algia": 642090
+  },
+  {
+    "date": "2025-03",
+    "Tienda Vasanna": 1548591,
+    "Uroccidente": 6723680,
+    "Dr Mama": 5353271,
+    "Algia": 535075
+  },
+  {
+    "date": "2025-04",
+    "Tienda Vasanna": 2724300,
+    "Uroccidente": 7412880,
+    "Dr Mama": 4567024,
+    "Algia": 428060
+  },
+  {
+    "date": "2025-05",
+    "Tienda Vasanna": 2994585,
+    "Uroccidente": 8111200,
+    "Dr Mama": 4882493,
+    "Algia": 428060
+  },
+  {
+    "date": "2025-06",
+    "Tienda Vasanna": 5027000,
+    "Uroccidente": 7096240,
+    "Dr Mama": 1938860,
+    "Algia": 535075
+  },
+  {
+    "date": "2025-07",
+    "Tienda Vasanna": 5969030,
+    "Uroccidente": 9103920,
+    "Dr Mama": 6105792,
+    "Algia": 321045
+  },
+  {
+    "date": "2025-08",
+    "Tienda Vasanna": 5016151,
+    "Uroccidente": 7513600,
+    "Dr Mama": 4162389,
+    "Algia": 1391195
+  },
+  {
+    "date": "2025-09",
+    "Tienda Vasanna": 8807751,
+    "Uroccidente": 5336830,
+    "Dr Mama": 3131121,
+    "Drs. Independientes": 1036150
+  },
+  {
+    "date": "2025-10",
+    "Tienda Vasanna": 6081201,
+    "Uroccidente": 6575120,
+    "Dr Mama": 7681520,
+    "Drs. Independientes": 635290
+  },
+  {
+    "date": "2025-11",
+    "Tienda Vasanna": 8082120,
+    "Uroccidente": 4350630,
+    "Dr Mama": 1836185,
+    "Drs. Independientes": 1457000
+  },
+  {
+    "date": "2025-12",
+    "Tienda Vasanna": 4761205,
+    "Uroccidente": 4395398,
+    "Dr Mama": 1357202
+  },
+  {
+    "date": "2026-01",
+    "Tienda Vasanna": 6478020,
+    "Uroccidente": 5377568,
+    "Dr Mama": 5551130
+  },
+  {
+    "date": "2026-02",
+    "Tienda Vasanna": 7519319,
+    "Uroccidente": 4680960,
+    "Dr Mama": 4616304
+  }
+]
+
+--- Cluster Data ---
+  Total points: 26
+  First 3: [
+  {
+    "id": "SYbzfbyJIBYIDOAZJCM6",
+    "x_engagement": 10,
+    "y_value": 0,
+    "category": "Hola q precio tiene?",
+    "channelType": "sales",
+    "status": "open"
+  },
+  {
+    "id": "dc-1",
+    "x_engagement": 72,
+    "y_value": 3200000,
+    "category": "Meta Ads",
+    "channelType": "advertising",
+    "status": "won"
+  },
+  {
+    "id": "dc-2",
+    "x_engagement": 55,
+    "y_value": 1800000,
+    "category": "Meta Ads",
+    "channelType": "advertising",
+    "status": "won"
+  }
+]
+
+--- Win Rate By Source ---
+[
+  {
+    "source": "Google Ads",
+    "channelType": "advertising",
+    "win_rate": 35,
+    "total_revenue": 24800000,
+    "roi": 312
+  },
+  {
+    "source": "WhatsApp",
+    "channelType": "sales",
+    "win_rate": 42,
+    "total_revenue": 18200000,
+    "roi": 284
+  },
+  {
+    "source": "Meta Ads",
+    "channelType": "advertising",
+    "win_rate": 18,
+    "total_revenue": 15600000,
+    "roi": 156
+  },
+  {
+    "source": "Instagram Organic",
+    "channelType": "sales",
+    "win_rate": 28,
+    "total_revenue": 8400000,
+    "roi": 210
+  },
+  {
+    "source": "Email Marketing",
+    "channelType": "sales",
+    "win_rate": 22,
+    "total_revenue": 6800000,
+    "roi": 175
+  },
+  {
+    "source": "TikTok Ads",
+    "channelType": "advertising",
+    "win_rate": 12,
+    "total_revenue": 5200000,
+    "roi": 98
+  },
+  {
+    "source": "Hola q precio tiene?",
+    "channelType": "sales",
+    "win_rate": 0,
+    "total_revenue": 0,
+    "roi": 0
+  }
+]
+
+--- Pipeline Value ---
+[
+  {
+    "stage": "Interesado💫",
+    "value": 0
+  },
+  {
+    "stage": "Unknown Stage",
+    "value": 44737106
+  }
+]
+
+--- Products ---
+[
+  {
+    "name": "Hid. Vag. +50 / 50ml",
+    "sku": "HV+50-50",
+    "revenue": 116092361,
+    "image": "product-watch",
+    "change": "+413%",
+    "changeType": "increase"
+  },
+  {
+    "name": "Hid. Vag. -50 / 50ml",
+    "sku": "HV-50-50",
+    "revenue": 61683612,
+    "image": "product-earbuds",
+    "change": "-65%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Loc. Limp. Syndet /50ml",
+    "sku": "LS-50",
+    "revenue": 46354989,
+    "image": "product-mat",
+    "change": "-28%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Hid. Vag. +50 / 30ml",
+    "sku": "HV+50-30",
+    "revenue": 28493684,
+    "image": "product-watch",
+    "change": "-74%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Hid. Vag. -50 / 30ml",
+    "sku": "HV-50-30",
+    "revenue": 18115624,
+    "image": "product-earbuds",
+    "change": "-69%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Loc. Limp. Syndet /30ml",
+    "sku": "LS-30",
+    "revenue": 10060562,
+    "image": "product-mat",
+    "change": "-18%",
+    "changeType": "decrease"
+  }
+]
+
+--- Intelligence Report ---
+{
+  "rawData": {
+    "action": "GET_DASHBOARD",
+    "data": {
+      "kpis": {
+        "total_revenue": 44737106,
+        "total_leads": 17,
+        "leads_chart_status": "ok",
+        "won_deals": 9,
+        "social_reach": 0,
+        "social_impressions": 0
+      },
+      "charts": {
+        "sales_funnel": [
+          {
+            "stage": "Comprador🎉",
+            "value": 0,
+            "previous_value": 1,
+            "drop_off_percentage": 100,
+            "change": "-100%",
+            "changeType": "decrease",
+            "meta": "1 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          },
+          {
+            "stage": "Interesado💫",
+            "value": 1,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "+1",
+            "changeType": "increase",
+            "meta": "Top of funnel",
+            "paid_count": 0,
+            "organic_count": 1
+          },
+          {
+            "stage": "Frío🥶",
+            "value": 0,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "0%",
+            "changeType": "increase",
+            "meta": "0 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          },
+          {
+            "stage": "Seguimiento⭐",
+            "value": 0,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "0%",
+            "changeType": "increase",
+            "meta": "0 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          }
+        ],
+        "leads_by_source": [
+          {
+            "label": "Meta Ads",
+            "value": 142,
+            "channelType": "advertising"
+          },
+          {
+            "label": "Google Ads",
+            "value": 98,
+            "channelType": "advertising"
+          },
+          {
+            "label": "WhatsApp",
+            "value": 87,
+            "channelType": "sales"
+          },
+          {
+            "label": "Instagram Organic",
+            "value": 63,
+            "channelType": "sales"
+          },
+          {
+            "label": "TikTok Ads",
+            "value": 41,
+            "channelType": "advertising"
+          },
+          {
+            "label": "Email Marketing",
+            "value": 35,
+            "channelType": "sales"
+          },
+          {
+            "label": "Voice AI Chat Widget",
+            "value": 1,
+            "channelType": "sales"
+          }
+        ],
+        "revenue_trend": [
+          {
+            "date": "2025-12-01",
+            "value": 10513805
+          },
+          {
+            "date": "2026-01-01",
+            "value": 17406718
+          },
+          {
+            "date": "2026-02-01",
+            "value": 16816583
+          }
+        ],
+        "leads_chart_data": [
+          {
+            "date": "2026-04-06",
+            "value": 12
+          },
+          {
+            "date": "2026-04-07",
+            "value": 5
+          }
+        ],
+        "lead_conversion_trends": [
+          {
+            "date": "2024-05",
+            "Tienda Vasanna": 4655800
+          },
+          {
+            "date": "2024-06",
+            "Tienda Vasanna": 6543500
+          },
+          {
+            "date": "2024-07",
+            "Tienda Vasanna": 4871690,
+            "Uroccidente": 2094240
+          },
+          {
+            "date": "2024-08",
+            "Tienda Vasanna": 2999280,
+            "Uroccidente": 6041200
+          },
+          {
+            "date": "2024-09",
+            "Tienda Vasanna": 3477250,
+            "Uroccidente": 3756640
+          },
+          {
+            "date": "2024-10",
+            "Tienda Vasanna": 4181440,
+            "Uroccidente": 6475760
+          },
+          {
+            "date": "2024-11",
+            "Tienda Vasanna": 5215949,
+            "Uroccidente": 9526000
+          },
+          {
+            "date": "2024-12",
+            "Tienda Vasanna": 3926220,
+            "Uroccidente": 5833040
+          },
+          {
+            "date": "2025-01",
+            "Tienda Vasanna": 2472700,
+            "Uroccidente": 8883280
+          },
+          {
+            "date": "2025-02",
+            "Tienda Vasanna": 3530450,
+            "Uroccidente": 8118110,
+            "Dr Mama": 941556,
+            "Algia": 642090
+          },
+          {
+            "date": "2025-03",
+            "Tienda Vasanna": 1548591,
+            "Uroccidente": 6723680,
+            "Dr Mama": 5353271,
+            "Algia": 535075
+          },
+          {
+            "date": "2025-04",
+            "Tienda Vasanna": 2724300,
+            "Uroccidente": 7412880,
+            "Dr Mama": 4567024,
+            "Algia": 428060
+          },
+          {
+            "date": "2025-05",
+            "Tienda Vasanna": 2994585,
+            "Uroccidente": 8111200,
+            "Dr Mama": 4882493,
+            "Algia": 428060
+          },
+          {
+            "date": "2025-06",
+            "Tienda Vasanna": 5027000,
+            "Uroccidente": 7096240,
+            "Dr Mama": 1938860,
+            "Algia": 535075
+          },
+          {
+            "date": "2025-07",
+            "Tienda Vasanna": 5969030,
+            "Uroccidente": 9103920,
+            "Dr Mama": 6105792,
+            "Algia": 321045
+          },
+          {
+            "date": "2025-08",
+            "Tienda Vasanna": 5016151,
+            "Uroccidente": 7513600,
+            "Dr Mama": 4162389,
+            "Algia": 1391195
+          },
+          {
+            "date": "2025-09",
+            "Tienda Vasanna": 8807751,
+            "Uroccidente": 5336830,
+            "Dr Mama": 3131121,
+            "Drs. Independientes": 1036150
+          },
+          {
+            "date": "2025-10",
+            "Tienda Vasanna": 6081201,
+            "Uroccidente": 6575120,
+            "Dr Mama": 7681520,
+            "Drs. Independientes": 635290
+          },
+          {
+            "date": "2025-11",
+            "Tienda Vasanna": 8082120,
+            "Uroccidente": 4350630,
+            "Dr Mama": 1836185,
+            "Drs. Independientes": 1457000
+          },
+          {
+            "date": "2025-12",
+            "Tienda Vasanna": 4761205,
+            "Uroccidente": 4395398,
+            "Dr Mama": 1357202
+          },
+          {
+            "date": "2026-01",
+            "Tienda Vasanna": 6478020,
+            "Uroccidente": 5377568,
+            "Dr Mama": 5551130
+          },
+          {
+            "date": "2026-02",
+            "Tienda Vasanna": 7519319,
+            "Uroccidente": 4680960,
+            "Dr Mama": 4616304
+          }
+        ],
+        "sales_volume_trends": [
+          {
+            "date": "2024-05",
+            "metrics": {
+              "Tienda Vasanna": 4655800
+            },
+            "totalUnits": 42,
+            "averageTicket": 110852
+          },
+          {
+            "date": "2024-06",
+            "metrics": {
+              "Tienda Vasanna": 6543500
+            },
+            "totalUnits": 61,
+            "averageTicket": 107270
+          },
+          {
+            "date": "2024-07",
+            "metrics": {
+              "Tienda Vasanna": 4871690,
+              "Uroccidente": 2094240
+            },
+            "totalUnits": 66,
+            "averageTicket": 105544
+          },
+          {
+            "date": "2024-08",
+            "metrics": {
+              "Tienda Vasanna": 2999280,
+              "Uroccidente": 6041200
+            },
+            "totalUnits": 91,
+            "averageTicket": 99346
+          },
+          {
+            "date": "2024-09",
+            "metrics": {
+              "Tienda Vasanna": 3477250,
+              "Uroccidente": 3756640
+            },
+            "totalUnits": 72,
+            "averageTicket": 100471
+          },
+          {
+            "date": "2024-10",
+            "metrics": {
+              "Tienda Vasanna": 4181440,
+              "Uroccidente": 6475760
+            },
+            "totalUnits": 110,
+            "averageTicket": 96884
+          },
+          {
+            "date": "2024-11",
+            "metrics": {
+              "Tienda Vasanna": 5215949,
+              "Uroccidente": 9526000
+            },
+            "totalUnits": 162,
+            "averageTicket": 91000
+          },
+          {
+            "date": "2024-12",
+            "metrics": {
+              "Tienda Vasanna": 3926220,
+              "Uroccidente": 5833040
+            },
+            "totalUnits": 102,
+            "averageTicket": 95679
+          },
+          {
+            "date": "2025-01",
+            "metrics": {
+              "Tienda Vasanna": 2472700,
+              "Uroccidente": 8883280
+            },
+            "totalUnits": 120,
+            "averageTicket": 94633
+          },
+          {
+            "date": "2025-02",
+            "metrics": {
+              "Tienda Vasanna": 3530450,
+              "Uroccidente": 8118110,
+              "Dr Mama": 941556,
+              "Algia": 642090
+            },
+            "totalUnits": 158,
+            "averageTicket": 83748
+          },
+          {
+            "date": "2025-03",
+            "metrics": {
+              "Tienda Vasanna": 1548591,
+              "Uroccidente": 6723680,
+              "Dr Mama": 5353271,
+              "Algia": 535075
+            },
+            "totalUnits": 151,
+            "averageTicket": 93779
+          },
+          {
+            "date": "2025-04",
+            "metrics": {
+              "Tienda Vasanna": 2724300,
+              "Uroccidente": 7412880,
+              "Dr Mama": 4567024,
+              "Algia": 428060
+            },
+            "totalUnits": 150,
+            "averageTicket": 100882
+          },
+          {
+            "date": "2025-05",
+            "metrics": {
+              "Tienda Vasanna": 2994585,
+              "Uroccidente": 8111200,
+              "Dr Mama": 4882493,
+              "Algia": 428060
+            },
+            "totalUnits": 169,
+            "averageTicket": 97138
+          },
+          {
+            "date": "2025-06",
+            "metrics": {
+              "Tienda Vasanna": 5027000,
+              "Uroccidente": 7096240,
+              "Dr Mama": 1938860,
+              "Algia": 535075
+            },
+            "totalUnits": 138,
+            "averageTicket": 105777
+          },
+          {
+            "date": "2025-07",
+            "metrics": {
+              "Tienda Vasanna": 5969030,
+              "Uroccidente": 9103920,
+              "Dr Mama": 6105792,
+              "Algia": 321045
+            },
+            "totalUnits": 229,
+            "averageTicket": 93886
+          },
+          {
+            "date": "2025-08",
+            "metrics": {
+              "Tienda Vasanna": 5016151,
+              "Uroccidente": 7513600,
+              "Dr Mama": 4162389,
+              "Algia": 1391195
+            },
+            "totalUnits": 178,
+            "averageTicket": 101592
+          },
+          {
+            "date": "2025-09",
+            "metrics": {
+              "Tienda Vasanna": 8807751,
+              "Uroccidente": 5336830,
+              "Dr Mama": 3131121,
+              "Drs. Independientes": 1036150
+            },
+            "totalUnits": 193,
+            "averageTicket": 94880
+          },
+          {
+            "date": "2025-10",
+            "metrics": {
+              "Tienda Vasanna": 6081201,
+              "Uroccidente": 6575120,
+              "Dr Mama": 7681520,
+              "Drs. Independientes": 635290
+            },
+            "totalUnits": 207,
+            "averageTicket": 101319
+          },
+          {
+            "date": "2025-11",
+            "metrics": {
+              "Tienda Vasanna": 8082120,
+              "Uroccidente": 4350630,
+              "Dr Mama": 1836185,
+              "Drs. Independientes": 1457000
+            },
+            "totalUnits": 209,
+            "averageTicket": 75244
+          },
+          {
+            "date": "2025-12",
+            "metrics": {
+              "Tienda Vasanna": 4761205,
+              "Uroccidente": 4395398,
+              "Dr Mama": 1357202
+            },
+            "totalUnits": 130,
+            "averageTicket": 80875
+          },
+          {
+            "date": "2026-01",
+            "metrics": {
+              "Tienda Vasanna": 6478020,
+              "Uroccidente": 5377568,
+              "Dr Mama": 5551130
+            },
+            "totalUnits": 210,
+            "averageTicket": 82889
+          },
+          {
+            "date": "2026-02",
+            "metrics": {
+              "Tienda Vasanna": 7519319,
+              "Uroccidente": 4680960,
+              "Dr Mama": 4616304
+            },
+            "totalUnits": 159,
+            "averageTicket": 105765
+          }
+        ],
+        "win_rate_by_source": [
+          {
+            "source": "Google Ads",
+            "channelType": "advertising",
+            "win_rate": 35,
+            "total_revenue": 24800000,
+            "roi": 312
+          },
+          {
+            "source": "WhatsApp",
+            "channelType": "sales",
+            "win_rate": 42,
+            "total_revenue": 18200000,
+            "roi": 284
+          },
+          {
+            "source": "Meta Ads",
+            "channelType": "advertising",
+            "win_rate": 18,
+            "total_revenue": 15600000,
+            "roi": 156
+          },
+          {
+            "source": "Instagram Organic",
+            "channelType": "sales",
+            "win_rate": 28,
+            "total_revenue": 8400000,
+            "roi": 210
+          },
+          {
+            "source": "Email Marketing",
+            "channelType": "sales",
+            "win_rate": 22,
+            "total_revenue": 6800000,
+            "roi": 175
+          },
+          {
+            "source": "TikTok Ads",
+            "channelType": "advertising",
+            "win_rate": 12,
+            "total_revenue": 5200000,
+            "roi": 98
+          },
+          {
+            "source": "Hola q precio tiene?",
+            "channelType": "sales",
+            "win_rate": 0,
+            "total_revenue": 0,
+            "roi": 0
+          }
+        ],
+        "cluster_data": [
+          {
+            "id": "SYbzfbyJIBYIDOAZJCM6",
+            "x_engagement": 10,
+            "y_value": 0,
+            "category": "Hola q precio tiene?",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-1",
+            "x_engagement": 72,
+            "y_value": 3200000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-2",
+            "x_engagement": 55,
+            "y_value": 1800000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-3",
+            "x_engagement": 81,
+            "y_value": 4500000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-4",
+            "x_engagement": 38,
+            "y_value": 750000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-5",
+            "x_engagement": 63,
+            "y_value": 2100000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-6",
+            "x_engagement": 88,
+            "y_value": 6800000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-7",
+            "x_engagement": 76,
+            "y_value": 5200000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-8",
+            "x_engagement": 92,
+            "y_value": 8100000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-9",
+            "x_engagement": 61,
+            "y_value": 2800000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-10",
+            "x_engagement": 47,
+            "y_value": 1500000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-11",
+            "x_engagement": 96,
+            "y_value": 3800000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-12",
+            "x_engagement": 85,
+            "y_value": 2900000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-13",
+            "x_engagement": 70,
+            "y_value": 1100000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-14",
+            "x_engagement": 91,
+            "y_value": 4200000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-15",
+            "x_engagement": 94,
+            "y_value": 1200000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-16",
+            "x_engagement": 87,
+            "y_value": 850000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-17",
+            "x_engagement": 78,
+            "y_value": 1500000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-18",
+            "x_engagement": 82,
+            "y_value": 980000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-19",
+            "x_engagement": 58,
+            "y_value": 1400000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-20",
+            "x_engagement": 41,
+            "y_value": 600000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-21",
+            "x_engagement": 67,
+            "y_value": 2200000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-22",
+            "x_engagement": 29,
+            "y_value": 400000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-23",
+            "x_engagement": 32,
+            "y_value": 1800000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-24",
+            "x_engagement": 24,
+            "y_value": 900000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-25",
+            "x_engagement": 19,
+            "y_value": 650000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "open"
+          }
+        ],
+        "pipeline_value_by_stage": [
+          {
+            "stage": "Interesado💫",
+            "value": 0
+          },
+          {
+            "stage": "Unknown Stage",
+            "value": 44737106
+          }
+        ]
+      },
+      "products": [
+        {
+          "name": "Hid. Vag. +50 / 50ml",
+          "sku": "HV+50-50",
+          "revenue": 116092361,
+          "image": "product-watch",
+          "change": "+413%",
+          "changeType": "increase"
+        },
+        {
+          "name": "Hid. Vag. -50 / 50ml",
+          "sku": "HV-50-50",
+          "revenue": 61683612,
+          "image": "product-earbuds",
+          "change": "-65%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Loc. Limp. Syndet /50ml",
+          "sku": "LS-50",
+          "revenue": 46354989,
+          "image": "product-mat",
+          "change": "-28%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Hid. Vag. +50 / 30ml",
+          "sku": "HV+50-30",
+          "revenue": 28493684,
+          "image": "product-watch",
+          "change": "-74%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Hid. Vag. -50 / 30ml",
+          "sku": "HV-50-30",
+          "revenue": 18115624,
+          "image": "product-earbuds",
+          "change": "-69%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Loc. Limp. Syndet /30ml",
+          "sku": "LS-30",
+          "revenue": 10060562,
+          "image": "product-mat",
+          "change": "-18%",
+          "changeType": "decrease"
+        }
+      ],
+      "raw_summary_for_ai": {
+        "top_source": "Direct",
+        "worst_funnel_stage": "Comprador🎉"
+      }
+    }
+  },
+  "context": {
+    "locationId": "PLsKcTpoijAF5iHuqikq",
+    "userToken": "default_token"
+  }
+}
+
+================================================================================
+TESTING RANGE: 1y
+Date range: 2025-04-08 to 2026-04-08
+================================================================================
+
+--- KPIs ---
+{
+  "total_revenue": 170344659,
+  "total_leads": 17,
+  "leads_chart_status": "ok",
+  "won_deals": 37,
+  "social_reach": 0,
+  "social_impressions": 0
+}
+
+--- Funnel ---
+[
+  {
+    "stage": "Comprador🎉",
+    "value": 0,
+    "previous_value": 1,
+    "drop_off_percentage": 100,
+    "change": "-100%",
+    "changeType": "decrease",
+    "meta": "1 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  },
+  {
+    "stage": "Interesado💫",
+    "value": 1,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "+1",
+    "changeType": "increase",
+    "meta": "Top of funnel",
+    "paid_count": 0,
+    "organic_count": 1
+  },
+  {
+    "stage": "Frío🥶",
+    "value": 0,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "0%",
+    "changeType": "increase",
+    "meta": "0 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  },
+  {
+    "stage": "Seguimiento⭐",
+    "value": 0,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "0%",
+    "changeType": "increase",
+    "meta": "0 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  }
+]
+
+--- SalesByChannel ---
+[
+  {
+    "label": "Meta Ads",
+    "value": 142,
+    "channelType": "advertising"
+  },
+  {
+    "label": "Google Ads",
+    "value": 98,
+    "channelType": "advertising"
+  },
+  {
+    "label": "WhatsApp",
+    "value": 87,
+    "channelType": "sales"
+  },
+  {
+    "label": "Instagram Organic",
+    "value": 63,
+    "channelType": "sales"
+  },
+  {
+    "label": "TikTok Ads",
+    "value": 41,
+    "channelType": "advertising"
+  },
+  {
+    "label": "Email Marketing",
+    "value": 35,
+    "channelType": "sales"
+  },
+  {
+    "label": "Voice AI Chat Widget",
+    "value": 1,
+    "channelType": "sales"
+  }
+]
+
+--- Lead Conversion Trends ---
+  Total months: 22
+[
+  {
+    "date": "2024-05",
+    "Tienda Vasanna": 4655800
+  },
+  {
+    "date": "2024-06",
+    "Tienda Vasanna": 6543500
+  },
+  {
+    "date": "2024-07",
+    "Tienda Vasanna": 4871690,
+    "Uroccidente": 2094240
+  },
+  {
+    "date": "2024-08",
+    "Tienda Vasanna": 2999280,
+    "Uroccidente": 6041200
+  },
+  {
+    "date": "2024-09",
+    "Tienda Vasanna": 3477250,
+    "Uroccidente": 3756640
+  },
+  {
+    "date": "2024-10",
+    "Tienda Vasanna": 4181440,
+    "Uroccidente": 6475760
+  },
+  {
+    "date": "2024-11",
+    "Tienda Vasanna": 5215949,
+    "Uroccidente": 9526000
+  },
+  {
+    "date": "2024-12",
+    "Tienda Vasanna": 3926220,
+    "Uroccidente": 5833040
+  },
+  {
+    "date": "2025-01",
+    "Tienda Vasanna": 2472700,
+    "Uroccidente": 8883280
+  },
+  {
+    "date": "2025-02",
+    "Tienda Vasanna": 3530450,
+    "Uroccidente": 8118110,
+    "Dr Mama": 941556,
+    "Algia": 642090
+  },
+  {
+    "date": "2025-03",
+    "Tienda Vasanna": 1548591,
+    "Uroccidente": 6723680,
+    "Dr Mama": 5353271,
+    "Algia": 535075
+  },
+  {
+    "date": "2025-04",
+    "Tienda Vasanna": 2724300,
+    "Uroccidente": 7412880,
+    "Dr Mama": 4567024,
+    "Algia": 428060
+  },
+  {
+    "date": "2025-05",
+    "Tienda Vasanna": 2994585,
+    "Uroccidente": 8111200,
+    "Dr Mama": 4882493,
+    "Algia": 428060
+  },
+  {
+    "date": "2025-06",
+    "Tienda Vasanna": 5027000,
+    "Uroccidente": 7096240,
+    "Dr Mama": 1938860,
+    "Algia": 535075
+  },
+  {
+    "date": "2025-07",
+    "Tienda Vasanna": 5969030,
+    "Uroccidente": 9103920,
+    "Dr Mama": 6105792,
+    "Algia": 321045
+  },
+  {
+    "date": "2025-08",
+    "Tienda Vasanna": 5016151,
+    "Uroccidente": 7513600,
+    "Dr Mama": 4162389,
+    "Algia": 1391195
+  },
+  {
+    "date": "2025-09",
+    "Tienda Vasanna": 8807751,
+    "Uroccidente": 5336830,
+    "Dr Mama": 3131121,
+    "Drs. Independientes": 1036150
+  },
+  {
+    "date": "2025-10",
+    "Tienda Vasanna": 6081201,
+    "Uroccidente": 6575120,
+    "Dr Mama": 7681520,
+    "Drs. Independientes": 635290
+  },
+  {
+    "date": "2025-11",
+    "Tienda Vasanna": 8082120,
+    "Uroccidente": 4350630,
+    "Dr Mama": 1836185,
+    "Drs. Independientes": 1457000
+  },
+  {
+    "date": "2025-12",
+    "Tienda Vasanna": 4761205,
+    "Uroccidente": 4395398,
+    "Dr Mama": 1357202
+  },
+  {
+    "date": "2026-01",
+    "Tienda Vasanna": 6478020,
+    "Uroccidente": 5377568,
+    "Dr Mama": 5551130
+  },
+  {
+    "date": "2026-02",
+    "Tienda Vasanna": 7519319,
+    "Uroccidente": 4680960,
+    "Dr Mama": 4616304
+  }
+]
+
+--- Cluster Data ---
+  Total points: 26
+  First 3: [
+  {
+    "id": "SYbzfbyJIBYIDOAZJCM6",
+    "x_engagement": 10,
+    "y_value": 0,
+    "category": "Hola q precio tiene?",
+    "channelType": "sales",
+    "status": "open"
+  },
+  {
+    "id": "dc-1",
+    "x_engagement": 72,
+    "y_value": 3200000,
+    "category": "Meta Ads",
+    "channelType": "advertising",
+    "status": "won"
+  },
+  {
+    "id": "dc-2",
+    "x_engagement": 55,
+    "y_value": 1800000,
+    "category": "Meta Ads",
+    "channelType": "advertising",
+    "status": "won"
+  }
+]
+
+--- Win Rate By Source ---
+[
+  {
+    "source": "Google Ads",
+    "channelType": "advertising",
+    "win_rate": 35,
+    "total_revenue": 24800000,
+    "roi": 312
+  },
+  {
+    "source": "WhatsApp",
+    "channelType": "sales",
+    "win_rate": 42,
+    "total_revenue": 18200000,
+    "roi": 284
+  },
+  {
+    "source": "Meta Ads",
+    "channelType": "advertising",
+    "win_rate": 18,
+    "total_revenue": 15600000,
+    "roi": 156
+  },
+  {
+    "source": "Instagram Organic",
+    "channelType": "sales",
+    "win_rate": 28,
+    "total_revenue": 8400000,
+    "roi": 210
+  },
+  {
+    "source": "Email Marketing",
+    "channelType": "sales",
+    "win_rate": 22,
+    "total_revenue": 6800000,
+    "roi": 175
+  },
+  {
+    "source": "TikTok Ads",
+    "channelType": "advertising",
+    "win_rate": 12,
+    "total_revenue": 5200000,
+    "roi": 98
+  },
+  {
+    "source": "Hola q precio tiene?",
+    "channelType": "sales",
+    "win_rate": 0,
+    "total_revenue": 0,
+    "roi": 0
+  }
+]
+
+--- Pipeline Value ---
+[
+  {
+    "stage": "Interesado💫",
+    "value": 0
+  },
+  {
+    "stage": "Unknown Stage",
+    "value": 170344659
+  }
+]
+
+--- Products ---
+[
+  {
+    "name": "Hid. Vag. +50 / 50ml",
+    "sku": "HV+50-50",
+    "revenue": 116092361,
+    "image": "product-watch",
+    "change": "+413%",
+    "changeType": "increase"
+  },
+  {
+    "name": "Hid. Vag. -50 / 50ml",
+    "sku": "HV-50-50",
+    "revenue": 61683612,
+    "image": "product-earbuds",
+    "change": "-65%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Loc. Limp. Syndet /50ml",
+    "sku": "LS-50",
+    "revenue": 46354989,
+    "image": "product-mat",
+    "change": "-28%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Hid. Vag. +50 / 30ml",
+    "sku": "HV+50-30",
+    "revenue": 28493684,
+    "image": "product-watch",
+    "change": "-74%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Hid. Vag. -50 / 30ml",
+    "sku": "HV-50-30",
+    "revenue": 18115624,
+    "image": "product-earbuds",
+    "change": "-69%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Loc. Limp. Syndet /30ml",
+    "sku": "LS-30",
+    "revenue": 10060562,
+    "image": "product-mat",
+    "change": "-18%",
+    "changeType": "decrease"
+  }
+]
+
+--- Intelligence Report ---
+{
+  "rawData": {
+    "action": "GET_DASHBOARD",
+    "data": {
+      "kpis": {
+        "total_revenue": 170344659,
+        "total_leads": 17,
+        "leads_chart_status": "ok",
+        "won_deals": 37,
+        "social_reach": 0,
+        "social_impressions": 0
+      },
+      "charts": {
+        "sales_funnel": [
+          {
+            "stage": "Comprador🎉",
+            "value": 0,
+            "previous_value": 1,
+            "drop_off_percentage": 100,
+            "change": "-100%",
+            "changeType": "decrease",
+            "meta": "1 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          },
+          {
+            "stage": "Interesado💫",
+            "value": 1,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "+1",
+            "changeType": "increase",
+            "meta": "Top of funnel",
+            "paid_count": 0,
+            "organic_count": 1
+          },
+          {
+            "stage": "Frío🥶",
+            "value": 0,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "0%",
+            "changeType": "increase",
+            "meta": "0 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          },
+          {
+            "stage": "Seguimiento⭐",
+            "value": 0,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "0%",
+            "changeType": "increase",
+            "meta": "0 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          }
+        ],
+        "leads_by_source": [
+          {
+            "label": "Meta Ads",
+            "value": 142,
+            "channelType": "advertising"
+          },
+          {
+            "label": "Google Ads",
+            "value": 98,
+            "channelType": "advertising"
+          },
+          {
+            "label": "WhatsApp",
+            "value": 87,
+            "channelType": "sales"
+          },
+          {
+            "label": "Instagram Organic",
+            "value": 63,
+            "channelType": "sales"
+          },
+          {
+            "label": "TikTok Ads",
+            "value": 41,
+            "channelType": "advertising"
+          },
+          {
+            "label": "Email Marketing",
+            "value": 35,
+            "channelType": "sales"
+          },
+          {
+            "label": "Voice AI Chat Widget",
+            "value": 1,
+            "channelType": "sales"
+          }
+        ],
+        "revenue_trend": [
+          {
+            "date": "2025-05-01",
+            "value": 16416338
+          },
+          {
+            "date": "2025-06-01",
+            "value": 14597175
+          },
+          {
+            "date": "2025-07-01",
+            "value": 21499787
+          },
+          {
+            "date": "2025-08-01",
+            "value": 18083335
+          },
+          {
+            "date": "2025-09-01",
+            "value": 18311852
+          },
+          {
+            "date": "2025-10-01",
+            "value": 20973131
+          },
+          {
+            "date": "2025-11-01",
+            "value": 15725935
+          },
+          {
+            "date": "2025-12-01",
+            "value": 10513805
+          },
+          {
+            "date": "2026-01-01",
+            "value": 17406718
+          },
+          {
+            "date": "2026-02-01",
+            "value": 16816583
+          }
+        ],
+        "leads_chart_data": [
+          {
+            "date": "2026-04-06",
+            "value": 12
+          },
+          {
+            "date": "2026-04-07",
+            "value": 5
+          }
+        ],
+        "lead_conversion_trends": [
+          {
+            "date": "2024-05",
+            "Tienda Vasanna": 4655800
+          },
+          {
+            "date": "2024-06",
+            "Tienda Vasanna": 6543500
+          },
+          {
+            "date": "2024-07",
+            "Tienda Vasanna": 4871690,
+            "Uroccidente": 2094240
+          },
+          {
+            "date": "2024-08",
+            "Tienda Vasanna": 2999280,
+            "Uroccidente": 6041200
+          },
+          {
+            "date": "2024-09",
+            "Tienda Vasanna": 3477250,
+            "Uroccidente": 3756640
+          },
+          {
+            "date": "2024-10",
+            "Tienda Vasanna": 4181440,
+            "Uroccidente": 6475760
+          },
+          {
+            "date": "2024-11",
+            "Tienda Vasanna": 5215949,
+            "Uroccidente": 9526000
+          },
+          {
+            "date": "2024-12",
+            "Tienda Vasanna": 3926220,
+            "Uroccidente": 5833040
+          },
+          {
+            "date": "2025-01",
+            "Tienda Vasanna": 2472700,
+            "Uroccidente": 8883280
+          },
+          {
+            "date": "2025-02",
+            "Tienda Vasanna": 3530450,
+            "Uroccidente": 8118110,
+            "Dr Mama": 941556,
+            "Algia": 642090
+          },
+          {
+            "date": "2025-03",
+            "Tienda Vasanna": 1548591,
+            "Uroccidente": 6723680,
+            "Dr Mama": 5353271,
+            "Algia": 535075
+          },
+          {
+            "date": "2025-04",
+            "Tienda Vasanna": 2724300,
+            "Uroccidente": 7412880,
+            "Dr Mama": 4567024,
+            "Algia": 428060
+          },
+          {
+            "date": "2025-05",
+            "Tienda Vasanna": 2994585,
+            "Uroccidente": 8111200,
+            "Dr Mama": 4882493,
+            "Algia": 428060
+          },
+          {
+            "date": "2025-06",
+            "Tienda Vasanna": 5027000,
+            "Uroccidente": 7096240,
+            "Dr Mama": 1938860,
+            "Algia": 535075
+          },
+          {
+            "date": "2025-07",
+            "Tienda Vasanna": 5969030,
+            "Uroccidente": 9103920,
+            "Dr Mama": 6105792,
+            "Algia": 321045
+          },
+          {
+            "date": "2025-08",
+            "Tienda Vasanna": 5016151,
+            "Uroccidente": 7513600,
+            "Dr Mama": 4162389,
+            "Algia": 1391195
+          },
+          {
+            "date": "2025-09",
+            "Tienda Vasanna": 8807751,
+            "Uroccidente": 5336830,
+            "Dr Mama": 3131121,
+            "Drs. Independientes": 1036150
+          },
+          {
+            "date": "2025-10",
+            "Tienda Vasanna": 6081201,
+            "Uroccidente": 6575120,
+            "Dr Mama": 7681520,
+            "Drs. Independientes": 635290
+          },
+          {
+            "date": "2025-11",
+            "Tienda Vasanna": 8082120,
+            "Uroccidente": 4350630,
+            "Dr Mama": 1836185,
+            "Drs. Independientes": 1457000
+          },
+          {
+            "date": "2025-12",
+            "Tienda Vasanna": 4761205,
+            "Uroccidente": 4395398,
+            "Dr Mama": 1357202
+          },
+          {
+            "date": "2026-01",
+            "Tienda Vasanna": 6478020,
+            "Uroccidente": 5377568,
+            "Dr Mama": 5551130
+          },
+          {
+            "date": "2026-02",
+            "Tienda Vasanna": 7519319,
+            "Uroccidente": 4680960,
+            "Dr Mama": 4616304
+          }
+        ],
+        "sales_volume_trends": [
+          {
+            "date": "2024-05",
+            "metrics": {
+              "Tienda Vasanna": 4655800
+            },
+            "totalUnits": 42,
+            "averageTicket": 110852
+          },
+          {
+            "date": "2024-06",
+            "metrics": {
+              "Tienda Vasanna": 6543500
+            },
+            "totalUnits": 61,
+            "averageTicket": 107270
+          },
+          {
+            "date": "2024-07",
+            "metrics": {
+              "Tienda Vasanna": 4871690,
+              "Uroccidente": 2094240
+            },
+            "totalUnits": 66,
+            "averageTicket": 105544
+          },
+          {
+            "date": "2024-08",
+            "metrics": {
+              "Tienda Vasanna": 2999280,
+              "Uroccidente": 6041200
+            },
+            "totalUnits": 91,
+            "averageTicket": 99346
+          },
+          {
+            "date": "2024-09",
+            "metrics": {
+              "Tienda Vasanna": 3477250,
+              "Uroccidente": 3756640
+            },
+            "totalUnits": 72,
+            "averageTicket": 100471
+          },
+          {
+            "date": "2024-10",
+            "metrics": {
+              "Tienda Vasanna": 4181440,
+              "Uroccidente": 6475760
+            },
+            "totalUnits": 110,
+            "averageTicket": 96884
+          },
+          {
+            "date": "2024-11",
+            "metrics": {
+              "Tienda Vasanna": 5215949,
+              "Uroccidente": 9526000
+            },
+            "totalUnits": 162,
+            "averageTicket": 91000
+          },
+          {
+            "date": "2024-12",
+            "metrics": {
+              "Tienda Vasanna": 3926220,
+              "Uroccidente": 5833040
+            },
+            "totalUnits": 102,
+            "averageTicket": 95679
+          },
+          {
+            "date": "2025-01",
+            "metrics": {
+              "Tienda Vasanna": 2472700,
+              "Uroccidente": 8883280
+            },
+            "totalUnits": 120,
+            "averageTicket": 94633
+          },
+          {
+            "date": "2025-02",
+            "metrics": {
+              "Tienda Vasanna": 3530450,
+              "Uroccidente": 8118110,
+              "Dr Mama": 941556,
+              "Algia": 642090
+            },
+            "totalUnits": 158,
+            "averageTicket": 83748
+          },
+          {
+            "date": "2025-03",
+            "metrics": {
+              "Tienda Vasanna": 1548591,
+              "Uroccidente": 6723680,
+              "Dr Mama": 5353271,
+              "Algia": 535075
+            },
+            "totalUnits": 151,
+            "averageTicket": 93779
+          },
+          {
+            "date": "2025-04",
+            "metrics": {
+              "Tienda Vasanna": 2724300,
+              "Uroccidente": 7412880,
+              "Dr Mama": 4567024,
+              "Algia": 428060
+            },
+            "totalUnits": 150,
+            "averageTicket": 100882
+          },
+          {
+            "date": "2025-05",
+            "metrics": {
+              "Tienda Vasanna": 2994585,
+              "Uroccidente": 8111200,
+              "Dr Mama": 4882493,
+              "Algia": 428060
+            },
+            "totalUnits": 169,
+            "averageTicket": 97138
+          },
+          {
+            "date": "2025-06",
+            "metrics": {
+              "Tienda Vasanna": 5027000,
+              "Uroccidente": 7096240,
+              "Dr Mama": 1938860,
+              "Algia": 535075
+            },
+            "totalUnits": 138,
+            "averageTicket": 105777
+          },
+          {
+            "date": "2025-07",
+            "metrics": {
+              "Tienda Vasanna": 5969030,
+              "Uroccidente": 9103920,
+              "Dr Mama": 6105792,
+              "Algia": 321045
+            },
+            "totalUnits": 229,
+            "averageTicket": 93886
+          },
+          {
+            "date": "2025-08",
+            "metrics": {
+              "Tienda Vasanna": 5016151,
+              "Uroccidente": 7513600,
+              "Dr Mama": 4162389,
+              "Algia": 1391195
+            },
+            "totalUnits": 178,
+            "averageTicket": 101592
+          },
+          {
+            "date": "2025-09",
+            "metrics": {
+              "Tienda Vasanna": 8807751,
+              "Uroccidente": 5336830,
+              "Dr Mama": 3131121,
+              "Drs. Independientes": 1036150
+            },
+            "totalUnits": 193,
+            "averageTicket": 94880
+          },
+          {
+            "date": "2025-10",
+            "metrics": {
+              "Tienda Vasanna": 6081201,
+              "Uroccidente": 6575120,
+              "Dr Mama": 7681520,
+              "Drs. Independientes": 635290
+            },
+            "totalUnits": 207,
+            "averageTicket": 101319
+          },
+          {
+            "date": "2025-11",
+            "metrics": {
+              "Tienda Vasanna": 8082120,
+              "Uroccidente": 4350630,
+              "Dr Mama": 1836185,
+              "Drs. Independientes": 1457000
+            },
+            "totalUnits": 209,
+            "averageTicket": 75244
+          },
+          {
+            "date": "2025-12",
+            "metrics": {
+              "Tienda Vasanna": 4761205,
+              "Uroccidente": 4395398,
+              "Dr Mama": 1357202
+            },
+            "totalUnits": 130,
+            "averageTicket": 80875
+          },
+          {
+            "date": "2026-01",
+            "metrics": {
+              "Tienda Vasanna": 6478020,
+              "Uroccidente": 5377568,
+              "Dr Mama": 5551130
+            },
+            "totalUnits": 210,
+            "averageTicket": 82889
+          },
+          {
+            "date": "2026-02",
+            "metrics": {
+              "Tienda Vasanna": 7519319,
+              "Uroccidente": 4680960,
+              "Dr Mama": 4616304
+            },
+            "totalUnits": 159,
+            "averageTicket": 105765
+          }
+        ],
+        "win_rate_by_source": [
+          {
+            "source": "Google Ads",
+            "channelType": "advertising",
+            "win_rate": 35,
+            "total_revenue": 24800000,
+            "roi": 312
+          },
+          {
+            "source": "WhatsApp",
+            "channelType": "sales",
+            "win_rate": 42,
+            "total_revenue": 18200000,
+            "roi": 284
+          },
+          {
+            "source": "Meta Ads",
+            "channelType": "advertising",
+            "win_rate": 18,
+            "total_revenue": 15600000,
+            "roi": 156
+          },
+          {
+            "source": "Instagram Organic",
+            "channelType": "sales",
+            "win_rate": 28,
+            "total_revenue": 8400000,
+            "roi": 210
+          },
+          {
+            "source": "Email Marketing",
+            "channelType": "sales",
+            "win_rate": 22,
+            "total_revenue": 6800000,
+            "roi": 175
+          },
+          {
+            "source": "TikTok Ads",
+            "channelType": "advertising",
+            "win_rate": 12,
+            "total_revenue": 5200000,
+            "roi": 98
+          },
+          {
+            "source": "Hola q precio tiene?",
+            "channelType": "sales",
+            "win_rate": 0,
+            "total_revenue": 0,
+            "roi": 0
+          }
+        ],
+        "cluster_data": [
+          {
+            "id": "SYbzfbyJIBYIDOAZJCM6",
+            "x_engagement": 10,
+            "y_value": 0,
+            "category": "Hola q precio tiene?",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-1",
+            "x_engagement": 72,
+            "y_value": 3200000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-2",
+            "x_engagement": 55,
+            "y_value": 1800000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-3",
+            "x_engagement": 81,
+            "y_value": 4500000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-4",
+            "x_engagement": 38,
+            "y_value": 750000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-5",
+            "x_engagement": 63,
+            "y_value": 2100000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-6",
+            "x_engagement": 88,
+            "y_value": 6800000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-7",
+            "x_engagement": 76,
+            "y_value": 5200000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-8",
+            "x_engagement": 92,
+            "y_value": 8100000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-9",
+            "x_engagement": 61,
+            "y_value": 2800000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-10",
+            "x_engagement": 47,
+            "y_value": 1500000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-11",
+            "x_engagement": 96,
+            "y_value": 3800000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-12",
+            "x_engagement": 85,
+            "y_value": 2900000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-13",
+            "x_engagement": 70,
+            "y_value": 1100000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-14",
+            "x_engagement": 91,
+            "y_value": 4200000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-15",
+            "x_engagement": 94,
+            "y_value": 1200000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-16",
+            "x_engagement": 87,
+            "y_value": 850000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-17",
+            "x_engagement": 78,
+            "y_value": 1500000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-18",
+            "x_engagement": 82,
+            "y_value": 980000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-19",
+            "x_engagement": 58,
+            "y_value": 1400000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-20",
+            "x_engagement": 41,
+            "y_value": 600000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-21",
+            "x_engagement": 67,
+            "y_value": 2200000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-22",
+            "x_engagement": 29,
+            "y_value": 400000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-23",
+            "x_engagement": 32,
+            "y_value": 1800000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-24",
+            "x_engagement": 24,
+            "y_value": 900000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-25",
+            "x_engagement": 19,
+            "y_value": 650000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "open"
+          }
+        ],
+        "pipeline_value_by_stage": [
+          {
+            "stage": "Interesado💫",
+            "value": 0
+          },
+          {
+            "stage": "Unknown Stage",
+            "value": 170344659
+          }
+        ]
+      },
+      "products": [
+        {
+          "name": "Hid. Vag. +50 / 50ml",
+          "sku": "HV+50-50",
+          "revenue": 116092361,
+          "image": "product-watch",
+          "change": "+413%",
+          "changeType": "increase"
+        },
+        {
+          "name": "Hid. Vag. -50 / 50ml",
+          "sku": "HV-50-50",
+          "revenue": 61683612,
+          "image": "product-earbuds",
+          "change": "-65%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Loc. Limp. Syndet /50ml",
+          "sku": "LS-50",
+          "revenue": 46354989,
+          "image": "product-mat",
+          "change": "-28%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Hid. Vag. +50 / 30ml",
+          "sku": "HV+50-30",
+          "revenue": 28493684,
+          "image": "product-watch",
+          "change": "-74%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Hid. Vag. -50 / 30ml",
+          "sku": "HV-50-30",
+          "revenue": 18115624,
+          "image": "product-earbuds",
+          "change": "-69%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Loc. Limp. Syndet /30ml",
+          "sku": "LS-30",
+          "revenue": 10060562,
+          "image": "product-mat",
+          "change": "-18%",
+          "changeType": "decrease"
+        }
+      ],
+      "raw_summary_for_ai": {
+        "top_source": "Direct",
+        "worst_funnel_stage": "Comprador🎉"
+      }
+    }
+  },
+  "context": {
+    "locationId": "PLsKcTpoijAF5iHuqikq",
+    "userToken": "default_token"
+  }
+}
+
+================================================================================
+TESTING RANGE: all
+Date range: 2020-01-01 to 2026-04-08
+================================================================================
+
+--- KPIs ---
+{
+  "total_revenue": 293823735,
+  "total_leads": 17,
+  "leads_chart_status": "ok",
+  "won_deals": 65,
+  "social_reach": 0,
+  "social_impressions": 0
+}
+
+--- Funnel ---
+[
+  {
+    "stage": "Comprador🎉",
+    "value": 0,
+    "previous_value": 1,
+    "drop_off_percentage": 100,
+    "change": "-100%",
+    "changeType": "decrease",
+    "meta": "1 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  },
+  {
+    "stage": "Interesado💫",
+    "value": 1,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "+1",
+    "changeType": "increase",
+    "meta": "Top of funnel",
+    "paid_count": 0,
+    "organic_count": 1
+  },
+  {
+    "stage": "Frío🥶",
+    "value": 0,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "0%",
+    "changeType": "increase",
+    "meta": "0 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  },
+  {
+    "stage": "Seguimiento⭐",
+    "value": 0,
+    "previous_value": 0,
+    "drop_off_percentage": 0,
+    "change": "0%",
+    "changeType": "increase",
+    "meta": "0 en etapa anterior",
+    "paid_count": 0,
+    "organic_count": 0
+  }
+]
+
+--- SalesByChannel ---
+[
+  {
+    "label": "Meta Ads",
+    "value": 142,
+    "channelType": "advertising"
+  },
+  {
+    "label": "Google Ads",
+    "value": 98,
+    "channelType": "advertising"
+  },
+  {
+    "label": "WhatsApp",
+    "value": 87,
+    "channelType": "sales"
+  },
+  {
+    "label": "Instagram Organic",
+    "value": 63,
+    "channelType": "sales"
+  },
+  {
+    "label": "TikTok Ads",
+    "value": 41,
+    "channelType": "advertising"
+  },
+  {
+    "label": "Email Marketing",
+    "value": 35,
+    "channelType": "sales"
+  },
+  {
+    "label": "Voice AI Chat Widget",
+    "value": 1,
+    "channelType": "sales"
+  }
+]
+
+--- Lead Conversion Trends ---
+  Total months: 22
+[
+  {
+    "date": "2024-05",
+    "Tienda Vasanna": 4655800
+  },
+  {
+    "date": "2024-06",
+    "Tienda Vasanna": 6543500
+  },
+  {
+    "date": "2024-07",
+    "Tienda Vasanna": 4871690,
+    "Uroccidente": 2094240
+  },
+  {
+    "date": "2024-08",
+    "Tienda Vasanna": 2999280,
+    "Uroccidente": 6041200
+  },
+  {
+    "date": "2024-09",
+    "Tienda Vasanna": 3477250,
+    "Uroccidente": 3756640
+  },
+  {
+    "date": "2024-10",
+    "Tienda Vasanna": 4181440,
+    "Uroccidente": 6475760
+  },
+  {
+    "date": "2024-11",
+    "Tienda Vasanna": 5215949,
+    "Uroccidente": 9526000
+  },
+  {
+    "date": "2024-12",
+    "Tienda Vasanna": 3926220,
+    "Uroccidente": 5833040
+  },
+  {
+    "date": "2025-01",
+    "Tienda Vasanna": 2472700,
+    "Uroccidente": 8883280
+  },
+  {
+    "date": "2025-02",
+    "Tienda Vasanna": 3530450,
+    "Uroccidente": 8118110,
+    "Dr Mama": 941556,
+    "Algia": 642090
+  },
+  {
+    "date": "2025-03",
+    "Tienda Vasanna": 1548591,
+    "Uroccidente": 6723680,
+    "Dr Mama": 5353271,
+    "Algia": 535075
+  },
+  {
+    "date": "2025-04",
+    "Tienda Vasanna": 2724300,
+    "Uroccidente": 7412880,
+    "Dr Mama": 4567024,
+    "Algia": 428060
+  },
+  {
+    "date": "2025-05",
+    "Tienda Vasanna": 2994585,
+    "Uroccidente": 8111200,
+    "Dr Mama": 4882493,
+    "Algia": 428060
+  },
+  {
+    "date": "2025-06",
+    "Tienda Vasanna": 5027000,
+    "Uroccidente": 7096240,
+    "Dr Mama": 1938860,
+    "Algia": 535075
+  },
+  {
+    "date": "2025-07",
+    "Tienda Vasanna": 5969030,
+    "Uroccidente": 9103920,
+    "Dr Mama": 6105792,
+    "Algia": 321045
+  },
+  {
+    "date": "2025-08",
+    "Tienda Vasanna": 5016151,
+    "Uroccidente": 7513600,
+    "Dr Mama": 4162389,
+    "Algia": 1391195
+  },
+  {
+    "date": "2025-09",
+    "Tienda Vasanna": 8807751,
+    "Uroccidente": 5336830,
+    "Dr Mama": 3131121,
+    "Drs. Independientes": 1036150
+  },
+  {
+    "date": "2025-10",
+    "Tienda Vasanna": 6081201,
+    "Uroccidente": 6575120,
+    "Dr Mama": 7681520,
+    "Drs. Independientes": 635290
+  },
+  {
+    "date": "2025-11",
+    "Tienda Vasanna": 8082120,
+    "Uroccidente": 4350630,
+    "Dr Mama": 1836185,
+    "Drs. Independientes": 1457000
+  },
+  {
+    "date": "2025-12",
+    "Tienda Vasanna": 4761205,
+    "Uroccidente": 4395398,
+    "Dr Mama": 1357202
+  },
+  {
+    "date": "2026-01",
+    "Tienda Vasanna": 6478020,
+    "Uroccidente": 5377568,
+    "Dr Mama": 5551130
+  },
+  {
+    "date": "2026-02",
+    "Tienda Vasanna": 7519319,
+    "Uroccidente": 4680960,
+    "Dr Mama": 4616304
+  }
+]
+
+--- Cluster Data ---
+  Total points: 26
+  First 3: [
+  {
+    "id": "SYbzfbyJIBYIDOAZJCM6",
+    "x_engagement": 10,
+    "y_value": 0,
+    "category": "Hola q precio tiene?",
+    "channelType": "sales",
+    "status": "open"
+  },
+  {
+    "id": "dc-1",
+    "x_engagement": 72,
+    "y_value": 3200000,
+    "category": "Meta Ads",
+    "channelType": "advertising",
+    "status": "won"
+  },
+  {
+    "id": "dc-2",
+    "x_engagement": 55,
+    "y_value": 1800000,
+    "category": "Meta Ads",
+    "channelType": "advertising",
+    "status": "won"
+  }
+]
+
+--- Win Rate By Source ---
+[
+  {
+    "source": "Google Ads",
+    "channelType": "advertising",
+    "win_rate": 35,
+    "total_revenue": 24800000,
+    "roi": 312
+  },
+  {
+    "source": "WhatsApp",
+    "channelType": "sales",
+    "win_rate": 42,
+    "total_revenue": 18200000,
+    "roi": 284
+  },
+  {
+    "source": "Meta Ads",
+    "channelType": "advertising",
+    "win_rate": 18,
+    "total_revenue": 15600000,
+    "roi": 156
+  },
+  {
+    "source": "Instagram Organic",
+    "channelType": "sales",
+    "win_rate": 28,
+    "total_revenue": 8400000,
+    "roi": 210
+  },
+  {
+    "source": "Email Marketing",
+    "channelType": "sales",
+    "win_rate": 22,
+    "total_revenue": 6800000,
+    "roi": 175
+  },
+  {
+    "source": "TikTok Ads",
+    "channelType": "advertising",
+    "win_rate": 12,
+    "total_revenue": 5200000,
+    "roi": 98
+  },
+  {
+    "source": "Hola q precio tiene?",
+    "channelType": "sales",
+    "win_rate": 0,
+    "total_revenue": 0,
+    "roi": 0
+  }
+]
+
+--- Pipeline Value ---
+[
+  {
+    "stage": "Interesado💫",
+    "value": 0
+  },
+  {
+    "stage": "Unknown Stage",
+    "value": 293823735
+  }
+]
+
+--- Products ---
+[
+  {
+    "name": "Hid. Vag. +50 / 50ml",
+    "sku": "HV+50-50",
+    "revenue": 116092361,
+    "image": "product-watch",
+    "change": "+413%",
+    "changeType": "increase"
+  },
+  {
+    "name": "Hid. Vag. -50 / 50ml",
+    "sku": "HV-50-50",
+    "revenue": 61683612,
+    "image": "product-earbuds",
+    "change": "-65%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Loc. Limp. Syndet /50ml",
+    "sku": "LS-50",
+    "revenue": 46354989,
+    "image": "product-mat",
+    "change": "-28%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Hid. Vag. +50 / 30ml",
+    "sku": "HV+50-30",
+    "revenue": 28493684,
+    "image": "product-watch",
+    "change": "-74%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Hid. Vag. -50 / 30ml",
+    "sku": "HV-50-30",
+    "revenue": 18115624,
+    "image": "product-earbuds",
+    "change": "-69%",
+    "changeType": "decrease"
+  },
+  {
+    "name": "Loc. Limp. Syndet /30ml",
+    "sku": "LS-30",
+    "revenue": 10060562,
+    "image": "product-mat",
+    "change": "-18%",
+    "changeType": "decrease"
+  }
+]
+
+--- Intelligence Report ---
+{
+  "rawData": {
+    "action": "GET_DASHBOARD",
+    "data": {
+      "kpis": {
+        "total_revenue": 293823735,
+        "total_leads": 17,
+        "leads_chart_status": "ok",
+        "won_deals": 65,
+        "social_reach": 0,
+        "social_impressions": 0
+      },
+      "charts": {
+        "sales_funnel": [
+          {
+            "stage": "Comprador🎉",
+            "value": 0,
+            "previous_value": 1,
+            "drop_off_percentage": 100,
+            "change": "-100%",
+            "changeType": "decrease",
+            "meta": "1 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          },
+          {
+            "stage": "Interesado💫",
+            "value": 1,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "+1",
+            "changeType": "increase",
+            "meta": "Top of funnel",
+            "paid_count": 0,
+            "organic_count": 1
+          },
+          {
+            "stage": "Frío🥶",
+            "value": 0,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "0%",
+            "changeType": "increase",
+            "meta": "0 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          },
+          {
+            "stage": "Seguimiento⭐",
+            "value": 0,
+            "previous_value": 0,
+            "drop_off_percentage": 0,
+            "change": "0%",
+            "changeType": "increase",
+            "meta": "0 en etapa anterior",
+            "paid_count": 0,
+            "organic_count": 0
+          }
+        ],
+        "leads_by_source": [
+          {
+            "label": "Meta Ads",
+            "value": 142,
+            "channelType": "advertising"
+          },
+          {
+            "label": "Google Ads",
+            "value": 98,
+            "channelType": "advertising"
+          },
+          {
+            "label": "WhatsApp",
+            "value": 87,
+            "channelType": "sales"
+          },
+          {
+            "label": "Instagram Organic",
+            "value": 63,
+            "channelType": "sales"
+          },
+          {
+            "label": "TikTok Ads",
+            "value": 41,
+            "channelType": "advertising"
+          },
+          {
+            "label": "Email Marketing",
+            "value": 35,
+            "channelType": "sales"
+          },
+          {
+            "label": "Voice AI Chat Widget",
+            "value": 1,
+            "channelType": "sales"
+          }
+        ],
+        "revenue_trend": [
+          {
+            "date": "2024-05-01",
+            "value": 4655800
+          },
+          {
+            "date": "2024-06-01",
+            "value": 6543500
+          },
+          {
+            "date": "2024-07-01",
+            "value": 6965930
+          },
+          {
+            "date": "2024-08-01",
+            "value": 9040480
+          },
+          {
+            "date": "2024-09-01",
+            "value": 7233890
+          },
+          {
+            "date": "2024-10-01",
+            "value": 10657200
+          },
+          {
+            "date": "2024-11-01",
+            "value": 14741949
+          },
+          {
+            "date": "2024-12-01",
+            "value": 9759260
+          },
+          {
+            "date": "2025-01-01",
+            "value": 11355980
+          },
+          {
+            "date": "2025-02-01",
+            "value": 13232206
+          },
+          {
+            "date": "2025-03-01",
+            "value": 14160617
+          },
+          {
+            "date": "2025-04-01",
+            "value": 15132264
+          },
+          {
+            "date": "2025-05-01",
+            "value": 16416338
+          },
+          {
+            "date": "2025-06-01",
+            "value": 14597175
+          },
+          {
+            "date": "2025-07-01",
+            "value": 21499787
+          },
+          {
+            "date": "2025-08-01",
+            "value": 18083335
+          },
+          {
+            "date": "2025-09-01",
+            "value": 18311852
+          },
+          {
+            "date": "2025-10-01",
+            "value": 20973131
+          },
+          {
+            "date": "2025-11-01",
+            "value": 15725935
+          },
+          {
+            "date": "2025-12-01",
+            "value": 10513805
+          },
+          {
+            "date": "2026-01-01",
+            "value": 17406718
+          },
+          {
+            "date": "2026-02-01",
+            "value": 16816583
+          }
+        ],
+        "leads_chart_data": [
+          {
+            "date": "2026-04-06",
+            "value": 12
+          },
+          {
+            "date": "2026-04-07",
+            "value": 5
+          }
+        ],
+        "lead_conversion_trends": [
+          {
+            "date": "2024-05",
+            "Tienda Vasanna": 4655800
+          },
+          {
+            "date": "2024-06",
+            "Tienda Vasanna": 6543500
+          },
+          {
+            "date": "2024-07",
+            "Tienda Vasanna": 4871690,
+            "Uroccidente": 2094240
+          },
+          {
+            "date": "2024-08",
+            "Tienda Vasanna": 2999280,
+            "Uroccidente": 6041200
+          },
+          {
+            "date": "2024-09",
+            "Tienda Vasanna": 3477250,
+            "Uroccidente": 3756640
+          },
+          {
+            "date": "2024-10",
+            "Tienda Vasanna": 4181440,
+            "Uroccidente": 6475760
+          },
+          {
+            "date": "2024-11",
+            "Tienda Vasanna": 5215949,
+            "Uroccidente": 9526000
+          },
+          {
+            "date": "2024-12",
+            "Tienda Vasanna": 3926220,
+            "Uroccidente": 5833040
+          },
+          {
+            "date": "2025-01",
+            "Tienda Vasanna": 2472700,
+            "Uroccidente": 8883280
+          },
+          {
+            "date": "2025-02",
+            "Tienda Vasanna": 3530450,
+            "Uroccidente": 8118110,
+            "Dr Mama": 941556,
+            "Algia": 642090
+          },
+          {
+            "date": "2025-03",
+            "Tienda Vasanna": 1548591,
+            "Uroccidente": 6723680,
+            "Dr Mama": 5353271,
+            "Algia": 535075
+          },
+          {
+            "date": "2025-04",
+            "Tienda Vasanna": 2724300,
+            "Uroccidente": 7412880,
+            "Dr Mama": 4567024,
+            "Algia": 428060
+          },
+          {
+            "date": "2025-05",
+            "Tienda Vasanna": 2994585,
+            "Uroccidente": 8111200,
+            "Dr Mama": 4882493,
+            "Algia": 428060
+          },
+          {
+            "date": "2025-06",
+            "Tienda Vasanna": 5027000,
+            "Uroccidente": 7096240,
+            "Dr Mama": 1938860,
+            "Algia": 535075
+          },
+          {
+            "date": "2025-07",
+            "Tienda Vasanna": 5969030,
+            "Uroccidente": 9103920,
+            "Dr Mama": 6105792,
+            "Algia": 321045
+          },
+          {
+            "date": "2025-08",
+            "Tienda Vasanna": 5016151,
+            "Uroccidente": 7513600,
+            "Dr Mama": 4162389,
+            "Algia": 1391195
+          },
+          {
+            "date": "2025-09",
+            "Tienda Vasanna": 8807751,
+            "Uroccidente": 5336830,
+            "Dr Mama": 3131121,
+            "Drs. Independientes": 1036150
+          },
+          {
+            "date": "2025-10",
+            "Tienda Vasanna": 6081201,
+            "Uroccidente": 6575120,
+            "Dr Mama": 7681520,
+            "Drs. Independientes": 635290
+          },
+          {
+            "date": "2025-11",
+            "Tienda Vasanna": 8082120,
+            "Uroccidente": 4350630,
+            "Dr Mama": 1836185,
+            "Drs. Independientes": 1457000
+          },
+          {
+            "date": "2025-12",
+            "Tienda Vasanna": 4761205,
+            "Uroccidente": 4395398,
+            "Dr Mama": 1357202
+          },
+          {
+            "date": "2026-01",
+            "Tienda Vasanna": 6478020,
+            "Uroccidente": 5377568,
+            "Dr Mama": 5551130
+          },
+          {
+            "date": "2026-02",
+            "Tienda Vasanna": 7519319,
+            "Uroccidente": 4680960,
+            "Dr Mama": 4616304
+          }
+        ],
+        "sales_volume_trends": [
+          {
+            "date": "2024-05",
+            "metrics": {
+              "Tienda Vasanna": 4655800
+            },
+            "totalUnits": 42,
+            "averageTicket": 110852
+          },
+          {
+            "date": "2024-06",
+            "metrics": {
+              "Tienda Vasanna": 6543500
+            },
+            "totalUnits": 61,
+            "averageTicket": 107270
+          },
+          {
+            "date": "2024-07",
+            "metrics": {
+              "Tienda Vasanna": 4871690,
+              "Uroccidente": 2094240
+            },
+            "totalUnits": 66,
+            "averageTicket": 105544
+          },
+          {
+            "date": "2024-08",
+            "metrics": {
+              "Tienda Vasanna": 2999280,
+              "Uroccidente": 6041200
+            },
+            "totalUnits": 91,
+            "averageTicket": 99346
+          },
+          {
+            "date": "2024-09",
+            "metrics": {
+              "Tienda Vasanna": 3477250,
+              "Uroccidente": 3756640
+            },
+            "totalUnits": 72,
+            "averageTicket": 100471
+          },
+          {
+            "date": "2024-10",
+            "metrics": {
+              "Tienda Vasanna": 4181440,
+              "Uroccidente": 6475760
+            },
+            "totalUnits": 110,
+            "averageTicket": 96884
+          },
+          {
+            "date": "2024-11",
+            "metrics": {
+              "Tienda Vasanna": 5215949,
+              "Uroccidente": 9526000
+            },
+            "totalUnits": 162,
+            "averageTicket": 91000
+          },
+          {
+            "date": "2024-12",
+            "metrics": {
+              "Tienda Vasanna": 3926220,
+              "Uroccidente": 5833040
+            },
+            "totalUnits": 102,
+            "averageTicket": 95679
+          },
+          {
+            "date": "2025-01",
+            "metrics": {
+              "Tienda Vasanna": 2472700,
+              "Uroccidente": 8883280
+            },
+            "totalUnits": 120,
+            "averageTicket": 94633
+          },
+          {
+            "date": "2025-02",
+            "metrics": {
+              "Tienda Vasanna": 3530450,
+              "Uroccidente": 8118110,
+              "Dr Mama": 941556,
+              "Algia": 642090
+            },
+            "totalUnits": 158,
+            "averageTicket": 83748
+          },
+          {
+            "date": "2025-03",
+            "metrics": {
+              "Tienda Vasanna": 1548591,
+              "Uroccidente": 6723680,
+              "Dr Mama": 5353271,
+              "Algia": 535075
+            },
+            "totalUnits": 151,
+            "averageTicket": 93779
+          },
+          {
+            "date": "2025-04",
+            "metrics": {
+              "Tienda Vasanna": 2724300,
+              "Uroccidente": 7412880,
+              "Dr Mama": 4567024,
+              "Algia": 428060
+            },
+            "totalUnits": 150,
+            "averageTicket": 100882
+          },
+          {
+            "date": "2025-05",
+            "metrics": {
+              "Tienda Vasanna": 2994585,
+              "Uroccidente": 8111200,
+              "Dr Mama": 4882493,
+              "Algia": 428060
+            },
+            "totalUnits": 169,
+            "averageTicket": 97138
+          },
+          {
+            "date": "2025-06",
+            "metrics": {
+              "Tienda Vasanna": 5027000,
+              "Uroccidente": 7096240,
+              "Dr Mama": 1938860,
+              "Algia": 535075
+            },
+            "totalUnits": 138,
+            "averageTicket": 105777
+          },
+          {
+            "date": "2025-07",
+            "metrics": {
+              "Tienda Vasanna": 5969030,
+              "Uroccidente": 9103920,
+              "Dr Mama": 6105792,
+              "Algia": 321045
+            },
+            "totalUnits": 229,
+            "averageTicket": 93886
+          },
+          {
+            "date": "2025-08",
+            "metrics": {
+              "Tienda Vasanna": 5016151,
+              "Uroccidente": 7513600,
+              "Dr Mama": 4162389,
+              "Algia": 1391195
+            },
+            "totalUnits": 178,
+            "averageTicket": 101592
+          },
+          {
+            "date": "2025-09",
+            "metrics": {
+              "Tienda Vasanna": 8807751,
+              "Uroccidente": 5336830,
+              "Dr Mama": 3131121,
+              "Drs. Independientes": 1036150
+            },
+            "totalUnits": 193,
+            "averageTicket": 94880
+          },
+          {
+            "date": "2025-10",
+            "metrics": {
+              "Tienda Vasanna": 6081201,
+              "Uroccidente": 6575120,
+              "Dr Mama": 7681520,
+              "Drs. Independientes": 635290
+            },
+            "totalUnits": 207,
+            "averageTicket": 101319
+          },
+          {
+            "date": "2025-11",
+            "metrics": {
+              "Tienda Vasanna": 8082120,
+              "Uroccidente": 4350630,
+              "Dr Mama": 1836185,
+              "Drs. Independientes": 1457000
+            },
+            "totalUnits": 209,
+            "averageTicket": 75244
+          },
+          {
+            "date": "2025-12",
+            "metrics": {
+              "Tienda Vasanna": 4761205,
+              "Uroccidente": 4395398,
+              "Dr Mama": 1357202
+            },
+            "totalUnits": 130,
+            "averageTicket": 80875
+          },
+          {
+            "date": "2026-01",
+            "metrics": {
+              "Tienda Vasanna": 6478020,
+              "Uroccidente": 5377568,
+              "Dr Mama": 5551130
+            },
+            "totalUnits": 210,
+            "averageTicket": 82889
+          },
+          {
+            "date": "2026-02",
+            "metrics": {
+              "Tienda Vasanna": 7519319,
+              "Uroccidente": 4680960,
+              "Dr Mama": 4616304
+            },
+            "totalUnits": 159,
+            "averageTicket": 105765
+          }
+        ],
+        "win_rate_by_source": [
+          {
+            "source": "Google Ads",
+            "channelType": "advertising",
+            "win_rate": 35,
+            "total_revenue": 24800000,
+            "roi": 312
+          },
+          {
+            "source": "WhatsApp",
+            "channelType": "sales",
+            "win_rate": 42,
+            "total_revenue": 18200000,
+            "roi": 284
+          },
+          {
+            "source": "Meta Ads",
+            "channelType": "advertising",
+            "win_rate": 18,
+            "total_revenue": 15600000,
+            "roi": 156
+          },
+          {
+            "source": "Instagram Organic",
+            "channelType": "sales",
+            "win_rate": 28,
+            "total_revenue": 8400000,
+            "roi": 210
+          },
+          {
+            "source": "Email Marketing",
+            "channelType": "sales",
+            "win_rate": 22,
+            "total_revenue": 6800000,
+            "roi": 175
+          },
+          {
+            "source": "TikTok Ads",
+            "channelType": "advertising",
+            "win_rate": 12,
+            "total_revenue": 5200000,
+            "roi": 98
+          },
+          {
+            "source": "Hola q precio tiene?",
+            "channelType": "sales",
+            "win_rate": 0,
+            "total_revenue": 0,
+            "roi": 0
+          }
+        ],
+        "cluster_data": [
+          {
+            "id": "SYbzfbyJIBYIDOAZJCM6",
+            "x_engagement": 10,
+            "y_value": 0,
+            "category": "Hola q precio tiene?",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-1",
+            "x_engagement": 72,
+            "y_value": 3200000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-2",
+            "x_engagement": 55,
+            "y_value": 1800000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-3",
+            "x_engagement": 81,
+            "y_value": 4500000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-4",
+            "x_engagement": 38,
+            "y_value": 750000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-5",
+            "x_engagement": 63,
+            "y_value": 2100000,
+            "category": "Meta Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-6",
+            "x_engagement": 88,
+            "y_value": 6800000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-7",
+            "x_engagement": 76,
+            "y_value": 5200000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-8",
+            "x_engagement": 92,
+            "y_value": 8100000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-9",
+            "x_engagement": 61,
+            "y_value": 2800000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-10",
+            "x_engagement": 47,
+            "y_value": 1500000,
+            "category": "Google Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-11",
+            "x_engagement": 96,
+            "y_value": 3800000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-12",
+            "x_engagement": 85,
+            "y_value": 2900000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-13",
+            "x_engagement": 70,
+            "y_value": 1100000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-14",
+            "x_engagement": 91,
+            "y_value": 4200000,
+            "category": "WhatsApp",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-15",
+            "x_engagement": 94,
+            "y_value": 1200000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-16",
+            "x_engagement": 87,
+            "y_value": 850000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-17",
+            "x_engagement": 78,
+            "y_value": 1500000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-18",
+            "x_engagement": 82,
+            "y_value": 980000,
+            "category": "Instagram Organic",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-19",
+            "x_engagement": 58,
+            "y_value": 1400000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-20",
+            "x_engagement": 41,
+            "y_value": 600000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-21",
+            "x_engagement": 67,
+            "y_value": 2200000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "won"
+          },
+          {
+            "id": "dc-22",
+            "x_engagement": 29,
+            "y_value": 400000,
+            "category": "TikTok Ads",
+            "channelType": "advertising",
+            "status": "open"
+          },
+          {
+            "id": "dc-23",
+            "x_engagement": 32,
+            "y_value": 1800000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "won"
+          },
+          {
+            "id": "dc-24",
+            "x_engagement": 24,
+            "y_value": 900000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "open"
+          },
+          {
+            "id": "dc-25",
+            "x_engagement": 19,
+            "y_value": 650000,
+            "category": "Email Marketing",
+            "channelType": "sales",
+            "status": "open"
+          }
+        ],
+        "pipeline_value_by_stage": [
+          {
+            "stage": "Interesado💫",
+            "value": 0
+          },
+          {
+            "stage": "Unknown Stage",
+            "value": 293823735
+          }
+        ]
+      },
+      "products": [
+        {
+          "name": "Hid. Vag. +50 / 50ml",
+          "sku": "HV+50-50",
+          "revenue": 116092361,
+          "image": "product-watch",
+          "change": "+413%",
+          "changeType": "increase"
+        },
+        {
+          "name": "Hid. Vag. -50 / 50ml",
+          "sku": "HV-50-50",
+          "revenue": 61683612,
+          "image": "product-earbuds",
+          "change": "-65%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Loc. Limp. Syndet /50ml",
+          "sku": "LS-50",
+          "revenue": 46354989,
+          "image": "product-mat",
+          "change": "-28%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Hid. Vag. +50 / 30ml",
+          "sku": "HV+50-30",
+          "revenue": 28493684,
+          "image": "product-watch",
+          "change": "-74%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Hid. Vag. -50 / 30ml",
+          "sku": "HV-50-30",
+          "revenue": 18115624,
+          "image": "product-earbuds",
+          "change": "-69%",
+          "changeType": "decrease"
+        },
+        {
+          "name": "Loc. Limp. Syndet /30ml",
+          "sku": "LS-30",
+          "revenue": 10060562,
+          "image": "product-mat",
+          "change": "-18%",
+          "changeType": "decrease"
+        }
+      ],
+      "raw_summary_for_ai": {
+        "top_source": "Direct",
+        "worst_funnel_stage": "Comprador🎉"
+      }
+    }
+  },
+  "context": {
+    "locationId": "PLsKcTpoijAF5iHuqikq",
+    "userToken": "default_token"
+  }
+}

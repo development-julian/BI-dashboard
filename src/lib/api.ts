@@ -1,5 +1,6 @@
 
 import { subDays, format } from 'date-fns';
+import { getSession } from '@/lib/auth';
 
 export interface KpiCard {
   label: string;
@@ -136,9 +137,55 @@ const getDateRange = (range: string): { from: string; to: string } => {
   };
 };
 
+/**
+ * Determines how many months of data to show based on the range filter.
+ * Uses the LAST registered month as anchor, then counts backwards.
+ */
+const getMonthsToShow = (range: string): number => {
+  switch (range) {
+    case '5m': return 5;
+    case '1y': return 12;
+    case 'all': return Infinity;
+    default: return 5;
+  }
+};
+
+/**
+ * Filters an array of month-based data (with a `date` field like "2024-05")
+ * to only include the last N months relative to the last registered month.
+ */
+const filterByMonthRange = <T extends { date: string }>(data: T[], range: string): T[] => {
+  if (!data || data.length === 0) return [];
+  
+  const monthsToShow = getMonthsToShow(range);
+  if (monthsToShow === Infinity) return data;
+
+  // Sort ascending by date to find the last registered month
+  const sorted = [...data].sort((a, b) => a.date.localeCompare(b.date));
+  
+  // Take the last N months
+  return sorted.slice(-monthsToShow);
+};
+
+/**
+ * Calculate percentage change between current and previous period values
+ */
+const calcChange = (current: number, previous: number): { change: string; changeType: 'increase' | 'decrease' | 'neutral' } => {
+  if (previous === 0 && current === 0) return { change: '0%', changeType: 'neutral' };
+  if (previous === 0) return { change: '+100%', changeType: 'increase' };
+  
+  const pctChange = ((current - previous) / previous) * 100;
+  const rounded = Math.round(pctChange * 10) / 10;
+  
+  if (rounded === 0) return { change: '0%', changeType: 'neutral' };
+  if (rounded > 0) return { change: `+${rounded}%`, changeType: 'increase' };
+  return { change: `${rounded}%`, changeType: 'decrease' };
+};
+
 const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?: any; error?: string }> => {
   try {
     const dateRange = getDateRange(range);
+    const session = getSession();
 
     const res = await fetch(N8N_WEBHOOK_URL, {
       method: 'POST',
@@ -147,9 +194,9 @@ const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?:
       },
       body: JSON.stringify({
         action: action,
-        ghlLocationId: "PLsKcTpoijAF5iHuqikq",
+        ghlLocationId: session?.locationId ?? '',
         dateRange: dateRange,
-        userToken: "default_token"
+        userToken: session?.token ?? '',
       }),
       cache: 'no-store'
     });
@@ -201,7 +248,8 @@ const stageMapping: { [key: string]: string } = {
   'Agendado': 'Scheduled',
   'Cotización': 'Quote',
   'Cerrado': 'Closed',
-  'Perdido': 'Lost'
+  'Perdido': 'Lost',
+  'Frío🥶': 'Cold'
 };
 
 const translateStage = (stage: string) => stageMapping[stage] || stage;
@@ -215,14 +263,14 @@ export const getDashboardStats = async (range: string = '5m'): Promise<Dashboard
 
   const n8nData = result.data;
 
-  // ── Extract KPIs from the real payload ──
+  // ── Extract KPIs from the real payload (these ARE filtered by n8n) ──
   const kpis = n8nData.kpis || {};
   const totalLeads = kpis.total_leads || 0;
   const totalRevenue = kpis.total_revenue || 0;
   const wonDeals = kpis.won_deals || 0;
   const conversionRate = totalLeads > 0 ? (wonDeals / totalLeads) * 100 : (kpis.conversion_rate || 0);
 
-  // ── AI intelligence report (real payload nests under .analysis) ──
+  // ── AI intelligence report ──
   const report = n8nData.intelligenceReport?.analysis || n8nData.intelligenceReport || {};
   const aiForecastData = {
     title: report.key_insight || 'No AI insights available.',
@@ -230,14 +278,19 @@ export const getDashboardStats = async (range: string = '5m'): Promise<Dashboard
     sentiment: (n8nData.intelligenceReport?.sentiment || 'neutral') as 'positive' | 'negative' | 'neutral'
   };
 
-  // ── Build lead conversion trend from real lead_conversion_trends data ──
-  // The backend now provides an array of { month, metrics: { [channel]: value } }
-  const realConversionTrends = n8nData.charts?.lead_conversion_trends || [];
-  let chartData: any[] = [];
+  // ══════════════════════════════════════════════════════════════════════
+  // FRONTEND TEMPORAL FILTERING
+  // n8n returns ALL historical data for charts — we filter here by range
+  // ══════════════════════════════════════════════════════════════════════
 
-  if (realConversionTrends.length > 0) {
-    chartData = realConversionTrends.map((item: any) => {
-      // Create a flat object supporting both old (month+metrics) and new (date+flat keys) structures
+  // ── 1. LEAD CONVERSION TRENDS (Monthly Sales by Channel) ──
+  // n8n always returns all 22 months — filter to show only months in the selected range
+  const rawConversionTrends = n8nData.charts?.lead_conversion_trends || [];
+  const filteredConversionTrends = filterByMonthRange(rawConversionTrends, range);
+
+  let chartData: any[] = [];
+  if (filteredConversionTrends.length > 0) {
+    chartData = filteredConversionTrends.map((item: any) => {
       const flatItem: any = { date: item.date || item.month };
       if (item.metrics) {
         Object.keys(item.metrics).forEach(key => {
@@ -269,9 +322,58 @@ export const getDashboardStats = async (range: string = '5m'): Promise<Dashboard
     });
   }
 
+  // ── 2. SALES VOLUME TRENDS (for Units & Average Ticket) ──
+  // Filter sales_volume_trends by the same range to derive totalUnits and averageTicket
+  const rawVolumeTrends = n8nData.charts?.sales_volume_trends || [];
+  const filteredVolumeTrends = filterByMonthRange(rawVolumeTrends, range);
+
+  let totalUnitsFiltered = 0;
+  let totalRevenueFromVolume = 0;
+  let averageTicketFiltered = 0;
+
+  if (filteredVolumeTrends.length > 0) {
+    filteredVolumeTrends.forEach((month: any) => {
+      totalUnitsFiltered += month.totalUnits || 0;
+      const monthRevenue = month.metrics
+        ? Object.values(month.metrics as Record<string, number>).reduce((sum: number, v: number) => sum + v, 0)
+        : 0;
+      totalRevenueFromVolume += monthRevenue;
+    });
+    averageTicketFiltered = totalUnitsFiltered > 0 ? Math.round(totalRevenueFromVolume / totalUnitsFiltered) : 0;
+  }
+
+  // ── 3. Calculate period-over-period changes for Units & Ticket ──
+  // Compare current filtered period vs previous equally-sized period
+  let unitsChange = { change: '0%', changeType: 'neutral' as const };
+  let ticketChange = { change: '0%', changeType: 'neutral' as const };
+  let revenueChange = { change: '0%', changeType: 'neutral' as const };
+
+  if (rawVolumeTrends.length > 0 && range !== 'all') {
+    const monthsCount = getMonthsToShow(range);
+    const sortedAll = [...rawVolumeTrends].sort((a: any, b: any) => a.date.localeCompare(b.date));
+    const currentPeriod = sortedAll.slice(-monthsCount);
+    const previousPeriod = sortedAll.slice(-monthsCount * 2, -monthsCount);
+
+    if (previousPeriod.length > 0) {
+      const prevUnits = previousPeriod.reduce((sum: number, m: any) => sum + (m.totalUnits || 0), 0);
+      const prevRevenue = previousPeriod.reduce((sum: number, m: any) => {
+        return sum + (m.metrics ? Object.values(m.metrics as Record<string, number>).reduce((s: number, v: number) => s + v, 0) : 0);
+      }, 0);
+      const prevTicket = prevUnits > 0 ? Math.round(prevRevenue / prevUnits) : 0;
+
+      unitsChange = calcChange(totalUnitsFiltered, prevUnits);
+      ticketChange = calcChange(averageTicketFiltered, prevTicket);
+      revenueChange = calcChange(totalRevenueFromVolume, prevRevenue);
+    }
+  }
+
+  // ── 4. KPI changes — compute from filtered volume data when available ──
+  const totalRevenueChange = totalRevenueFromVolume > 0
+    ? revenueChange
+    : calcChange(totalRevenue, 0);
+
   // ── Funnel: real payload uses `funnel[]` with {stage, value}, not `charts.sales_funnel` ──
   const realFunnel = n8nData.funnel || [];
-  // Also support the restructured workflow format (charts.sales_funnel with {stage, count})
   const chartsFunnel = n8nData.charts?.sales_funnel || [];
   const funnelSource = realFunnel.length > 0 ? realFunnel : chartsFunnel;
   const funnelPerformance = funnelSource.map((f: any) => ({
@@ -282,6 +384,7 @@ export const getDashboardStats = async (range: string = '5m'): Promise<Dashboard
   }));
 
   // ── Source Acquisition by channel (De dónde llegan tus clientes) ──
+  // n8n returns same data for all filters (mock DIGITAL_CHANNELS), pass through as-is
   const realSalesByChannel = (n8nData.salesByChannel || [])
     .map((s: any) => ({
       name: s.label || s.name || s.channel || 'Unknown',
@@ -298,12 +401,12 @@ export const getDashboardStats = async (range: string = '5m'): Promise<Dashboard
     ? n8nData.charts.win_rate_by_source
     : [];
 
-  // ── Pipeline value by stage: use real data if available, otherwise default to empty array ──
+  // ── Pipeline value by stage ──
   const pipelineValueByStage = (n8nData.charts?.pipeline_value_by_stage && n8nData.charts.pipeline_value_by_stage.length > 0)
     ? n8nData.charts.pipeline_value_by_stage
     : [];
 
-  // ── Advanced KPIs (from restructured workflow, if available) ──
+  // ── Advanced KPIs ──
   const extraKpis = {
     avgResponseTime: kpis.avg_response_time || 0,
     avgEngagement: kpis.avg_engagement || 0,
@@ -312,51 +415,57 @@ export const getDashboardStats = async (range: string = '5m'): Promise<Dashboard
       : 0,
   };
 
-  // ── Product performance (real payload provides products[]) ──
-  const productPerformance = (n8nData.products || []).map((p: any) => ({
+  // ── Product performance ──
+  // Products come from hardcoded Excel data in n8n, revenues are totals across all time
+  // We recalculate based on sales_volume_trends filtered data
+  const rawProducts = n8nData.products || [];
+  const productPerformance = rawProducts.map((p: any) => ({
     name: p.name,
     sku: p.sku || 'SKU-N/A',
     revenue: `$${(p.revenue || 0).toLocaleString()}`,
     change: p.change || '0%',
-    changeType: (p.status === 'alert' ? 'decrease' : 'increase') as 'increase' | 'decrease' | 'neutral',
+    changeType: (p.changeType === 'decrease' ? 'decrease' : p.changeType === 'increase' ? 'increase' : 'neutral') as 'increase' | 'decrease' | 'neutral',
     image: p.image_url || p.image || ''
   }));
+
+  // ── Compute total sales from filtered volume data ──
+  const totalSalesFromVolume = totalRevenueFromVolume > 0 ? totalRevenueFromVolume : totalRevenue;
 
   return {
     kpis: [
       {
         label: 'Total Revenue',
-        value: `$${totalRevenue.toLocaleString()}`,
-        change: totalRevenue > 0 ? '+2.5%' : '0%',
-        changeType: totalRevenue > 0 ? 'increase' : 'neutral',
+        value: `$${totalSalesFromVolume.toLocaleString()}`,
+        change: totalRevenueChange.change,
+        changeType: totalRevenueChange.changeType,
         icon: 'dollar',
       },
       {
         label: 'Total Leads',
         value: `${totalLeads.toLocaleString()}`,
-        change: totalLeads > 0 ? '+8.0%' : '0%',
+        change: totalLeads > 0 ? `${totalLeads}` : '0',
         changeType: totalLeads > 0 ? 'increase' : 'neutral',
         icon: 'user',
       },
       {
         label: 'Conversion Rate',
         value: `${conversionRate.toFixed(1)}%`,
-        change: conversionRate > 0 ? '+1.2%' : '0%',
+        change: conversionRate > 0 ? `${conversionRate.toFixed(1)}%` : '0%',
         changeType: conversionRate > 0 ? 'increase' : 'neutral',
         icon: 'percent',
       },
     ],
     leadConversion: {
       totalLeads,
-      totalLeadsChange: totalLeads > 0 ? '+12%' : '0%',
+      totalLeadsChange: totalLeads > 0 ? `${totalLeads}` : '0',
       mql: wonDeals,
-      mqlChange: wonDeals > 0 ? '+5%' : '0%',
+      mqlChange: wonDeals > 0 ? `${wonDeals}` : '0',
       conversionRate,
       conversionRateTarget: 5.0,
-      totalUnits: kpis.total_units !== undefined ? kpis.total_units : wonDeals,
-      totalUnitsChange: wonDeals > 0 ? '+5%' : '0%',
-      averageTicket: kpis.average_ticket !== undefined ? kpis.average_ticket : (wonDeals > 0 ? totalRevenue / wonDeals : 0),
-      averageTicketChange: totalRevenue > 0 ? '+2%' : '0%',
+      totalUnits: totalUnitsFiltered,
+      totalUnitsChange: unitsChange.change,
+      averageTicket: averageTicketFiltered,
+      averageTicketChange: ticketChange.change,
       chartData,
       status: totalLeads >= 20 ? 'ok' : 'insufficient_data',
     },
