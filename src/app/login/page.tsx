@@ -156,7 +156,7 @@ export default function LoginPage() {
         </p>
       </main>
 
-      <style jsx>{`
+      <style>{`
         /* ── Layout ───────────────────────────────────────────────────────── */
         .login-root {
           min-height: 100vh;

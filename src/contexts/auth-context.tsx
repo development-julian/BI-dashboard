@@ -51,7 +51,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const result = await loginWithN8n(username, password);
       if (result.success && result.user) {
         setUser(result.user);
-        router.replace('/dashboard');
+        // Usamos window.location para forzar una recarga completa, 
+        // de modo que el navegador envíe la cookie recién creada a los Server Components
+        window.location.href = '/dashboard';
       }
       return result;
     },

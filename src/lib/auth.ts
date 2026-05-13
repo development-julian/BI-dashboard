@@ -2,7 +2,7 @@
 // Auth types & session helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const N8N_AUTH_URL = 'https://n8n.growtzy.com/webhook/api/v1/auth';
+export const N8N_AUTH_URL = '/api/auth/login';
 
 export interface AuthUser {
   userId: string;

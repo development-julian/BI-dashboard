@@ -1,6 +1,12 @@
-
 import { subDays, format } from 'date-fns';
 import { getSession } from '@/lib/auth';
+import { cookies } from 'next/headers';
+
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') return '';
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return `http://localhost:${process.env.PORT || 9002}`; // fallback for dev
+};
 
 export interface KpiCard {
   label: string;
@@ -111,7 +117,7 @@ export const isAdChannel = (channel: string) => {
 };
 
 
-export const N8N_WEBHOOK_URL = 'https://n8n.growtzy.com/webhook/api/v1/gateway';
+export const N8N_WEBHOOK_URL = '/api/gateway';
 
 const getDateRange = (range: string): { from: string; to: string } => {
   const to = new Date();
@@ -185,18 +191,27 @@ const calcChange = (current: number, previous: number): { change: string; change
 const fetchDataFromN8n = async (action: string, range: string): Promise<{ data?: any; error?: string }> => {
   try {
     const dateRange = getDateRange(range);
-    const session = getSession();
+    
+    let userToken = '';
+    if (typeof window === 'undefined') {
+      const cookieStore = await cookies();
+      userToken = cookieStore.get('nexusdash_token')?.value || '';
+    } else {
+      userToken = getSession()?.token || '';
+    }
 
-    const res = await fetch(N8N_WEBHOOK_URL, {
+    const absoluteUrl = typeof window === 'undefined' ? `${getBaseUrl()}${N8N_WEBHOOK_URL}` : N8N_WEBHOOK_URL;
+
+    // Use absoluteURL and dynamic token
+    const res = await fetch(absoluteUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         action: action,
-        ghlLocationId: session?.locationId ?? '',
         dateRange: dateRange,
-        userToken: session?.token ?? '',
+        userToken: userToken,
       }),
       cache: 'no-store'
     });
@@ -344,9 +359,9 @@ export const getDashboardStats = async (range: string = '5m'): Promise<Dashboard
 
   // ── 3. Calculate period-over-period changes for Units & Ticket ──
   // Compare current filtered period vs previous equally-sized period
-  let unitsChange = { change: '0%', changeType: 'neutral' as const };
-  let ticketChange = { change: '0%', changeType: 'neutral' as const };
-  let revenueChange = { change: '0%', changeType: 'neutral' as const };
+  let unitsChange: { change: string; changeType: 'increase' | 'decrease' | 'neutral' } = { change: '0%', changeType: 'neutral' };
+  let ticketChange: { change: string; changeType: 'increase' | 'decrease' | 'neutral' } = { change: '0%', changeType: 'neutral' };
+  let revenueChange: { change: string; changeType: 'increase' | 'decrease' | 'neutral' } = { change: '0%', changeType: 'neutral' };
 
   if (rawVolumeTrends.length > 0 && range !== 'all') {
     const monthsCount = getMonthsToShow(range);
